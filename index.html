@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Analizador de Colección · Biblioteca PUCV</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+:root{
+  --ink:#0f1923;--ink2:#3a4a5c;--ink3:#7a8fa6;
+  --paper:#f7f5f0;--paper2:#edeae3;--rule:#d6d1c8;
+  --accent:#1a3a6b;--accent2:#c8a84b;
+  --green:#1e6b3a;--green-bg:#e6f4ec;
+  --amber:#8a5e00;--amber-bg:#fdf3d6;
+  --red:#8b1a1a;--red-bg:#fdecea;
+  --purple:#5c2d91;--purple-bg:#f0e8fc;
+  --teal:#006064;--teal-bg:#e0f7fa;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;display:flex;flex-direction:column}
+header{background:var(--accent);color:#fff;padding:22px 40px 18px;display:flex;align-items:center;gap:16px;border-bottom:4px solid var(--accent2)}
+.hlogo{width:44px;height:44px;background:var(--accent2);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.htitle h1{font-family:'Playfair Display',serif;font-size:19px}
+.htitle p{font-size:11px;color:rgba(255,255,255,.55);margin-top:2px;letter-spacing:.05em;text-transform:uppercase}
+main{flex:1;max-width:1260px;margin:0 auto;padding:28px 40px 60px;width:100%}
+.slabel{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:7px}
+
+/* Config */
+.cfg-row{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:18px}
+.cfg-field label{display:block;font-size:12px;font-weight:500;color:var(--ink2);margin-bottom:4px}
+.cfg-field input{width:100%;padding:8px 11px;border:1.5px solid var(--rule);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:13px;background:#fff;color:var(--ink)}
+.cfg-field input:focus{outline:none;border-color:var(--accent)}
+
+/* Cutoff panel */
+.cutoff-panel{background:#fff;border:1.5px solid var(--rule);border-radius:10px;padding:18px 22px;margin-bottom:20px}
+.cutoff-panel-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;gap:10px;flex-wrap:wrap}
+.cutoff-panel-head h3{font-family:'Playfair Display',serif;font-size:15px}
+.cutoff-panel-head p{font-size:12px;color:var(--ink3);margin-top:2px}
+.cutoff-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:7px}
+.cutoff-row{display:grid;grid-template-columns:90px 1fr 70px;align-items:center;gap:7px;padding:6px 10px;background:var(--paper);border-radius:6px;border:1px solid var(--rule)}
+.cutoff-row:hover{background:var(--paper2)}
+.cutoff-range{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);font-weight:500}
+.cutoff-desc{font-size:12px;color:var(--ink2)}
+.cutoff-year{width:66px;padding:4px 7px;border:1.5px solid var(--rule);border-radius:5px;font-family:'DM Mono',monospace;font-size:12px;text-align:center;color:var(--ink);background:#fff}
+.cutoff-year:focus{outline:none;border-color:var(--accent)}
+.reset-btn{padding:5px 13px;font-size:12px;border:1.5px solid var(--rule);border-radius:5px;cursor:pointer;background:#fff;color:var(--ink2);font-family:'DM Sans',sans-serif;white-space:nowrap}
+.reset-btn:hover{background:var(--paper2)}
+
+/* Semivida info box */
+.halflife-info{background:var(--purple-bg);border:1.5px solid #c9a7f0;border-radius:8px;padding:14px 18px;margin-bottom:20px}
+.halflife-info h4{font-family:'Playfair Display',serif;font-size:14px;color:var(--purple);margin-bottom:6px}
+.halflife-info p{font-size:12px;color:#4a2070;line-height:1.6}
+.halflife-info .hl-formula{font-family:'DM Mono',monospace;font-size:11px;background:rgba(92,45,145,.1);padding:4px 10px;border-radius:4px;display:inline-block;margin-top:6px}
+
+/* Drop */
+.drop-zone{border:2px dashed var(--rule);border-radius:12px;background:#fff;padding:34px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:18px}
+.drop-zone.drag-over{border-color:var(--accent);background:#edf2fa}
+.drop-zone.loaded{border:2px solid var(--accent2);background:#fdfbf4}
+.drop-icon{font-size:32px;margin-bottom:8px}
+.drop-title{font-family:'Playfair Display',serif;font-size:16px;margin-bottom:4px}
+.drop-sub{font-size:12px;color:var(--ink3);margin-bottom:12px}
+.drop-btn{display:inline-block;padding:7px 20px;background:var(--accent);color:#fff;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer}
+.drop-hint{margin-top:10px;font-family:'DM Mono',monospace;font-size:11px;color:var(--ink3)}
+#file-input{display:none}
+
+/* Mapping */
+#mapping-panel{display:none;background:#fff;border:1.5px solid var(--rule);border-radius:9px;padding:15px 19px;margin-bottom:14px}
+.map-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px 16px;margin-top:8px}
+.map-field label{font-size:11px;font-weight:500;color:var(--ink2);display:block;margin-bottom:3px}
+.map-field select{width:100%;padding:6px 9px;border:1.5px solid var(--rule);border-radius:5px;font-size:12px;font-family:'DM Mono',monospace;color:var(--ink);background:#fff}
+
+/* Career panel */
+#career-panel{display:none;background:#fff;border:1.5px solid var(--rule);border-radius:9px;padding:16px 19px;margin-bottom:16px}
+#career-panel h3{font-family:'Playfair Display',serif;font-size:14px;margin-bottom:9px}
+.chip-actions{display:flex;gap:6px;margin-bottom:9px}
+.chip-btn{padding:4px 11px;font-size:11px;border:1.5px solid var(--rule);border-radius:5px;cursor:pointer;background:#fff;color:var(--ink2);font-family:'DM Sans',sans-serif}
+.chip-btn:hover{background:var(--paper2)}
+.career-grid{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:9px}
+.career-chip{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border:1.5px solid var(--rule);border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;background:#fff;transition:all .15s;user-select:none}
+.career-chip:hover{border-color:var(--accent);color:var(--accent)}
+.career-chip.selected{background:var(--accent);color:#fff;border-color:var(--accent)}
+.chip-n{font-family:'DM Mono',monospace;font-size:10px;opacity:.7}
+.sel-info{font-size:12px;color:var(--ink3)}
+
+.alert{padding:10px 14px;border-radius:7px;font-size:13px;margin-bottom:12px;display:none}
+.alert.error{background:var(--red-bg);color:var(--red);border-left:3px solid var(--red)}
+.alert.info{background:#e8f0fc;color:var(--accent);border-left:3px solid var(--accent)}
+.alert.success{background:var(--green-bg);color:var(--green);border-left:3px solid var(--green)}
+
+.analyze-btn{display:flex;align-items:center;gap:9px;padding:11px 26px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:background .15s;margin-bottom:28px}
+.analyze-btn:hover{background:#14305a}
+.analyze-btn:disabled{background:var(--ink3);cursor:not-allowed}
+
+/* Tabs */
+.tabs{display:flex;gap:3px;border-bottom:2px solid var(--rule);flex-wrap:wrap;margin-bottom:16px}
+.tab{padding:7px 15px;font-size:13px;font-weight:500;cursor:pointer;border-radius:5px 5px 0 0;border:none;background:transparent;color:var(--ink3);font-family:'DM Sans',sans-serif;position:relative;bottom:-2px;border-bottom:2px solid transparent}
+.tab:hover{color:var(--ink)}
+.tab.active{color:var(--accent);font-weight:600;border-bottom:2px solid var(--accent);background:#fff}
+.tab-panel{display:none}.tab-panel.active{display:block}
+
+/* KPIs */
+.kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:11px;margin-bottom:20px}
+.kpi-card{background:#fff;border:1.5px solid var(--rule);border-radius:9px;padding:13px 14px;position:relative;overflow:hidden}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent2)}
+.kpi-card.hl::before{background:var(--purple)}
+.kpi-card.obs::before{background:var(--teal)}
+.kpi-lbl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);margin-bottom:5px}
+.kpi-val{font-family:'Playfair Display',serif;font-size:22px;color:var(--ink);line-height:1}
+.kpi-sub{font-size:11px;color:var(--ink3);margin-top:3px}
+.kpi-val.purple{color:var(--purple)}
+.kpi-val.teal{color:var(--teal)}
+
+/* Table */
+.tbl-wrap{background:#fff;border:1.5px solid var(--rule);border-radius:9px;overflow:hidden;margin-bottom:14px}
+.tbl-head{padding:11px 15px;border-bottom:1.5px solid var(--rule);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.tbl-head h3{font-family:'Playfair Display',serif;font-size:14px}
+.filter-inp{padding:5px 10px;border:1.5px solid var(--rule);border-radius:5px;font-size:12px;font-family:'DM Sans',sans-serif;width:165px}
+.filter-inp:focus{outline:none;border-color:var(--accent)}
+table{width:100%;border-collapse:collapse;font-size:12px}
+thead th{background:var(--paper2);padding:8px 10px;text-align:left;font-size:10px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--ink2);border-bottom:1.5px solid var(--rule);white-space:nowrap;cursor:pointer;user-select:none}
+thead th:hover{background:var(--rule)}
+thead th.sa::after{content:' ▲';font-size:9px}
+thead th.sd::after{content:' ▼';font-size:9px}
+thead th.th-hl{background:#f5edfc;color:var(--purple)}
+thead th.th-obs{background:#e0f7fa;color:var(--teal)}
+tbody tr:nth-child(even) td{background:#fafafa}
+tbody tr:hover td{background:#f0f4fc}
+td{padding:7px 10px;border-bottom:1px solid var(--paper2);vertical-align:middle}
+td.mono{font-family:'DM Mono',monospace;font-size:11px}
+td.num{text-align:right;font-family:'DM Mono',monospace}
+td.td-hl{background:#faf5ff}
+td.td-obs{background:#f0fafa}
+.badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
+.badge.g{background:var(--green-bg);color:var(--green)}
+.badge.a{background:var(--amber-bg);color:var(--amber)}
+.badge.r{background:var(--red-bg);color:var(--red)}
+.hl-badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;font-family:'DM Mono',monospace;white-space:nowrap}
+.hl-badge.fast{background:#fce8ec;color:#8b1a1a}
+.hl-badge.med{background:#fff3e0;color:#8a5e00}
+.hl-badge.slow{background:var(--green-bg);color:var(--green)}
+.obs-badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;font-family:'DM Mono',monospace;white-space:nowrap}
+.pbar-wrap{display:flex;align-items:center;gap:6px;min-width:88px}
+.pbar{flex:1;height:5px;border-radius:3px;background:var(--paper2);overflow:hidden}
+.pbar-fill{height:100%;border-radius:3px}
+.pval{font-family:'DM Mono',monospace;font-size:11px;min-width:32px;color:var(--ink2)}
+.dbars{display:flex;gap:2px;align-items:flex-end;height:16px}
+.dbar{width:6px;border-radius:2px 2px 0 0}
+.corte-tag{font-family:'DM Mono',monospace;font-size:10px;padding:1px 6px;background:var(--paper2);border-radius:3px;white-space:nowrap}
+
+/* Tooltip */
+[title]{cursor:help}
+
+/* Download */
+.dl-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.dl-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:filter .15s}
+.dl-btn:hover{filter:brightness(1.08)}
+.dl-btn.p{background:var(--accent2);color:var(--ink)}
+.dl-btn.s{background:var(--paper2);color:var(--ink2);border:1.5px solid var(--rule)}
+.dl-btn.m{background:var(--accent);color:#fff}
+.export-section{margin-top:24px;padding-top:20px;border-top:2px solid var(--rule)}
+footer{background:var(--paper2);border-top:1.5px solid var(--rule);padding:10px 40px;font-size:11px;color:var(--ink3);display:flex;justify-content:space-between}
+@media(max-width:800px){main{padding:14px 12px 36px}.cfg-row,.kpi-row,.map-grid,.cutoff-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <div class="hlogo">📚</div>
+  <div class="htitle">
+    <h1>Analizador de Colección Bibliográfica</h1>
+    <p>Análisis por Clasificación Dewey · Biblioteca PUCV</p>
+  </div>
+</header>
+
+<main>
+
+<!-- Config -->
+<div class="slabel">Configuración general</div>
+<div class="cfg-row">
+  <div class="cfg-field">
+    <label>Título del informe</label>
+    <input type="text" id="report-title" placeholder="Ej: Ingenierías PUCV 2025">
+  </div>
+  <div class="cfg-field">
+    <label>Año de corte por defecto <span style="color:var(--ink3);font-weight:400">(clases sin regla específica)</span></label>
+    <input type="number" id="corte-default" value="2013" min="1990" max="2024">
+  </div>
+</div>
+
+<!-- Halflife explainer -->
+<div class="halflife-info">
+  <h4>📐 Indicadores bibliométricos incluidos en este análisis</h4>
+  <p>
+    Además del <strong>% anterior al corte</strong> (criterio de actualización por disciplina), la herramienta calcula dos métricas estandarizadas:
+  </p>
+  <p style="margin-top:8px">
+    <strong>Semivida (Half-life)</strong> — número de años que concentran el 50% más reciente de la colección, calculado desde el año actual hacia atrás. Una semivida corta indica colección en renovación activa; una larga indica estancamiento.
+    <span class="hl-formula">Semivida = Año actual − Año en que se acumula el 50% más reciente</span>
+  </p>
+  <p style="margin-top:8px">
+    <strong>Índice de obsolescencia</strong> — % de ejemplares cuya antigüedad supera la semivida de su propia disciplina según la literatura bibliométrica. Complementa el % anterior al corte con un criterio interno a la propia colección.
+    <span class="hl-formula">I.Obs = Ejemplares con antigüedad &gt; semivida / Total × 100</span>
+  </p>
+</div>
+
+<!-- Cutoff table -->
+<div class="slabel">Años de corte por área disciplinar (Dewey)</div>
+<div class="cutoff-panel">
+  <div class="cutoff-panel-head">
+    <div>
+      <h3>Criterios de actualización por disciplina</h3>
+      <p>Basado en estándares ALA/ACRL — editable según criterio bibliotecológico</p>
+    </div>
+    <button class="reset-btn" onclick="resetCutoffs()">↺ Restaurar valores recomendados</button>
+  </div>
+  <div class="cutoff-grid" id="cutoff-grid"></div>
+</div>
+
+<!-- Drop -->
+<div class="slabel">Archivo de inventario</div>
+<div class="drop-zone" id="drop-zone">
+  <div class="drop-icon">📂</div>
+  <div class="drop-title">Arrastre su archivo Excel aquí</div>
+  <div class="drop-sub">Compatible con planillas de una o múltiples carreras</div>
+  <label class="drop-btn" for="file-input">Seleccionar archivo</label>
+  <div class="drop-hint" id="file-hint">Ningún archivo · .xlsx · .xls</div>
+  <input type="file" id="file-input" accept=".xlsx,.xls">
+</div>
+
+<!-- Mapping -->
+<div id="mapping-panel">
+  <div class="slabel">Mapeo de columnas</div>
+  <div class="map-grid">
+    <div class="map-field"><label>Topográfico (Dewey) *</label><select id="map-topo"></select></div>
+    <div class="map-field"><label>Año de publicación *</label><select id="map-year"></select></div>
+    <div class="map-field"><label>Carrera / Unidad académica</label><select id="map-unit"></select></div>
+  </div>
+</div>
+
+<!-- Career chips -->
+<div id="career-panel">
+  <h3>Seleccionar carreras a analizar</h3>
+  <div class="chip-actions">
+    <button class="chip-btn" onclick="selAll()">Seleccionar todas</button>
+    <button class="chip-btn" onclick="clearAll()">Limpiar</button>
+  </div>
+  <div class="career-grid" id="career-grid"></div>
+  <div class="sel-info" id="sel-info">Sin selección</div>
+</div>
+
+<div class="alert" id="alert-box"></div>
+<button class="analyze-btn" id="analyze-btn" disabled><span>⚡</span> Analizar colección seleccionada</button>
+
+<!-- Results -->
+<div id="results-container" style="display:none">
+  <div class="tabs" id="tabs-bar"></div>
+  <div id="tabs-content"></div>
+  <div class="export-section">
+    <div class="slabel">Exportar todos los informes</div>
+    <div class="dl-row">
+      <button class="dl-btn m" id="dl-all-excel">📊 Excel completo — todas las carreras</button>
+      <button class="dl-btn s" id="dl-all-csv">📄 CSV consolidado</button>
+    </div>
+  </div>
+</div>
+</main>
+
+<footer>
+  <span>Analizador de Colección Bibliográfica · Biblioteca PUCV</span>
+  <span id="fts">—</span>
+</footer>
+
+<script>
+const CURRENT_YEAR = new Date().getFullYear();
+
+// ── Dewey labels ──────────────────────────────────────────────────────────────
+const DEWEY={
+  '000':'Ciencias de la información (General)','001':'Metodología y conocimiento',
+  '002':'El libro','003':'Sistemas','004':'Procesamiento de datos / Informática',
+  '005':'Programación y software','006':'IA, multimedia y métodos especiales',
+  '010':'Bibliografías','020':'Bibliotecología','070':'Documentación y periodismo',
+  '100':'Filosofía','150':'Psicología','153':'Psicología cognitiva','160':'Lógica','170':'Ética',
+  '200':'Religión','300':'Ciencias sociales','301':'Sociología','302':'Interacción social',
+  '303':'Procesos sociales','306':'Cultura e instituciones','310':'Estadística',
+  '320':'Ciencia política','330':'Economía','331':'Economía del trabajo',
+  '332':'Economía financiera','333':'Economía de la tierra','336':'Finanzas públicas',
+  '338':'Producción','339':'Macroeconomía','340':'Derecho','341':'D. internacional',
+  '342':'D. constitucional','343':'D. tributario y comercial','344':'D. laboral',
+  '345':'D. penal','346':'D. privado','347':'D. procesal','350':'Adm. pública',
+  '360':'Servicios sociales','370':'Educación','371':'Instituciones educativas',
+  '378':'Educación superior','380':'Comercio y comunicaciones','384':'Telecomunicaciones',
+  '390':'Costumbres','400':'Lengua y lingüística','410':'Lingüística','420':'Inglés',
+  '460':'Español y portugués','500':'Ciencias naturales','510':'Matemáticas',
+  '511':'Principios generales mat.','512':'Álgebra','513':'Aritmética','514':'Topología',
+  '515':'Análisis / Cálculo','516':'Geometría','519':'Probabilidad y estadística',
+  '520':'Astronomía','530':'Física','531':'Mecánica clásica','532':'Mecánica de fluidos',
+  '535':'Óptica','536':'Termodinámica','537':'Electricidad y electrónica',
+  '540':'Química','541':'Química física','546':'Química inorgánica','547':'Química orgánica',
+  '550':'Ciencias de la Tierra','551':'Geología','552':'Petrología','553':'Geología económica',
+  '560':'Paleontología','570':'Biología','572':'Bioquímica','576':'Genética','577':'Ecología',
+  '580':'Plantas','590':'Animales','600':'Tecnología','607':'Educación en tecnología',
+  '610':'Medicina y salud','611':'Anatomía','612':'Fisiología','620':'Ingeniería',
+  '621':'Ing. mecánica / eléctrica','622':'Minería','623':'Ing. militar y naval',
+  '624':'Ing. civil','625':'Ing. de transporte','627':'Hidráulica',
+  '628':'Ing. ambiental y sanitaria','629':'Otras ingenierías','630':'Agricultura',
+  '640':'Economía doméstica','650':'Gestión y administración','651':'Servicios de oficina',
+  '657':'Contabilidad','658':'Gestión empresarial','659':'Publicidad',
+  '660':'Ing. química','661':'Química industrial','662':'Combustibles',
+  '663':'Industria de bebidas','664':'Industria alimentaria','665':'Petróleo',
+  '666':'Cerámica','668':'Polímeros','669':'Metalurgia',
+  '670':'Manufactura','680':'Manufactura específica','686':'Impresión','690':'Construcción',
+  '700':'Artes','720':'Arquitectura','740':'Diseño','745':'Artes decorativas',
+  '750':'Pintura','770':'Fotografía','780':'Música','790':'Deportes',
+  '800':'Literatura','860':'Literatura española','900':'Historia y Geografía',
+  '910':'Geografía','920':'Biografías','940':'Historia de Europa',
+  '980':'Historia de América del Sur',
+};
+function dlabel(c){if(DEWEY[c])return DEWEY[c];const d=c[0]+'00';return DEWEY[d]?DEWEY[d]+' (div.)':'Dewey '+c}
+
+// ── Cutoff rules ──────────────────────────────────────────────────────────────
+const DEFAULT_CUTOFFS=[
+  {from:0,  to:6,  label:'000–006',desc:'Computación, IA, software',        year:2019,why:'Obsolescencia muy rápida — tecnología cambia en 3–5 años'},
+  {from:7,  to:99, label:'007–099',desc:'Información, documentación',        year:2014,why:'Semivida media'},
+  {from:100,to:199,label:'100–199',desc:'Filosofía, psicología, ética',      year:2010,why:'Fundamentos estables; actualización lenta'},
+  {from:200,to:299,label:'200–299',desc:'Religión',                          year:2008,why:'Disciplina de semivida larga'},
+  {from:300,to:309,label:'300–309',desc:'Ciencias sociales (General)',       year:2012,why:'Cambia con contexto social y político'},
+  {from:310,to:319,label:'310–319',desc:'Estadística aplicada',              year:2014,why:'Métodos se actualizan con frecuencia'},
+  {from:320,to:329,label:'320–329',desc:'Ciencia política',                  year:2013,why:'Semivida media'},
+  {from:330,to:339,label:'330–339',desc:'Economía',                          year:2013,why:'Datos y modelos cambian; semivida 8–10 años'},
+  {from:340,to:349,label:'340–349',desc:'Derecho',                           year:2015,why:'Normativa y jurisprudencia se actualizan constantemente'},
+  {from:350,to:399,label:'350–399',desc:'Adm. pública, educación, comercio', year:2012,why:'Semivida media'},
+  {from:400,to:499,label:'400–499',desc:'Lengua y lingüística',              year:2008,why:'Disciplina de semivida larga'},
+  {from:500,to:509,label:'500–509',desc:'Ciencias naturales (General)',      year:2012,why:'Semivida media'},
+  {from:510,to:519,label:'510–519',desc:'Matemáticas y estadística',         year:2010,why:'Fundamentos estables; textos clásicos vigentes'},
+  {from:520,to:529,label:'520–529',desc:'Astronomía',                        year:2013,why:'Semivida media'},
+  {from:530,to:539,label:'530–539',desc:'Física',                            year:2013,why:'Semivida media; fundamentos estables'},
+  {from:540,to:549,label:'540–549',desc:'Química',                           year:2013,why:'Semivida media'},
+  {from:550,to:559,label:'550–559',desc:'Ciencias de la Tierra / Geología',  year:2013,why:'Semivida media'},
+  {from:560,to:599,label:'560–599',desc:'Biología y ciencias naturales',     year:2013,why:'Avances frecuentes; semivida 8–10 años'},
+  {from:600,to:609,label:'600–609',desc:'Tecnología (General)',              year:2014,why:'Cambia con frecuencia'},
+  {from:610,to:619,label:'610–619',desc:'Medicina y salud',                  year:2015,why:'Protocolos y evidencia se actualizan rápido'},
+  {from:620,to:629,label:'620–629',desc:'Ingeniería mecánica, civil, etc.',  year:2013,why:'Normas y métodos evolucionan; semivida 8–10 años'},
+  {from:630,to:649,label:'630–649',desc:'Agricultura, economía doméstica',   year:2012,why:'Semivida media'},
+  {from:650,to:659,label:'650–659',desc:'Gestión, administración, contab.',   year:2013,why:'Prácticas cambian; semivida 8–10 años'},
+  {from:660,to:669,label:'660–669',desc:'Ingeniería química, materiales',    year:2013,why:'Procesos industriales se actualizan'},
+  {from:670,to:699,label:'670–699',desc:'Manufactura, construcción',         year:2012,why:'Normas constructivas como referencia'},
+  {from:700,to:799,label:'700–799',desc:'Artes',                             year:2008,why:'Semivida larga'},
+  {from:800,to:899,label:'800–899',desc:'Literatura',                        year:2000,why:'Obras permanentes'},
+  {from:900,to:999,label:'900–999',desc:'Historia y Geografía',              year:2000,why:'Semivida muy larga'},
+];
+
+// Semivida disciplinar de referencia (en años) para el índice de obsolescencia
+// Fuente: Burton & Kebler, Brookes, Stinson & Fenly (bibliometría clásica)
+const HALFLIFE_REF={
+  '000':5,'001':8,'003':8,'004':5,'005':5,'006':4,
+  '100':15,'150':12,'160':15,'170':15,
+  '200':20,
+  '300':10,'310':8,'320':10,'330':10,'340':7,'350':10,'360':10,'370':12,'380':10,
+  '400':15,
+  '500':10,'510':15,'511':15,'512':15,'515':15,'519':10,
+  '520':10,'530':12,'536':12,'537':8,
+  '540':10,'550':12,'560':15,'570':10,'572':8,'577':10,
+  '600':8,'610':7,'620':10,'621':8,'622':12,'624':10,'628':10,'629':8,
+  '630':10,'650':10,'657':10,'658':10,
+  '660':10,'669':12,'670':12,'690':12,
+  '700':20,'800':25,'900':25,
+};
+function getHLRef(code){
+  if(HALFLIFE_REF[code])return HALFLIFE_REF[code];
+  const d=code[0]+'00';
+  return HALFLIFE_REF[d]||10;
+}
+
+let cutoffRules=JSON.parse(JSON.stringify(DEFAULT_CUTOFFS));
+
+function yearColor(y){
+  if(y>=2018)return'#c62828';if(y>=2015)return'#ef6c00';
+  if(y>=2012)return'#558b2f';return'#2e7d32';
+}
+function buildCutoffGrid(){
+  const grid=document.getElementById('cutoff-grid');
+  grid.innerHTML='';
+  cutoffRules.forEach((rule,i)=>{
+    const row=document.createElement('div');
+    row.className='cutoff-row';
+    row.innerHTML=`<span class="cutoff-range">${rule.label}</span>
+      <span class="cutoff-desc" title="${rule.why}">${rule.desc}</span>
+      <input class="cutoff-year" type="number" value="${rule.year}" min="1990" max="2024"
+        data-idx="${i}" style="border-color:${yearColor(rule.year)};color:${yearColor(rule.year)}">`;
+    grid.appendChild(row);
+  });
+  grid.querySelectorAll('.cutoff-year').forEach(inp=>{
+    inp.addEventListener('change',function(){
+      const idx=+this.dataset.idx;
+      cutoffRules[idx].year=+this.value;
+      this.style.borderColor=yearColor(+this.value);
+      this.style.color=yearColor(+this.value);
+    });
+  });
+}
+function resetCutoffs(){cutoffRules=JSON.parse(JSON.stringify(DEFAULT_CUTOFFS));buildCutoffGrid()}
+function getCutoff(code){
+  const n=parseInt(code);
+  const rule=cutoffRules.find(r=>n>=r.from&&n<=r.to);
+  return rule?rule.year:parseInt(document.getElementById('corte-default').value)||2013;
+}
+
+buildCutoffGrid();
+
+// ── Semivida calculation ──────────────────────────────────────────────────────
+// Returns number of years that cover the most recent 50% of the collection
+function calcHalfLife(validYears){
+  if(validYears.length<4)return null;
+  const sorted=[...validYears].sort((a,b)=>b-a); // descending (newest first)
+  const half=Math.ceil(sorted.length/2);
+  const cutoffYear=sorted[half-1]; // year at which we reach 50%
+  return CURRENT_YEAR-cutoffYear;
+}
+
+// Índice de obsolescencia: % con antigüedad > semivida de referencia disciplinar
+function calcObsolescencia(validYears,deweyCode){
+  if(!validYears.length)return null;
+  const hlRef=getHLRef(deweyCode);
+  const cutoffYear=CURRENT_YEAR-hlRef;
+  return(validYears.filter(y=>y<cutoffYear).length/validYears.length)*100;
+}
+
+// ── State ─────────────────────────────────────────────────────────────────────
+let rawData=[],allCols=[],selectedCareers=new Set(),allResults={};
+const DECADAS=[1960,1970,1980,1990,2000,2010,2020];
+
+// ── File ──────────────────────────────────────────────────────────────────────
+const dz=document.getElementById('drop-zone'),fi=document.getElementById('file-input');
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag-over')});
+dz.addEventListener('dragleave',()=>dz.classList.remove('drag-over'));
+dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag-over');handleFile(e.dataTransfer.files[0])});
+fi.addEventListener('change',e=>handleFile(e.target.files[0]));
+
+function handleFile(file){
+  if(!file)return;
+  document.getElementById('file-hint').textContent=file.name;
+  showAlert('Leyendo archivo…','info');
+  const r=new FileReader();
+  r.onload=e=>{
+    try{
+      const wb=XLSX.read(e.target.result,{type:'array'});
+      const ws=wb.Sheets[wb.SheetNames[0]];
+      const json=XLSX.utils.sheet_to_json(ws,{defval:''});
+      if(!json.length){showAlert('Archivo vacío.','error');return}
+      allCols=Object.keys(json[0]);rawData=json;
+      dz.classList.add('loaded');
+      populateMaps();buildChips();
+      document.getElementById('mapping-panel').style.display='block';
+      document.getElementById('career-panel').style.display='block';
+      document.getElementById('analyze-btn').disabled=false;
+      hideAlert();
+      showAlert(`✓ ${json.length.toLocaleString()} filas cargadas · ${allCols.length} columnas.`,'success');
+    }catch(err){showAlert('Error: '+err.message,'error')}
+  };
+  r.readAsArrayBuffer(file);
+}
+
+function populateMaps(){
+  const none='<option value="">— no usar —</option>';
+  const opts=allCols.map(c=>`<option value="${c}">${c}</option>`).join('');
+  ['map-topo','map-year','map-unit'].forEach(id=>document.getElementById(id).innerHTML=none+opts);
+  const norm=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const autoMap={
+    'map-topo':['topografico','signatura','dewey','clasificacion','cota'],
+    'map-year':['ano de publicacion','ano publicacion','ano','year','pub_year','fecha'],
+    'map-unit':['unidad_academica','unidad academica','carrera','programa','escuela','unit'],
+  };
+  for(const [id,cands] of Object.entries(autoMap)){
+    const el=document.getElementById(id);
+    const match=allCols.find(c=>cands.some(k=>norm(c).includes(k)));
+    if(match)el.value=match;
+  }
+  document.getElementById('map-unit').addEventListener('change',buildChips);
+}
+
+function buildChips(){
+  const unitCol=document.getElementById('map-unit').value;
+  const grid=document.getElementById('career-grid');
+  grid.innerHTML='';selectedCareers.clear();
+  if(!unitCol){document.getElementById('sel-info').textContent='(sin columna de carrera — se analizará todo)';return}
+  const counts={};
+  for(const r of rawData){const u=String(r[unitCol]||'').trim();if(u)counts[u]=(counts[u]||0)+1}
+  Object.entries(counts).sort((a,b)=>b[1]-a[1]).forEach(([code,n])=>{
+    const ch=document.createElement('div');
+    ch.className='career-chip';ch.dataset.code=code;
+    ch.innerHTML=`<span>${code}</span><span class="chip-n">${n.toLocaleString()}</span>`;
+    ch.addEventListener('click',()=>{
+      if(selectedCareers.has(code)){selectedCareers.delete(code);ch.classList.remove('selected')}
+      else{selectedCareers.add(code);ch.classList.add('selected')}
+      updateSelInfo();
+    });
+    grid.appendChild(ch);
+  });
+  updateSelInfo();
+}
+function selAll(){document.querySelectorAll('.career-chip').forEach(ch=>{ch.classList.add('selected');selectedCareers.add(ch.dataset.code)});updateSelInfo()}
+function clearAll(){document.querySelectorAll('.career-chip').forEach(ch=>ch.classList.remove('selected'));selectedCareers.clear();updateSelInfo()}
+function updateSelInfo(){
+  const n=selectedCareers.size;
+  const unitCol=document.getElementById('map-unit').value;
+  const tot=unitCol?rawData.filter(r=>selectedCareers.has(String(r[unitCol]||'').trim())).length:0;
+  document.getElementById('sel-info').textContent=n===0?'Sin selección':`${n} carrera${n>1?'s':''} · ${tot.toLocaleString()} ejemplares`;
+}
+
+// ── Analysis ──────────────────────────────────────────────────────────────────
+document.getElementById('analyze-btn').addEventListener('click',runAnalysis);
+
+function analyzeRows(rows){
+  const topoCol=document.getElementById('map-topo').value;
+  const yearCol=document.getElementById('map-year').value;
+  const re=/^(\d{3})/,groups={};
+  for(const row of rows){
+    const m=re.exec(String(row[topoCol]||'').trim());if(!m)continue;
+    const code=m[1];
+    const yr=parseFloat(String(row[yearCol]).replace(/\D/g,''));
+    if(!groups[code])groups[code]=[];
+    groups[code].push(isNaN(yr)?null:yr);
+  }
+  return Object.entries(groups).map(([code,years])=>{
+    const corte=getCutoff(code);
+    const valid=years.filter(y=>y&&y>1800&&y<=CURRENT_YEAR+1);
+    const s=[...valid].sort((a,b)=>a-b);
+    const n=years.length,yMin=s[0]||null,yMax=s[s.length-1]||null;
+    const med=s.length?s[Math.floor(s.length/2)]:null;
+    const avg=s.length?s.reduce((a,b)=>a+b,0)/s.length:null;
+    const pct=valid.length?(valid.filter(y=>y<corte).length/valid.length)*100:null;
+    const halfLife=calcHalfLife(valid);
+    const iObs=calcObsolescencia(valid,code);
+    const hlRef=getHLRef(code);
+    const dc={};for(const d of DECADAS)dc[d]=valid.filter(y=>y>=d&&y<d+10).length;
+    return{dewey:code,materia:dlabel(code),n,yMin,yMax,med,avg,pct,corte,halfLife,iObs,hlRef,dc,valid};
+  }).sort((a,b)=>a.dewey.localeCompare(b.dewey));
+}
+
+function runAnalysis(){
+  const topoCol=document.getElementById('map-topo').value;
+  const yearCol=document.getElementById('map-year').value;
+  if(!topoCol||!yearCol){showAlert('Asigne Topográfico y Año de publicación.','error');return}
+  const unitCol=document.getElementById('map-unit').value;
+  allResults={};
+  if(!unitCol||selectedCareers.size===0){
+    allResults['Colección']=analyzeRows(rawData);
+  } else {
+    for(const code of selectedCareers){
+      const sub=rawData.filter(r=>String(r[unitCol]||'').trim()===code);
+      allResults[code]=analyzeRows(sub);
+    }
+  }
+  buildTabs();
+  document.getElementById('results-container').style.display='block';
+  document.getElementById('results-container').scrollIntoView({behavior:'smooth',block:'start'});
+  hideAlert();
+  document.getElementById('fts').textContent='Análisis: '+new Date().toLocaleString('es-CL');
+}
+
+// ── Tabs ──────────────────────────────────────────────────────────────────────
+function buildTabs(){
+  const bar=document.getElementById('tabs-bar'),cont=document.getElementById('tabs-content');
+  bar.innerHTML='';cont.innerHTML='';
+  Object.keys(allResults).forEach((code,i)=>{
+    const tab=document.createElement('button');
+    tab.className='tab'+(i===0?' active':'');tab.textContent=code;
+    tab.addEventListener('click',()=>{
+      document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('tp-'+code).classList.add('active');
+    });
+    bar.appendChild(tab);
+    const panel=document.createElement('div');
+    panel.className='tab-panel'+(i===0?' active':'');
+    panel.id='tp-'+code;
+    panel.innerHTML=panelHTML(code,allResults[code]);
+    cont.appendChild(panel);
+    wirePanel(code,allResults[code]);
+  });
+}
+
+function globalHalfLife(data){
+  const allV=data.flatMap(r=>r.valid);
+  return calcHalfLife(allV);
+}
+function globalIObs(data){
+  // weighted average of IObs
+  const totalV=data.reduce((a,r)=>a+r.valid.length,0);
+  if(!totalV)return null;
+  const sumObs=data.reduce((a,r)=>{
+    if(r.iObs===null)return a;
+    return a+(r.iObs/100)*r.valid.length;
+  },0);
+  return(sumObs/totalV)*100;
+}
+
+function panelHTML(code,data){
+  const allV=data.flatMap(r=>r.valid).sort((a,b)=>a-b);
+  const gMed=allV.length?allV[Math.floor(allV.length/2)]:'—';
+  const totalV=data.reduce((a,r)=>a+r.valid.length,0);
+  const totalAntes=data.reduce((a,r)=>a+r.valid.filter(y=>y<r.corte).length,0);
+  const gPct=totalV?(totalAntes/totalV*100).toFixed(1)+'%':'—';
+  const tot=data.reduce((a,b)=>a+b.n,0);
+  const nA=data.filter(r=>r.pct!==null&&r.pct<=30).length;
+  const nM=data.filter(r=>r.pct!==null&&r.pct>30&&r.pct<=70).length;
+  const nD=data.filter(r=>r.pct!==null&&r.pct>70).length;
+  const gHL=globalHalfLife(data);
+  const gObs=globalIObs(data);
+  const gHLstr=gHL!==null?gHL+' años':'—';
+  const gObsStr=gObs!==null?gObs.toFixed(1)+'%':'—';
+  const hlInterpret=gHL===null?'':gHL<=6?'Renovación activa':gHL<=12?'Renovación moderada':'Colección envejecida';
+  const obsInterpret=gObs===null?'':gObs<=30?'Buen estado':gObs<=60?'Requiere atención':'Renovación urgente';
+
+  return`
+  <div class="kpi-row">
+    <div class="kpi-card"><div class="kpi-lbl">Ejemplares</div><div class="kpi-val">${tot.toLocaleString()}</div><div class="kpi-sub">${code}</div></div>
+    <div class="kpi-card"><div class="kpi-lbl">Clases Dewey</div><div class="kpi-val">${data.length}</div><div class="kpi-sub">áreas temáticas</div></div>
+    <div class="kpi-card"><div class="kpi-lbl">Mediana global</div><div class="kpi-val">${gMed}</div><div class="kpi-sub">año publicación</div></div>
+    <div class="kpi-card"><div class="kpi-lbl">% anterior al corte</div><div class="kpi-val">${gPct}</div><div class="kpi-sub">corte diferenciado</div></div>
+    <div class="kpi-card hl"><div class="kpi-lbl">Semivida colección</div><div class="kpi-val purple">${gHLstr}</div><div class="kpi-sub">${hlInterpret}</div></div>
+    <div class="kpi-card obs"><div class="kpi-lbl">Índice obsolescencia</div><div class="kpi-val teal">${gObsStr}</div><div class="kpi-sub">${obsInterpret}</div></div>
+  </div>
+  <div class="tbl-wrap">
+    <div class="tbl-head">
+      <h3>Materias · ${code}</h3>
+      <input class="filter-inp" type="text" placeholder="Filtrar materia o código…" id="fi-${code}">
+    </div>
+    <div style="overflow-x:auto">
+      <table><thead><tr>
+        <th data-col="dewey" data-code="${code}">Dewey</th>
+        <th data-col="materia" data-code="${code}">Materia</th>
+        <th data-col="n" data-code="${code}" style="text-align:right">N</th>
+        <th data-col="yMin" data-code="${code}" style="text-align:right">Mín</th>
+        <th data-col="yMax" data-code="${code}" style="text-align:right">Máx</th>
+        <th data-col="med" data-code="${code}" style="text-align:right">Mediana</th>
+        <th data-col="corte" data-code="${code}">Corte</th>
+        <th data-col="pct" data-code="${code}">% ant. corte</th>
+        <th data-col="pct" data-code="${code}">Estado</th>
+        <th data-col="halfLife" data-code="${code}" class="th-hl" title="Años que concentran el 50% más reciente de la colección">Semivida</th>
+        <th data-col="iObs" data-code="${code}" class="th-obs" title="% de ejemplares con antigüedad mayor a la semivida de referencia disciplinar">Í. Obsolescencia</th>
+        <th>Décadas</th>
+      </tr></thead>
+      <tbody id="tb-${code}"></tbody></table>
+    </div>
+  </div>
+  <div class="dl-row">
+    <button class="dl-btn p" data-excel="${code}">📊 Excel — ${code}</button>
+    <button class="dl-btn s" data-csv="${code}">📄 CSV — ${code}</button>
+  </div>`;
+}
+
+function wirePanel(code,data){
+  renderTbody(code,data);
+  document.getElementById('fi-'+code).addEventListener('input',function(){
+    const q=this.value.toLowerCase();
+    renderTbody(code,q?data.filter(r=>r.materia.toLowerCase().includes(q)||r.dewey.includes(q)):data);
+  });
+  document.querySelectorAll(`th[data-code="${code}"]`).forEach(th=>{
+    th.addEventListener('click',()=>{
+      const col=th.dataset.col;
+      const wasAsc=th.classList.contains('sa');
+      document.querySelectorAll(`th[data-code="${code}"]`).forEach(h=>h.classList.remove('sa','sd'));
+      const dir=wasAsc?'desc':'asc';
+      th.classList.add(dir==='asc'?'sa':'sd');
+      const sorted=[...data].sort((a,b)=>{
+        const av=a[col],bv=b[col];
+        if(av===null||av===undefined)return 1;if(bv===null||bv===undefined)return -1;
+        return dir==='asc'?(typeof av==='string'?av.localeCompare(bv):av-bv):(typeof av==='string'?bv.localeCompare(av):bv-av);
+      });
+      renderTbody(code,sorted);
+    });
+  });
+  document.querySelector(`[data-excel="${code}"]`).addEventListener('click',()=>dlExcel(code,data));
+  document.querySelector(`[data-csv="${code}"]`).addEventListener('click',()=>dlCSV(code,data));
+}
+
+function dcol(d){
+  if(d>=2020)return'#1a5c34';if(d>=2010)return'#2e7d32';if(d>=2000)return'#7cb342';
+  if(d>=1990)return'#f9a825';if(d>=1980)return'#ef6c00';return'#c62828';
+}
+
+function hlBadge(hl){
+  if(hl===null)return'<span style="color:var(--ink3);font-size:11px">—</span>';
+  const cls=hl<=6?'fast':hl<=12?'med':'slow';
+  const label=hl<=6?'Rápida':hl<=12?'Media':'Lenta';
+  return`<span class="hl-badge ${cls}" title="Semivida: ${hl} años (${label})">${hl} años</span>`;
+}
+function obsBadge(obs,hlRef){
+  if(obs===null)return'<span style="color:var(--ink3);font-size:11px">—</span>';
+  const bg=obs<=30?'#e6f4ec':obs<=60?'#fdf3d6':'#fdecea';
+  const color=obs<=30?'#1e6b3a':obs<=60?'#8a5e00':'#8b1a1a';
+  return`<span class="obs-badge" style="background:${bg};color:${color}" title="Ref. disciplinar: ${hlRef} años">${obs.toFixed(1)}%</span>`;
+}
+
+function renderTbody(code,data){
+  const tbody=document.getElementById('tb-'+code);if(!tbody)return;
+  tbody.innerHTML=data.map(row=>{
+    const p=row.pct;
+    const bc=p===null?'':p<=30?'g':p<=70?'a':'r';
+    const bl=p===null?'Sin año':p<=30?'✓ Actualizado':p<=70?'◑ Moderado':'✗ Desactualizado';
+    const fc=p===null?'#ccc':p<=30?'var(--green)':p<=70?'#f9a825':'var(--red)';
+    const corteColor=yearColor(row.corte);
+    const maxD=Math.max(...DECADAS.map(d=>row.dc[d]||0),1);
+    const bars=DECADAS.map(d=>{const v=row.dc[d]||0,h=Math.round(v/maxD*14)+2;
+      return`<div class="dbar" style="height:${h}px;background:${dcol(d)};opacity:${v?.85:.12}" title="${d}s: ${v}"></div>`;
+    }).join('');
+    return`<tr>
+      <td class="mono">${row.dewey}</td>
+      <td>${row.materia}</td>
+      <td class="num">${row.n}</td>
+      <td class="num mono">${row.yMin||'—'}</td>
+      <td class="num mono">${row.yMax||'—'}</td>
+      <td class="num mono">${row.med||'—'}</td>
+      <td><span class="corte-tag" style="border:1px solid ${corteColor};color:${corteColor}">&lt;${row.corte}</span></td>
+      <td><div class="pbar-wrap"><div class="pbar"><div class="pbar-fill" style="width:${p||0}%;background:${fc}"></div></div><span class="pval">${p!==null?p.toFixed(1)+'%':'—'}</span></div></td>
+      <td><span class="badge ${bc}">${bl}</span></td>
+      <td class="td-hl">${hlBadge(row.halfLife)}</td>
+      <td class="td-obs">${obsBadge(row.iObs,row.hlRef)}</td>
+      <td><div class="dbars">${bars}</div></td>
+    </tr>`;
+  }).join('');
+}
+
+// ── Exports ───────────────────────────────────────────────────────────────────
+function buildSheets(code,data){
+  const h1=['Código Dewey','Materia','N Ejemplares','Año mín','Año máx','Mediana','Promedio',
+            'Corte aplicado','% anterior corte','Estado',
+            'Semivida (años)','Semivida (interp.)','Í. Obsolescencia','HL Ref. disciplinar (años)'];
+  const r1=data.map(r=>{
+    const e=r.pct===null?'Sin dato':r.pct<=30?'Actualizado':r.pct<=70?'Moderado':'Desactualizado';
+    const hlI=r.halfLife===null?'—':r.halfLife<=6?'Renovación activa':r.halfLife<=12?'Renovación moderada':'Colección envejecida';
+    return[r.dewey,r.materia,r.n,r.yMin||'',r.yMax||'',r.med||'',
+           r.avg?+r.avg.toFixed(1):'',r.corte,
+           r.pct!==null?+(r.pct/100).toFixed(4):'',e,
+           r.halfLife!==null?r.halfLife:'',hlI,
+           r.iObs!==null?+(r.iObs/100).toFixed(4):'',r.hlRef];
+  });
+  r1.push(['TOTAL','',data.reduce((a,b)=>a+b.n,0),'','','','','','','','','','','']);
+  const ws1=XLSX.utils.aoa_to_sheet([[`Análisis de Colección — ${code}`],
+    [`Semivida y cortes diferenciados por Dewey · ${new Date().toLocaleString('es-CL')}`],[],h1,...r1]);
+  ws1['!cols']=[{wch:11},{wch:40},{wch:11},{wch:9},{wch:9},{wch:9},{wch:9},{wch:12},
+                {wch:15},{wch:15},{wch:14},{wch:20},{wch:15},{wch:22}];
+  for(let i=4;i<4+r1.length;i++){
+    let c=XLSX.utils.encode_cell({r:i,c:8});if(ws1[c]&&typeof ws1[c].v==='number')ws1[c].z='0.0%';
+    c=XLSX.utils.encode_cell({r:i,c:12});if(ws1[c]&&typeof ws1[c].v==='number')ws1[c].z='0.0%';
+  }
+
+  const h2=['Código Dewey','Materia','Total',...DECADAS.map(d=>d+'s')];
+  const r2=data.map(r=>[r.dewey,r.materia,r.n,...DECADAS.map(d=>r.dc[d]||0)]);
+  r2.push(['TOTAL','',data.reduce((a,b)=>a+b.n,0),...DECADAS.map(d=>data.reduce((a,r)=>a+(r.dc[d]||0),0))]);
+  const ws2=XLSX.utils.aoa_to_sheet([[`Por Décadas — ${code}`],[],h2,...r2]);
+  ws2['!cols']=[{wch:11},{wch:40},{wch:8},...DECADAS.map(()=>({wch:8}))];
+
+  const hC=['Rango Dewey','Descripción','Año de corte','Semivida ref. (años)','Fundamento'];
+  const rC=cutoffRules.map(r=>[r.label,r.desc,r.year,getHLRef(String(r.from).padStart(3,'0')),r.why]);
+  const wsC=XLSX.utils.aoa_to_sheet([['Criterios aplicados'],[],hC,...rC]);
+  wsC['!cols']=[{wch:12},{wch:36},{wch:12},{wch:18},{wch:55}];
+  return{ws1,ws2,wsC};
+}
+
+function dlExcel(code,data){
+  const wb=XLSX.utils.book_new();
+  const{ws1,ws2,wsC}=buildSheets(code,data);
+  XLSX.utils.book_append_sheet(wb,ws1,'Análisis por Materia');
+  XLSX.utils.book_append_sheet(wb,ws2,'Por Década');
+  XLSX.utils.book_append_sheet(wb,wsC,'Criterios');
+  XLSX.writeFile(wb,`Coleccion_${code}_${CURRENT_YEAR}.xlsx`);
+}
+
+function dlCSV(code,data){
+  const h=['Carrera','Dewey','Materia','N','Anio_min','Anio_max','Mediana','Corte',
+           'Pct_ant_corte','Estado','Semivida_anios','I_Obsolescencia','HL_ref_disciplinar'];
+  const rows=data.map(r=>{
+    const e=r.pct===null?'Sin dato':r.pct<=30?'Actualizado':r.pct<=70?'Moderado':'Desactualizado';
+    return[code,r.dewey,`"${r.materia}"`,r.n,r.yMin||'',r.yMax||'',r.med||'',r.corte,
+           r.pct!==null?r.pct.toFixed(1):'',e,
+           r.halfLife!==null?r.halfLife:'',r.iObs!==null?r.iObs.toFixed(1):'',r.hlRef];
+  });
+  const csv=[h,...rows].map(r=>r.join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'}));
+  a.download=`Coleccion_${code}.csv`;a.click();
+}
+
+document.getElementById('dl-all-excel').addEventListener('click',()=>{
+  const title=document.getElementById('report-title').value.trim()||'Colecciones';
+  const wb=XLSX.utils.book_new();
+  const sh=['Carrera','Ejemplares','Clases Dewey','Mediana','% ant. corte','Estado mat.',
+            'Semivida global (años)','I. Obsolescencia global','Desactualizadas','Moderadas','Actualizadas'];
+  const sr=Object.entries(allResults).map(([code,data])=>{
+    const av=data.flatMap(r=>r.valid).sort((a,b)=>a-b);
+    const med=av.length?av[Math.floor(av.length/2)]:'';
+    const tv=data.reduce((a,r)=>a+r.valid.length,0);
+    const ta=data.reduce((a,r)=>a+r.valid.filter(y=>y<r.corte).length,0);
+    const pct=tv?+(ta/tv).toFixed(4):'';
+    const gHL=globalHalfLife(data);
+    const gObs=globalIObs(data);
+    const nD=data.filter(r=>r.pct!==null&&r.pct>70).length;
+    const nM=data.filter(r=>r.pct!==null&&r.pct>30&&r.pct<=70).length;
+    const nA=data.filter(r=>r.pct!==null&&r.pct<=30).length;
+    const totM=nD+nM+nA;
+    const est=nD>nM&&nD>nA?'Desactualizada':nM>=nA&&nM>=nD?'Moderada':'Actualizada';
+    return[code,data.reduce((a,b)=>a+b.n,0),data.length,med,pct,est,
+           gHL!==null?gHL:'',gObs!==null?+(gObs/100).toFixed(4):'',nD,nM,nA];
+  });
+  const wsS=XLSX.utils.aoa_to_sheet([[`Resumen — ${title}`],[`${new Date().toLocaleString('es-CL')}`],[],sh,...sr]);
+  wsS['!cols']=[{wch:12},{wch:11},{wch:12},{wch:10},{wch:13},{wch:14},{wch:18},{wch:22},{wch:14},{wch:12},{wch:12}];
+  for(let i=4;i<4+sr.length;i++){
+    let c=XLSX.utils.encode_cell({r:i,c:4});if(wsS[c]&&typeof wsS[c].v==='number')wsS[c].z='0.0%';
+    c=XLSX.utils.encode_cell({r:i,c:7});if(wsS[c]&&typeof wsS[c].v==='number')wsS[c].z='0.0%';
+  }
+  XLSX.utils.book_append_sheet(wb,wsS,'Resumen General');
+  for(const [code,data] of Object.entries(allResults)){
+    const{ws1,ws2}=buildSheets(code,data);
+    XLSX.utils.book_append_sheet(wb,ws1,code.substring(0,27)+'-Mat');
+    XLSX.utils.book_append_sheet(wb,ws2,code.substring(0,27)+'-Dec');
+  }
+  const hC=['Rango Dewey','Descripción','Año de corte','Semivida ref. (años)','Fundamento'];
+  const rC=cutoffRules.map(r=>[r.label,r.desc,r.year,getHLRef(String(r.from).padStart(3,'0')),r.why]);
+  const wsC=XLSX.utils.aoa_to_sheet([['Criterios aplicados'],[],hC,...rC]);
+  wsC['!cols']=[{wch:12},{wch:36},{wch:12},{wch:18},{wch:55}];
+  XLSX.utils.book_append_sheet(wb,wsC,'Criterios');
+  XLSX.writeFile(wb,`Analisis_${title.replace(/\s+/g,'_')}_${CURRENT_YEAR}.xlsx`);
+});
+
+document.getElementById('dl-all-csv').addEventListener('click',()=>{
+  const h=['Carrera','Dewey','Materia','N','Anio_min','Anio_max','Mediana','Corte',
+           'Pct_ant_corte','Estado','Semivida_anios','I_Obsolescencia','HL_ref_disciplinar'];
+  const rows=[];
+  for(const [code,data] of Object.entries(allResults)){
+    for(const r of data){
+      const e=r.pct===null?'Sin dato':r.pct<=30?'Actualizado':r.pct<=70?'Moderado':'Desactualizado';
+      rows.push([code,r.dewey,`"${r.materia}"`,r.n,r.yMin||'',r.yMax||'',r.med||'',r.corte,
+                 r.pct!==null?r.pct.toFixed(1):'',e,
+                 r.halfLife!==null?r.halfLife:'',r.iObs!==null?r.iObs.toFixed(1):'',r.hlRef]);
+    }
+  }
+  const csv=[h,...rows].map(r=>r.join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'}));
+  a.download='Analisis_consolidado.csv';a.click();
+});
+
+function showAlert(msg,type){const el=document.getElementById('alert-box');el.textContent=msg;el.className='alert '+type;el.style.display='block'}
+function hideAlert(){document.getElementById('alert-box').style.display='none'}
+</script>
+</body>
+</html>
