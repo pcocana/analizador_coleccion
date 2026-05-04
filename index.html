@@ -16,6 +16,8 @@
   --red:#8b1a1a;--red-bg:#fdecea;
   --purple:#5c2d91;--purple-bg:#f0e8fc;
   --teal:#006064;--teal-bg:#e0f7fa;
+  --blue:#1565c0;--blue-bg:#e3f0fc;
+  --orange:#bf360c;--orange-bg:#fbe9e7;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;display:flex;flex-direction:column}
@@ -23,7 +25,7 @@ header{background:var(--accent);color:#fff;padding:22px 40px 18px;display:flex;a
 .hlogo{width:44px;height:44px;background:var(--accent2);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
 .htitle h1{font-family:'Playfair Display',serif;font-size:19px}
 .htitle p{font-size:11px;color:rgba(255,255,255,.55);margin-top:2px;letter-spacing:.05em;text-transform:uppercase}
-main{flex:1;max-width:1260px;margin:0 auto;padding:28px 40px 60px;width:100%}
+main{flex:1;max-width:1300px;margin:0 auto;padding:26px 40px 60px;width:100%}
 .slabel{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:7px}
 
 /* Config */
@@ -33,123 +35,145 @@ main{flex:1;max-width:1260px;margin:0 auto;padding:28px 40px 60px;width:100%}
 .cfg-field input:focus{outline:none;border-color:var(--accent)}
 
 /* Cutoff panel */
-.cutoff-panel{background:#fff;border:1.5px solid var(--rule);border-radius:10px;padding:18px 22px;margin-bottom:20px}
-.cutoff-panel-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;gap:10px;flex-wrap:wrap}
-.cutoff-panel-head h3{font-family:'Playfair Display',serif;font-size:15px}
+.cutoff-panel{background:#fff;border:1.5px solid var(--rule);border-radius:10px;padding:16px 20px;margin-bottom:20px}
+.cutoff-panel-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;gap:10px;flex-wrap:wrap}
+.cutoff-panel-head h3{font-family:'Playfair Display',serif;font-size:14px}
 .cutoff-panel-head p{font-size:12px;color:var(--ink3);margin-top:2px}
-.cutoff-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:7px}
-.cutoff-row{display:grid;grid-template-columns:90px 1fr 70px;align-items:center;gap:7px;padding:6px 10px;background:var(--paper);border-radius:6px;border:1px solid var(--rule)}
-.cutoff-row:hover{background:var(--paper2)}
+.cutoff-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(305px,1fr));gap:6px}
+.cutoff-row{display:grid;grid-template-columns:88px 1fr 68px;align-items:center;gap:7px;padding:5px 9px;background:var(--paper);border-radius:6px;border:1px solid var(--rule)}
 .cutoff-range{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);font-weight:500}
 .cutoff-desc{font-size:12px;color:var(--ink2)}
-.cutoff-year{width:66px;padding:4px 7px;border:1.5px solid var(--rule);border-radius:5px;font-family:'DM Mono',monospace;font-size:12px;text-align:center;color:var(--ink);background:#fff}
+.cutoff-year{width:65px;padding:3px 6px;border:1.5px solid var(--rule);border-radius:5px;font-family:'DM Mono',monospace;font-size:12px;text-align:center;background:#fff}
 .cutoff-year:focus{outline:none;border-color:var(--accent)}
-.reset-btn{padding:5px 13px;font-size:12px;border:1.5px solid var(--rule);border-radius:5px;cursor:pointer;background:#fff;color:var(--ink2);font-family:'DM Sans',sans-serif;white-space:nowrap}
+.reset-btn{padding:5px 12px;font-size:12px;border:1.5px solid var(--rule);border-radius:5px;cursor:pointer;background:#fff;color:var(--ink2);font-family:'DM Sans',sans-serif;white-space:nowrap}
 .reset-btn:hover{background:var(--paper2)}
 
-/* Semivida info box */
-.halflife-info{background:var(--purple-bg);border:1.5px solid #c9a7f0;border-radius:8px;padding:14px 18px;margin-bottom:20px}
-.halflife-info h4{font-family:'Playfair Display',serif;font-size:14px;color:var(--purple);margin-bottom:6px}
-.halflife-info p{font-size:12px;color:#4a2070;line-height:1.6}
-.halflife-info .hl-formula{font-family:'DM Mono',monospace;font-size:11px;background:rgba(92,45,145,.1);padding:4px 10px;border-radius:4px;display:inline-block;margin-top:6px}
-
-/* Drop */
-.drop-zone{border:2px dashed var(--rule);border-radius:12px;background:#fff;padding:34px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:18px}
+/* Drop zones — side by side */
+.drop-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+.drop-zone{border:2px dashed var(--rule);border-radius:12px;background:#fff;padding:28px 20px;text-align:center;cursor:pointer;transition:all .2s}
 .drop-zone.drag-over{border-color:var(--accent);background:#edf2fa}
 .drop-zone.loaded{border:2px solid var(--accent2);background:#fdfbf4}
-.drop-icon{font-size:32px;margin-bottom:8px}
-.drop-title{font-family:'Playfair Display',serif;font-size:16px;margin-bottom:4px}
-.drop-sub{font-size:12px;color:var(--ink3);margin-bottom:12px}
-.drop-btn{display:inline-block;padding:7px 20px;background:var(--accent);color:#fff;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer}
-.drop-hint{margin-top:10px;font-family:'DM Mono',monospace;font-size:11px;color:var(--ink3)}
-#file-input{display:none}
+.drop-zone.optional{border-color:#b8d4f0;background:#f5f9ff}
+.drop-zone.optional.loaded{border-color:var(--teal);background:#f0fafa}
+.drop-icon{font-size:28px;margin-bottom:7px}
+.drop-title{font-family:'Playfair Display',serif;font-size:15px;margin-bottom:3px}
+.drop-sub{font-size:12px;color:var(--ink3);margin-bottom:11px}
+.drop-btn{display:inline-block;padding:6px 18px;background:var(--accent);color:#fff;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer}
+.drop-btn.teal{background:var(--teal)}
+.drop-hint{margin-top:9px;font-family:'DM Mono',monospace;font-size:11px;color:var(--ink3)}
+.opt-badge{display:inline-block;padding:2px 8px;background:var(--blue-bg);color:var(--blue);border-radius:10px;font-size:10px;font-weight:600;margin-bottom:6px;letter-spacing:.04em}
 
 /* Mapping */
-#mapping-panel{display:none;background:#fff;border:1.5px solid var(--rule);border-radius:9px;padding:15px 19px;margin-bottom:14px}
-.map-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px 16px;margin-top:8px}
+.map-panels{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.map-panel{display:none;background:#fff;border:1.5px solid var(--rule);border-radius:9px;padding:14px 18px}
+.map-panel.loans-panel{border-color:#a5d4d4}
+.map-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px 14px;margin-top:8px}
+.map-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px;margin-top:8px}
 .map-field label{font-size:11px;font-weight:500;color:var(--ink2);display:block;margin-bottom:3px}
-.map-field select{width:100%;padding:6px 9px;border:1.5px solid var(--rule);border-radius:5px;font-size:12px;font-family:'DM Mono',monospace;color:var(--ink);background:#fff}
+.map-field select{width:100%;padding:5px 8px;border:1.5px solid var(--rule);border-radius:5px;font-size:12px;font-family:'DM Mono',monospace;color:var(--ink);background:#fff}
 
 /* Career panel */
-#career-panel{display:none;background:#fff;border:1.5px solid var(--rule);border-radius:9px;padding:16px 19px;margin-bottom:16px}
-#career-panel h3{font-family:'Playfair Display',serif;font-size:14px;margin-bottom:9px}
-.chip-actions{display:flex;gap:6px;margin-bottom:9px}
-.chip-btn{padding:4px 11px;font-size:11px;border:1.5px solid var(--rule);border-radius:5px;cursor:pointer;background:#fff;color:var(--ink2);font-family:'DM Sans',sans-serif}
+#career-panel{display:none;background:#fff;border:1.5px solid var(--rule);border-radius:9px;padding:14px 18px;margin-bottom:14px}
+#career-panel h3{font-family:'Playfair Display',serif;font-size:14px;margin-bottom:8px}
+.chip-actions{display:flex;gap:6px;margin-bottom:8px}
+.chip-btn{padding:3px 10px;font-size:11px;border:1.5px solid var(--rule);border-radius:5px;cursor:pointer;background:#fff;color:var(--ink2);font-family:'DM Sans',sans-serif}
 .chip-btn:hover{background:var(--paper2)}
-.career-grid{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:9px}
+.career-grid{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
 .career-chip{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border:1.5px solid var(--rule);border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;background:#fff;transition:all .15s;user-select:none}
 .career-chip:hover{border-color:var(--accent);color:var(--accent)}
 .career-chip.selected{background:var(--accent);color:#fff;border-color:var(--accent)}
 .chip-n{font-family:'DM Mono',monospace;font-size:10px;opacity:.7}
 .sel-info{font-size:12px;color:var(--ink3)}
 
-.alert{padding:10px 14px;border-radius:7px;font-size:13px;margin-bottom:12px;display:none}
+.alert{padding:9px 13px;border-radius:7px;font-size:13px;margin-bottom:11px;display:none}
 .alert.error{background:var(--red-bg);color:var(--red);border-left:3px solid var(--red)}
 .alert.info{background:#e8f0fc;color:var(--accent);border-left:3px solid var(--accent)}
 .alert.success{background:var(--green-bg);color:var(--green);border-left:3px solid var(--green)}
 
-.analyze-btn{display:flex;align-items:center;gap:9px;padding:11px 26px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:background .15s;margin-bottom:28px}
+.analyze-btn{display:flex;align-items:center;gap:9px;padding:11px 26px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:background .15s;margin-bottom:26px}
 .analyze-btn:hover{background:#14305a}
 .analyze-btn:disabled{background:var(--ink3);cursor:not-allowed}
 
 /* Tabs */
-.tabs{display:flex;gap:3px;border-bottom:2px solid var(--rule);flex-wrap:wrap;margin-bottom:16px}
-.tab{padding:7px 15px;font-size:13px;font-weight:500;cursor:pointer;border-radius:5px 5px 0 0;border:none;background:transparent;color:var(--ink3);font-family:'DM Sans',sans-serif;position:relative;bottom:-2px;border-bottom:2px solid transparent}
+.tabs{display:flex;gap:3px;border-bottom:2px solid var(--rule);flex-wrap:wrap;margin-bottom:14px}
+.tab{padding:7px 14px;font-size:13px;font-weight:500;cursor:pointer;border-radius:5px 5px 0 0;border:none;background:transparent;color:var(--ink3);font-family:'DM Sans',sans-serif;position:relative;bottom:-2px;border-bottom:2px solid transparent}
 .tab:hover{color:var(--ink)}
 .tab.active{color:var(--accent);font-weight:600;border-bottom:2px solid var(--accent);background:#fff}
 .tab-panel{display:none}.tab-panel.active{display:block}
 
 /* KPIs */
-.kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:11px;margin-bottom:20px}
-.kpi-card{background:#fff;border:1.5px solid var(--rule);border-radius:9px;padding:13px 14px;position:relative;overflow:hidden}
+.kpi-row{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin-bottom:18px}
+.kpi-card{background:#fff;border:1.5px solid var(--rule);border-radius:9px;padding:12px 13px;position:relative;overflow:hidden}
 .kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent2)}
 .kpi-card.hl::before{background:var(--purple)}
-.kpi-card.obs::before{background:var(--teal)}
-.kpi-lbl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);margin-bottom:5px}
-.kpi-val{font-family:'Playfair Display',serif;font-size:22px;color:var(--ink);line-height:1}
-.kpi-sub{font-size:11px;color:var(--ink3);margin-top:3px}
+.kpi-card.circ::before{background:var(--teal)}
+.kpi-card.dead::before{background:var(--red)}
+.kpi-lbl{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);margin-bottom:4px}
+.kpi-val{font-family:'Playfair Display',serif;font-size:20px;color:var(--ink);line-height:1}
+.kpi-sub{font-size:10px;color:var(--ink3);margin-top:3px}
 .kpi-val.purple{color:var(--purple)}
 .kpi-val.teal{color:var(--teal)}
+.kpi-val.red{color:var(--red)}
+
+/* Quadrant matrix */
+.matrix-wrap{background:#fff;border:1.5px solid var(--rule);border-radius:10px;padding:16px 20px;margin-bottom:16px}
+.matrix-wrap h3{font-family:'Playfair Display',serif;font-size:14px;margin-bottom:4px}
+.matrix-wrap p{font-size:12px;color:var(--ink3);margin-bottom:14px}
+.matrix{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.quadrant{border-radius:8px;padding:14px 16px;border:1.5px solid}
+.quadrant h4{font-size:13px;font-weight:600;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.quadrant .q-stat{font-family:'DM Mono',monospace;font-size:22px;font-weight:600;line-height:1;margin-bottom:4px}
+.quadrant .q-sub{font-size:11px;opacity:.75;margin-bottom:8px}
+.quadrant .q-items{font-size:11px;color:var(--ink2);line-height:1.7}
+.quadrant .q-action{font-size:11px;font-weight:600;margin-top:8px;padding:5px 10px;border-radius:5px;display:inline-block}
+/* Q1: Desact + Alta circ → Adquisición urgente */
+.q1{background:#fff8f8;border-color:#f5a5a5}
+.q1 h4{color:var(--red)}.q1 .q-stat{color:var(--red)}.q1 .q-action{background:var(--red-bg);color:var(--red)}
+/* Q2: Act + Alta circ → Mantener */
+.q2{background:#f4faf6;border-color:#a5d4b5}
+.q2 h4{color:var(--green)}.q2 .q-stat{color:var(--green)}.q2 .q-action{background:var(--green-bg);color:var(--green)}
+/* Q3: Desact + Baja circ → Evaluar descarte */
+.q3{background:#fff9f0;border-color:#f5c98a}
+.q3 h4{color:var(--orange)}.q3 .q-stat{color:var(--orange)}.q3 .q-action{background:var(--orange-bg);color:var(--orange)}
+/* Q4: Act + Baja circ → Revisar pertinencia */
+.q4{background:#f8f9fc;border-color:#c0cce8}
+.q4 h4{color:var(--blue)}.q4 .q-stat{color:var(--blue)}.q4 .q-action{background:var(--blue-bg);color:var(--blue)}
 
 /* Table */
 .tbl-wrap{background:#fff;border:1.5px solid var(--rule);border-radius:9px;overflow:hidden;margin-bottom:14px}
-.tbl-head{padding:11px 15px;border-bottom:1.5px solid var(--rule);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.tbl-head{padding:11px 14px;border-bottom:1.5px solid var(--rule);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .tbl-head h3{font-family:'Playfair Display',serif;font-size:14px}
-.filter-inp{padding:5px 10px;border:1.5px solid var(--rule);border-radius:5px;font-size:12px;font-family:'DM Sans',sans-serif;width:165px}
+.filter-inp{padding:5px 9px;border:1.5px solid var(--rule);border-radius:5px;font-size:12px;font-family:'DM Sans',sans-serif;width:160px}
 .filter-inp:focus{outline:none;border-color:var(--accent)}
 table{width:100%;border-collapse:collapse;font-size:12px}
-thead th{background:var(--paper2);padding:8px 10px;text-align:left;font-size:10px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--ink2);border-bottom:1.5px solid var(--rule);white-space:nowrap;cursor:pointer;user-select:none}
+thead th{background:var(--paper2);padding:7px 10px;text-align:left;font-size:10px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--ink2);border-bottom:1.5px solid var(--rule);white-space:nowrap;cursor:pointer;user-select:none}
 thead th:hover{background:var(--rule)}
 thead th.sa::after{content:' ▲';font-size:9px}
 thead th.sd::after{content:' ▼';font-size:9px}
+thead th.th-circ{background:#e0f7fa;color:var(--teal)}
 thead th.th-hl{background:#f5edfc;color:var(--purple)}
-thead th.th-obs{background:#e0f7fa;color:var(--teal)}
 tbody tr:nth-child(even) td{background:#fafafa}
 tbody tr:hover td{background:#f0f4fc}
 td{padding:7px 10px;border-bottom:1px solid var(--paper2);vertical-align:middle}
 td.mono{font-family:'DM Mono',monospace;font-size:11px}
 td.num{text-align:right;font-family:'DM Mono',monospace}
+td.td-circ{background:#f5fdfd}
 td.td-hl{background:#faf5ff}
-td.td-obs{background:#f0fafa}
 .badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
 .badge.g{background:var(--green-bg);color:var(--green)}
 .badge.a{background:var(--amber-bg);color:var(--amber)}
 .badge.r{background:var(--red-bg);color:var(--red)}
-.hl-badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;font-family:'DM Mono',monospace;white-space:nowrap}
-.hl-badge.fast{background:#fce8ec;color:#8b1a1a}
-.hl-badge.med{background:#fff3e0;color:#8a5e00}
-.hl-badge.slow{background:var(--green-bg);color:var(--green)}
-.obs-badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;font-family:'DM Mono',monospace;white-space:nowrap}
-.pbar-wrap{display:flex;align-items:center;gap:6px;min-width:88px}
+.circ-badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
+.hl-badge{display:inline-flex;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;font-family:'DM Mono',monospace;white-space:nowrap}
+.pbar-wrap{display:flex;align-items:center;gap:5px;min-width:82px}
 .pbar{flex:1;height:5px;border-radius:3px;background:var(--paper2);overflow:hidden}
 .pbar-fill{height:100%;border-radius:3px}
-.pval{font-family:'DM Mono',monospace;font-size:11px;min-width:32px;color:var(--ink2)}
-.dbars{display:flex;gap:2px;align-items:flex-end;height:16px}
-.dbar{width:6px;border-radius:2px 2px 0 0}
-.corte-tag{font-family:'DM Mono',monospace;font-size:10px;padding:1px 6px;background:var(--paper2);border-radius:3px;white-space:nowrap}
-
-/* Tooltip */
-[title]{cursor:help}
+.pval{font-family:'DM Mono',monospace;font-size:11px;min-width:31px;color:var(--ink2)}
+.dbars{display:flex;gap:2px;align-items:flex-end;height:15px}
+.dbar{width:5px;border-radius:2px 2px 0 0}
+.corte-tag{font-family:'DM Mono',monospace;font-size:10px;padding:1px 5px;background:var(--paper2);border-radius:3px;white-space:nowrap}
+.quad-pill{display:inline-block;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;white-space:nowrap}
+.no-loans{color:var(--ink3);font-size:11px;font-style:italic}
 
 /* Download */
 .dl-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
@@ -158,9 +182,22 @@ td.td-obs{background:#f0fafa}
 .dl-btn.p{background:var(--accent2);color:var(--ink)}
 .dl-btn.s{background:var(--paper2);color:var(--ink2);border:1.5px solid var(--rule)}
 .dl-btn.m{background:var(--accent);color:#fff}
-.export-section{margin-top:24px;padding-top:20px;border-top:2px solid var(--rule)}
+.export-section{margin-top:22px;padding-top:20px;border-top:2px solid var(--rule)}
+/* Title detail section */
+.title-section{margin-top:16px;border-top:2px solid var(--rule);padding-top:14px}
+.title-toggle{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--paper2);border:1.5px solid var(--rule);border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--ink2);width:100%;text-align:left;transition:background .15s}
+.title-toggle:hover{background:var(--rule)}
+.title-toggle .tt-arrow{transition:transform .2s;font-size:11px}
+.title-toggle.open .tt-arrow{transform:rotate(90deg)}
+.title-content{display:none;margin-top:12px}
+.title-content.open{display:block}
+.pri-badge{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;font-size:10px;font-weight:700;flex-shrink:0}
+.rec-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600;white-space:nowrap}
+.title-filter-row{display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+.title-filter-row select,.title-filter-row input{padding:5px 9px;border:1.5px solid var(--rule);border-radius:5px;font-size:12px;font-family:'DM Sans',sans-serif;background:#fff;color:var(--ink)}
+.title-filter-row select:focus,.title-filter-row input:focus{outline:none;border-color:var(--accent)}
 footer{background:var(--paper2);border-top:1.5px solid var(--rule);padding:10px 40px;font-size:11px;color:var(--ink3);display:flex;justify-content:space-between}
-@media(max-width:800px){main{padding:14px 12px 36px}.cfg-row,.kpi-row,.map-grid,.cutoff-grid{grid-template-columns:1fr}}
+@media(max-width:900px){main{padding:14px 12px 36px}.cfg-row,.kpi-row,.map-panels,.drop-row{grid-template-columns:1fr}.matrix{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -168,7 +205,7 @@ footer{background:var(--paper2);border-top:1.5px solid var(--rule);padding:10px 
   <div class="hlogo">📚</div>
   <div class="htitle">
     <h1>Analizador de Colección Bibliográfica</h1>
-    <p>Análisis por Clasificación Dewey · Biblioteca PUCV</p>
+    <p>Actualización · Semivida · Circulación · Biblioteca PUCV</p>
   </div>
 </header>
 
@@ -179,7 +216,7 @@ footer{background:var(--paper2);border-top:1.5px solid var(--rule);padding:10px 
 <div class="cfg-row">
   <div class="cfg-field">
     <label>Título del informe</label>
-    <input type="text" id="report-title" placeholder="Ej: Ingenierías PUCV 2025">
+    <input type="text" id="report-title" placeholder="Ej: Matemáticas PUCV 2025">
   </div>
   <div class="cfg-field">
     <label>Año de corte por defecto <span style="color:var(--ink3);font-weight:400">(clases sin regla específica)</span></label>
@@ -187,61 +224,74 @@ footer{background:var(--paper2);border-top:1.5px solid var(--rule);padding:10px 
   </div>
 </div>
 
-<!-- Halflife explainer -->
-<div class="halflife-info">
-  <h4>📐 Indicadores bibliométricos incluidos en este análisis</h4>
-  <p>
-    Además del <strong>% anterior al corte</strong> (criterio de actualización por disciplina), la herramienta calcula dos métricas estandarizadas:
-  </p>
-  <p style="margin-top:8px">
-    <strong>Semivida (Half-life)</strong> — número de años que concentran el 50% más reciente de la colección, calculado desde el año actual hacia atrás. Una semivida corta indica colección en renovación activa; una larga indica estancamiento.
-    <span class="hl-formula">Semivida = Año actual − Año en que se acumula el 50% más reciente</span>
-  </p>
-  <p style="margin-top:8px">
-    <strong>Índice de obsolescencia</strong> — % de ejemplares cuya antigüedad supera la semivida de su propia disciplina según la literatura bibliométrica. Complementa el % anterior al corte con un criterio interno a la propia colección.
-    <span class="hl-formula">I.Obs = Ejemplares con antigüedad &gt; semivida / Total × 100</span>
-  </p>
-</div>
-
 <!-- Cutoff table -->
-<div class="slabel">Años de corte por área disciplinar (Dewey)</div>
+<div class="slabel">Años de corte por área disciplinar</div>
 <div class="cutoff-panel">
   <div class="cutoff-panel-head">
     <div>
-      <h3>Criterios de actualización por disciplina</h3>
-      <p>Basado en estándares ALA/ACRL — editable según criterio bibliotecológico</p>
+      <h3>Criterios de actualización por disciplina (ALA/ACRL)</h3>
+      <p>Editable según criterio bibliotecológico institucional</p>
     </div>
     <button class="reset-btn" onclick="resetCutoffs()">↺ Restaurar valores recomendados</button>
   </div>
   <div class="cutoff-grid" id="cutoff-grid"></div>
 </div>
 
-<!-- Drop -->
-<div class="slabel">Archivo de inventario</div>
-<div class="drop-zone" id="drop-zone">
-  <div class="drop-icon">📂</div>
-  <div class="drop-title">Arrastre su archivo Excel aquí</div>
-  <div class="drop-sub">Compatible con planillas de una o múltiples carreras</div>
-  <label class="drop-btn" for="file-input">Seleccionar archivo</label>
-  <div class="drop-hint" id="file-hint">Ningún archivo · .xlsx · .xls</div>
-  <input type="file" id="file-input" accept=".xlsx,.xls">
-</div>
-
-<!-- Mapping -->
-<div id="mapping-panel">
-  <div class="slabel">Mapeo de columnas</div>
-  <div class="map-grid">
-    <div class="map-field"><label>Topográfico (Dewey) *</label><select id="map-topo"></select></div>
-    <div class="map-field"><label>Año de publicación *</label><select id="map-year"></select></div>
-    <div class="map-field"><label>Carrera / Unidad académica</label><select id="map-unit"></select></div>
+<!-- Drop zones -->
+<div class="slabel">Archivos de entrada</div>
+<div class="drop-row">
+  <!-- Inventario -->
+  <div>
+    <div style="font-size:12px;font-weight:500;color:var(--ink2);margin-bottom:5px">📦 Inventario de colección <span style="color:var(--red);font-size:11px">requerido</span></div>
+    <div class="drop-zone" id="dz-col">
+      <div class="drop-icon">📂</div>
+      <div class="drop-title">Archivo de inventario</div>
+      <div class="drop-sub">Topográfico + Año de publicación</div>
+      <label class="drop-btn" for="fi-col">Seleccionar archivo</label>
+      <div class="drop-hint" id="hint-col">Ningún archivo · .xlsx · .xls</div>
+      <input type="file" id="fi-col" accept=".xlsx,.xls" style="display:none">
+    </div>
+  </div>
+  <!-- Préstamos -->
+  <div>
+    <div style="font-size:12px;font-weight:500;color:var(--ink2);margin-bottom:5px">📋 Registro de préstamos <span style="color:var(--ink3);font-size:11px">opcional</span></div>
+    <div class="drop-zone optional" id="dz-loans">
+      <div class="opt-badge">OPCIONAL</div>
+      <div class="drop-icon">📊</div>
+      <div class="drop-title">Informe de circulación</div>
+      <div class="drop-sub">Signatura + columna de préstamos</div>
+      <label class="drop-btn teal" for="fi-loans">Seleccionar archivo</label>
+      <div class="drop-hint" id="hint-loans">Sin archivo — análisis sin circulación</div>
+      <input type="file" id="fi-loans" accept=".xlsx,.xls" style="display:none">
+    </div>
   </div>
 </div>
 
-<!-- Career chips -->
+<!-- Mapping panels -->
+<div class="map-panels">
+  <div id="map-col" class="map-panel">
+    <div class="slabel">Mapeo — Inventario</div>
+    <div class="map-grid">
+      <div class="map-field"><label>Topográfico (Dewey) *</label><select id="map-topo"></select></div>
+      <div class="map-field"><label>Año de publicación *</label><select id="map-year"></select></div>
+      <div class="map-field"><label>Carrera / Unidad</label><select id="map-unit"></select></div>
+    </div>
+  </div>
+  <div id="map-loans" class="map-panel loans-panel">
+    <div class="slabel">Mapeo — Préstamos</div>
+    <div class="map-grid-2">
+      <div class="map-field"><label>Signatura / Topográfico *</label><select id="map-lsig"></select></div>
+      <div class="map-field"><label>N° de préstamos (opcional)</label><select id="map-lcount"></select></div>
+    </div>
+    <p style="font-size:11px;color:var(--ink3);margin-top:8px">Si cada fila es una transacción, deje "N° préstamos" sin asignar — se contarán las filas por signatura automáticamente.</p>
+  </div>
+</div>
+
+<!-- Career panel -->
 <div id="career-panel">
   <h3>Seleccionar carreras a analizar</h3>
   <div class="chip-actions">
-    <button class="chip-btn" onclick="selAll()">Seleccionar todas</button>
+    <button class="chip-btn" onclick="selAll()">Todas</button>
     <button class="chip-btn" onclick="clearAll()">Limpiar</button>
   </div>
   <div class="career-grid" id="career-grid"></div>
@@ -249,7 +299,7 @@ footer{background:var(--paper2);border-top:1.5px solid var(--rule);padding:10px 
 </div>
 
 <div class="alert" id="alert-box"></div>
-<button class="analyze-btn" id="analyze-btn" disabled><span>⚡</span> Analizar colección seleccionada</button>
+<button class="analyze-btn" id="analyze-btn" disabled><span>⚡</span> Analizar colección</button>
 
 <!-- Results -->
 <div id="results-container" style="display:none">
@@ -271,239 +321,271 @@ footer{background:var(--paper2);border-top:1.5px solid var(--rule);padding:10px 
 </footer>
 
 <script>
-const CURRENT_YEAR = new Date().getFullYear();
+const CY=new Date().getFullYear();
 
 // ── Dewey labels ──────────────────────────────────────────────────────────────
 const DEWEY={
-  '000':'Ciencias de la información (General)','001':'Metodología y conocimiento',
-  '002':'El libro','003':'Sistemas','004':'Procesamiento de datos / Informática',
-  '005':'Programación y software','006':'IA, multimedia y métodos especiales',
-  '010':'Bibliografías','020':'Bibliotecología','070':'Documentación y periodismo',
-  '100':'Filosofía','150':'Psicología','153':'Psicología cognitiva','160':'Lógica','170':'Ética',
-  '200':'Religión','300':'Ciencias sociales','301':'Sociología','302':'Interacción social',
+  '000':'Ciencias de la información','001':'Metodología y conocimiento',
+  '002':'El libro','003':'Sistemas','004':'Procesamiento de datos',
+  '005':'Programación y software','006':'IA y multimedia',
+  '010':'Bibliografías','020':'Bibliotecología','070':'Documentación',
+  '100':'Filosofía','150':'Psicología','153':'Psicología cognitiva',
+  '160':'Lógica','170':'Ética','200':'Religión',
+  '300':'Ciencias sociales','301':'Sociología','302':'Interacción social',
   '303':'Procesos sociales','306':'Cultura e instituciones','310':'Estadística',
   '320':'Ciencia política','330':'Economía','331':'Economía del trabajo',
-  '332':'Economía financiera','333':'Economía de la tierra','336':'Finanzas públicas',
-  '338':'Producción','339':'Macroeconomía','340':'Derecho','341':'D. internacional',
-  '342':'D. constitucional','343':'D. tributario y comercial','344':'D. laboral',
-  '345':'D. penal','346':'D. privado','347':'D. procesal','350':'Adm. pública',
+  '332':'Economía financiera','336':'Finanzas públicas','338':'Producción',
+  '340':'Derecho','341':'D. internacional','342':'D. constitucional',
+  '343':'D. tributario','344':'D. laboral','345':'D. penal',
+  '346':'D. privado','347':'D. procesal','350':'Adm. pública',
   '360':'Servicios sociales','370':'Educación','371':'Instituciones educativas',
-  '378':'Educación superior','380':'Comercio y comunicaciones','384':'Telecomunicaciones',
-  '390':'Costumbres','400':'Lengua y lingüística','410':'Lingüística','420':'Inglés',
-  '460':'Español y portugués','500':'Ciencias naturales','510':'Matemáticas',
-  '511':'Principios generales mat.','512':'Álgebra','513':'Aritmética','514':'Topología',
-  '515':'Análisis / Cálculo','516':'Geometría','519':'Probabilidad y estadística',
-  '520':'Astronomía','530':'Física','531':'Mecánica clásica','532':'Mecánica de fluidos',
+  '372':'Educación primaria','378':'Educación superior',
+  '380':'Comercio y comunicaciones','384':'Telecomunicaciones',
+  '390':'Costumbres','400':'Lingüística','401':'Filosofía del lenguaje',
+  '410':'Lingüística aplicada','420':'Inglés','460':'Español',
+  '500':'Ciencias naturales','510':'Matemáticas','511':'Fundamentos mat.',
+  '512':'Álgebra','513':'Aritmética','514':'Topología',
+  '515':'Análisis / Cálculo','516':'Geometría','518':'Métodos numéricos',
+  '519':'Probabilidad y estadística','520':'Astronomía',
+  '530':'Física','531':'Mecánica clásica','532':'Mecánica de fluidos',
   '535':'Óptica','536':'Termodinámica','537':'Electricidad y electrónica',
   '540':'Química','541':'Química física','546':'Química inorgánica','547':'Química orgánica',
-  '550':'Ciencias de la Tierra','551':'Geología','552':'Petrología','553':'Geología económica',
-  '560':'Paleontología','570':'Biología','572':'Bioquímica','576':'Genética','577':'Ecología',
-  '580':'Plantas','590':'Animales','600':'Tecnología','607':'Educación en tecnología',
-  '610':'Medicina y salud','611':'Anatomía','612':'Fisiología','620':'Ingeniería',
-  '621':'Ing. mecánica / eléctrica','622':'Minería','623':'Ing. militar y naval',
-  '624':'Ing. civil','625':'Ing. de transporte','627':'Hidráulica',
-  '628':'Ing. ambiental y sanitaria','629':'Otras ingenierías','630':'Agricultura',
-  '640':'Economía doméstica','650':'Gestión y administración','651':'Servicios de oficina',
-  '657':'Contabilidad','658':'Gestión empresarial','659':'Publicidad',
-  '660':'Ing. química','661':'Química industrial','662':'Combustibles',
-  '663':'Industria de bebidas','664':'Industria alimentaria','665':'Petróleo',
-  '666':'Cerámica','668':'Polímeros','669':'Metalurgia',
-  '670':'Manufactura','680':'Manufactura específica','686':'Impresión','690':'Construcción',
-  '700':'Artes','720':'Arquitectura','740':'Diseño','745':'Artes decorativas',
-  '750':'Pintura','770':'Fotografía','780':'Música','790':'Deportes',
-  '800':'Literatura','860':'Literatura española','900':'Historia y Geografía',
-  '910':'Geografía','920':'Biografías','940':'Historia de Europa',
-  '980':'Historia de América del Sur',
+  '550':'Ciencias de la Tierra','551':'Geología','560':'Paleontología',
+  '570':'Biología','572':'Bioquímica','576':'Genética','577':'Ecología',
+  '580':'Plantas','590':'Animales',
+  '600':'Tecnología','607':'Educación en tecnología',
+  '610':'Medicina y salud','620':'Ingeniería','621':'Ing. mecánica / eléctrica',
+  '622':'Minería','624':'Ing. civil','625':'Ing. de transporte',
+  '627':'Hidráulica','628':'Ing. ambiental','629':'Otras ingenierías',
+  '630':'Agricultura','650':'Gestión y administración',
+  '657':'Contabilidad','658':'Gestión empresarial',
+  '660':'Ing. química','669':'Metalurgia','670':'Manufactura','690':'Construcción',
+  '700':'Artes','720':'Arquitectura','740':'Diseño','750':'Pintura',
+  '780':'Música','790':'Deportes',
+  '800':'Literatura','860':'Literatura española',
+  '900':'Historia y Geografía','910':'Geografía','920':'Biografías',
+  '940':'Historia de Europa','980':'Historia de América del Sur',
 };
 function dlabel(c){if(DEWEY[c])return DEWEY[c];const d=c[0]+'00';return DEWEY[d]?DEWEY[d]+' (div.)':'Dewey '+c}
 
 // ── Cutoff rules ──────────────────────────────────────────────────────────────
 const DEFAULT_CUTOFFS=[
-  {from:0,  to:6,  label:'000–006',desc:'Computación, IA, software',        year:2019,why:'Obsolescencia muy rápida — tecnología cambia en 3–5 años'},
-  {from:7,  to:99, label:'007–099',desc:'Información, documentación',        year:2014,why:'Semivida media'},
-  {from:100,to:199,label:'100–199',desc:'Filosofía, psicología, ética',      year:2010,why:'Fundamentos estables; actualización lenta'},
-  {from:200,to:299,label:'200–299',desc:'Religión',                          year:2008,why:'Disciplina de semivida larga'},
-  {from:300,to:309,label:'300–309',desc:'Ciencias sociales (General)',       year:2012,why:'Cambia con contexto social y político'},
-  {from:310,to:319,label:'310–319',desc:'Estadística aplicada',              year:2014,why:'Métodos se actualizan con frecuencia'},
-  {from:320,to:329,label:'320–329',desc:'Ciencia política',                  year:2013,why:'Semivida media'},
-  {from:330,to:339,label:'330–339',desc:'Economía',                          year:2013,why:'Datos y modelos cambian; semivida 8–10 años'},
-  {from:340,to:349,label:'340–349',desc:'Derecho',                           year:2015,why:'Normativa y jurisprudencia se actualizan constantemente'},
-  {from:350,to:399,label:'350–399',desc:'Adm. pública, educación, comercio', year:2012,why:'Semivida media'},
-  {from:400,to:499,label:'400–499',desc:'Lengua y lingüística',              year:2008,why:'Disciplina de semivida larga'},
-  {from:500,to:509,label:'500–509',desc:'Ciencias naturales (General)',      year:2012,why:'Semivida media'},
-  {from:510,to:519,label:'510–519',desc:'Matemáticas y estadística',         year:2010,why:'Fundamentos estables; textos clásicos vigentes'},
-  {from:520,to:529,label:'520–529',desc:'Astronomía',                        year:2013,why:'Semivida media'},
-  {from:530,to:539,label:'530–539',desc:'Física',                            year:2013,why:'Semivida media; fundamentos estables'},
-  {from:540,to:549,label:'540–549',desc:'Química',                           year:2013,why:'Semivida media'},
-  {from:550,to:559,label:'550–559',desc:'Ciencias de la Tierra / Geología',  year:2013,why:'Semivida media'},
-  {from:560,to:599,label:'560–599',desc:'Biología y ciencias naturales',     year:2013,why:'Avances frecuentes; semivida 8–10 años'},
-  {from:600,to:609,label:'600–609',desc:'Tecnología (General)',              year:2014,why:'Cambia con frecuencia'},
-  {from:610,to:619,label:'610–619',desc:'Medicina y salud',                  year:2015,why:'Protocolos y evidencia se actualizan rápido'},
-  {from:620,to:629,label:'620–629',desc:'Ingeniería mecánica, civil, etc.',  year:2013,why:'Normas y métodos evolucionan; semivida 8–10 años'},
-  {from:630,to:649,label:'630–649',desc:'Agricultura, economía doméstica',   year:2012,why:'Semivida media'},
-  {from:650,to:659,label:'650–659',desc:'Gestión, administración, contab.',   year:2013,why:'Prácticas cambian; semivida 8–10 años'},
-  {from:660,to:669,label:'660–669',desc:'Ingeniería química, materiales',    year:2013,why:'Procesos industriales se actualizan'},
-  {from:670,to:699,label:'670–699',desc:'Manufactura, construcción',         year:2012,why:'Normas constructivas como referencia'},
-  {from:700,to:799,label:'700–799',desc:'Artes',                             year:2008,why:'Semivida larga'},
-  {from:800,to:899,label:'800–899',desc:'Literatura',                        year:2000,why:'Obras permanentes'},
-  {from:900,to:999,label:'900–999',desc:'Historia y Geografía',              year:2000,why:'Semivida muy larga'},
+  {from:0,  to:6,  label:'000–006',desc:'Computación, IA, software',       year:2019,why:'Obsolescencia en 3–5 años'},
+  {from:7,  to:99, label:'007–099',desc:'Información, documentación',       year:2014,why:'Semivida media'},
+  {from:100,to:199,label:'100–199',desc:'Filosofía, psicología, ética',     year:2010,why:'Actualización lenta'},
+  {from:200,to:299,label:'200–299',desc:'Religión',                         year:2008,why:'Semivida larga'},
+  {from:300,to:309,label:'300–309',desc:'Ciencias sociales',                year:2012,why:'Cambia con contexto social'},
+  {from:310,to:319,label:'310–319',desc:'Estadística aplicada',             year:2014,why:'Métodos se actualizan frecuentemente'},
+  {from:320,to:329,label:'320–329',desc:'Ciencia política',                 year:2013,why:'Semivida media'},
+  {from:330,to:339,label:'330–339',desc:'Economía',                         year:2013,why:'Semivida 8–10 años'},
+  {from:340,to:349,label:'340–349',desc:'Derecho',                          year:2015,why:'Normativa se actualiza constantemente'},
+  {from:350,to:399,label:'350–399',desc:'Adm. pública, educación',          year:2012,why:'Semivida media'},
+  {from:400,to:499,label:'400–499',desc:'Lengua y lingüística',             year:2008,why:'Semivida larga'},
+  {from:500,to:509,label:'500–509',desc:'Ciencias naturales (General)',     year:2012,why:'Semivida media'},
+  {from:510,to:519,label:'510–519',desc:'Matemáticas y estadística',        year:2010,why:'Fundamentos estables; textos clásicos vigentes'},
+  {from:520,to:529,label:'520–529',desc:'Astronomía',                       year:2013,why:'Semivida media'},
+  {from:530,to:539,label:'530–539',desc:'Física',                           year:2013,why:'Semivida media'},
+  {from:540,to:549,label:'540–549',desc:'Química',                          year:2013,why:'Semivida media'},
+  {from:550,to:559,label:'550–559',desc:'Ciencias de la Tierra',            year:2013,why:'Semivida media'},
+  {from:560,to:599,label:'560–599',desc:'Biología y ciencias naturales',    year:2013,why:'Semivida 8–10 años'},
+  {from:600,to:609,label:'600–609',desc:'Tecnología (General)',             year:2014,why:'Cambia con frecuencia'},
+  {from:610,to:619,label:'610–619',desc:'Medicina y salud',                 year:2015,why:'Evidencia clínica se actualiza rápido'},
+  {from:620,to:629,label:'620–629',desc:'Ingeniería',                       year:2013,why:'Normas y métodos, semivida 8–10 años'},
+  {from:630,to:649,label:'630–649',desc:'Agricultura, economía doméstica',  year:2012,why:'Semivida media'},
+  {from:650,to:659,label:'650–659',desc:'Gestión, administración',          year:2013,why:'Semivida 8–10 años'},
+  {from:660,to:669,label:'660–669',desc:'Ingeniería química, materiales',   year:2013,why:'Procesos industriales'},
+  {from:670,to:699,label:'670–699',desc:'Manufactura, construcción',        year:2012,why:'Normas constructivas'},
+  {from:700,to:799,label:'700–799',desc:'Artes',                            year:2008,why:'Semivida larga'},
+  {from:800,to:899,label:'800–899',desc:'Literatura',                       year:2000,why:'Obras permanentes'},
+  {from:900,to:999,label:'900–999',desc:'Historia y Geografía',             year:2000,why:'Semivida muy larga'},
 ];
-
-// Semivida disciplinar de referencia (en años) para el índice de obsolescencia
-// Fuente: Burton & Kebler, Brookes, Stinson & Fenly (bibliometría clásica)
 const HALFLIFE_REF={
   '000':5,'001':8,'003':8,'004':5,'005':5,'006':4,
-  '100':15,'150':12,'160':15,'170':15,
-  '200':20,
+  '100':15,'150':12,'160':15,'170':15,'200':20,
   '300':10,'310':8,'320':10,'330':10,'340':7,'350':10,'360':10,'370':12,'380':10,
-  '400':15,
-  '500':10,'510':15,'511':15,'512':15,'515':15,'519':10,
-  '520':10,'530':12,'536':12,'537':8,
-  '540':10,'550':12,'560':15,'570':10,'572':8,'577':10,
+  '400':15,'500':10,'510':15,'511':15,'512':15,'513':15,'514':15,'515':15,'516':15,'518':10,'519':10,
+  '520':10,'530':12,'536':12,'537':8,'540':10,'550':12,'560':15,'570':10,'572':8,'577':10,
   '600':8,'610':7,'620':10,'621':8,'622':12,'624':10,'628':10,'629':8,
-  '630':10,'650':10,'657':10,'658':10,
-  '660':10,'669':12,'670':12,'690':12,
+  '630':10,'650':10,'657':10,'658':10,'660':10,'669':12,'670':12,'690':12,
   '700':20,'800':25,'900':25,
 };
-function getHLRef(code){
-  if(HALFLIFE_REF[code])return HALFLIFE_REF[code];
-  const d=code[0]+'00';
-  return HALFLIFE_REF[d]||10;
-}
-
+function getHLRef(c){return HALFLIFE_REF[c]||(HALFLIFE_REF[c[0]+'00'])||10}
 let cutoffRules=JSON.parse(JSON.stringify(DEFAULT_CUTOFFS));
-
-function yearColor(y){
-  if(y>=2018)return'#c62828';if(y>=2015)return'#ef6c00';
-  if(y>=2012)return'#558b2f';return'#2e7d32';
-}
+function yearColor(y){if(y>=2018)return'#c62828';if(y>=2015)return'#ef6c00';if(y>=2012)return'#558b2f';return'#2e7d32'}
 function buildCutoffGrid(){
-  const grid=document.getElementById('cutoff-grid');
-  grid.innerHTML='';
-  cutoffRules.forEach((rule,i)=>{
-    const row=document.createElement('div');
-    row.className='cutoff-row';
-    row.innerHTML=`<span class="cutoff-range">${rule.label}</span>
-      <span class="cutoff-desc" title="${rule.why}">${rule.desc}</span>
-      <input class="cutoff-year" type="number" value="${rule.year}" min="1990" max="2024"
-        data-idx="${i}" style="border-color:${yearColor(rule.year)};color:${yearColor(rule.year)}">`;
-    grid.appendChild(row);
+  const g=document.getElementById('cutoff-grid');g.innerHTML='';
+  cutoffRules.forEach((r,i)=>{
+    const row=document.createElement('div');row.className='cutoff-row';
+    row.innerHTML=`<span class="cutoff-range">${r.label}</span>
+      <span class="cutoff-desc" title="${r.why}">${r.desc}</span>
+      <input class="cutoff-year" type="number" value="${r.year}" min="1990" max="2024" data-idx="${i}"
+        style="border-color:${yearColor(r.year)};color:${yearColor(r.year)}">`;
+    g.appendChild(row);
   });
-  grid.querySelectorAll('.cutoff-year').forEach(inp=>{
-    inp.addEventListener('change',function(){
-      const idx=+this.dataset.idx;
-      cutoffRules[idx].year=+this.value;
-      this.style.borderColor=yearColor(+this.value);
-      this.style.color=yearColor(+this.value);
-    });
-  });
+  g.querySelectorAll('.cutoff-year').forEach(inp=>inp.addEventListener('change',function(){
+    cutoffRules[+this.dataset.idx].year=+this.value;
+    this.style.borderColor=yearColor(+this.value);this.style.color=yearColor(+this.value);
+  }));
 }
 function resetCutoffs(){cutoffRules=JSON.parse(JSON.stringify(DEFAULT_CUTOFFS));buildCutoffGrid()}
-function getCutoff(code){
-  const n=parseInt(code);
-  const rule=cutoffRules.find(r=>n>=r.from&&n<=r.to);
-  return rule?rule.year:parseInt(document.getElementById('corte-default').value)||2013;
-}
-
+function getCutoff(code){const n=parseInt(code);const r=cutoffRules.find(r=>n>=r.from&&n<=r.to);return r?r.year:parseInt(document.getElementById('corte-default').value)||2013}
 buildCutoffGrid();
 
-// ── Semivida calculation ──────────────────────────────────────────────────────
-// Returns number of years that cover the most recent 50% of the collection
-function calcHalfLife(validYears){
-  if(validYears.length<4)return null;
-  const sorted=[...validYears].sort((a,b)=>b-a); // descending (newest first)
-  const half=Math.ceil(sorted.length/2);
-  const cutoffYear=sorted[half-1]; // year at which we reach 50%
-  return CURRENT_YEAR-cutoffYear;
+// ── Metrics ───────────────────────────────────────────────────────────────────
+function calcHalfLife(yrs){
+  if(yrs.length<4)return null;
+  const s=[...yrs].sort((a,b)=>b-a);
+  return CY-s[Math.ceil(s.length/2)-1];
 }
-
-// Índice de obsolescencia: % con antigüedad > semivida de referencia disciplinar
-function calcObsolescencia(validYears,deweyCode){
-  if(!validYears.length)return null;
-  const hlRef=getHLRef(deweyCode);
-  const cutoffYear=CURRENT_YEAR-hlRef;
-  return(validYears.filter(y=>y<cutoffYear).length/validYears.length)*100;
+function calcIObs(yrs,code){
+  if(!yrs.length)return null;
+  const ref=getHLRef(code);
+  return(yrs.filter(y=>y<CY-ref).length/yrs.length)*100;
 }
 
 // ── State ─────────────────────────────────────────────────────────────────────
-let rawData=[],allCols=[],selectedCareers=new Set(),allResults={};
+let colData=[],colCols=[],loansMap={},hasLoans=false;
+let selCareers=new Set(),allResults={};
 const DECADAS=[1960,1970,1980,1990,2000,2010,2020];
 
-// ── File ──────────────────────────────────────────────────────────────────────
-const dz=document.getElementById('drop-zone'),fi=document.getElementById('file-input');
-dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag-over')});
-dz.addEventListener('dragleave',()=>dz.classList.remove('drag-over'));
-dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag-over');handleFile(e.dataTransfer.files[0])});
-fi.addEventListener('change',e=>handleFile(e.target.files[0]));
+// ── Circulation threshold (median-based, calculated after analysis) ──
+let circThreshold=0;
 
-function handleFile(file){
-  if(!file)return;
-  document.getElementById('file-hint').textContent=file.name;
-  showAlert('Leyendo archivo…','info');
+// ── File: Inventario ─────────────────────────────────────────────────────────
+function setupDrop(dzId,fiId,hintId,onFile){
+  const dz=document.getElementById(dzId),fi=document.getElementById(fiId);
+  dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag-over')});
+  dz.addEventListener('dragleave',()=>dz.classList.remove('drag-over'));
+  dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag-over');onFile(e.dataTransfer.files[0],hintId,dzId)});
+  fi.addEventListener('change',e=>onFile(e.target.files[0],hintId,dzId));
+}
+
+function readXLSX(file,cb){
   const r=new FileReader();
   r.onload=e=>{
     try{
       const wb=XLSX.read(e.target.result,{type:'array'});
       const ws=wb.Sheets[wb.SheetNames[0]];
-      const json=XLSX.utils.sheet_to_json(ws,{defval:''});
-      if(!json.length){showAlert('Archivo vacío.','error');return}
-      allCols=Object.keys(json[0]);rawData=json;
-      dz.classList.add('loaded');
-      populateMaps();buildChips();
-      document.getElementById('mapping-panel').style.display='block';
-      document.getElementById('career-panel').style.display='block';
-      document.getElementById('analyze-btn').disabled=false;
-      hideAlert();
-      showAlert(`✓ ${json.length.toLocaleString()} filas cargadas · ${allCols.length} columnas.`,'success');
-    }catch(err){showAlert('Error: '+err.message,'error')}
+      cb(null,XLSX.utils.sheet_to_json(ws,{defval:''}));
+    }catch(err){cb(err)}
   };
   r.readAsArrayBuffer(file);
 }
 
-function populateMaps(){
+setupDrop('dz-col','fi-col','hint-col',(file,hintId,dzId)=>{
+  if(!file)return;
+  document.getElementById(hintId).textContent=file.name;
+  showAlert('Leyendo inventario…','info');
+  readXLSX(file,(err,json)=>{
+    if(err||!json.length){showAlert('Error al leer inventario.','error');return}
+    colData=json;colCols=Object.keys(json[0]);
+    document.getElementById(dzId).classList.add('loaded');
+    populateColMaps();buildChips();
+    document.getElementById('map-col').style.display='block';
+    document.getElementById('career-panel').style.display='block';
+    document.getElementById('analyze-btn').disabled=false;
+    hideAlert();
+    showAlert(`✓ Inventario: ${json.length.toLocaleString()} filas.`,'success');
+  });
+});
+
+setupDrop('dz-loans','fi-loans','hint-loans',(file,hintId,dzId)=>{
+  if(!file)return;
+  document.getElementById(hintId).textContent=file.name;
+  showAlert('Leyendo préstamos…','info');
+  readXLSX(file,(err,json)=>{
+    if(err||!json.length){showAlert('Error al leer préstamos.','error');return}
+    document.getElementById(dzId).classList.add('loaded');
+    document.getElementById('map-loans').style.display='block';
+    populateLoansMaps(Object.keys(json[0]));
+    // Build loans map (signatura → total loans)
+    buildLoansMap(json);
+    hideAlert();
+    showAlert(`✓ Préstamos: ${json.length.toLocaleString()} transacciones cargadas.`,'success');
+  });
+});
+
+let loansMapBySig={};  // signatura → total loans
+
+function buildLoansMap(json){
+  const re=/^(\d{3})/;
+  function rebuild(){
+    const sc=document.getElementById('map-lsig').value;
+    const cc=document.getElementById('map-lcount').value;
+    loansMap={};loansMapBySig={};
+    for(const r of json){
+      const sig=String(r[sc]||'').trim();if(!sig)continue;
+      const m=re.exec(sig);if(!m)continue;
+      const code=m[1];
+      const cnt=cc&&r[cc]?parseFloat(r[cc])||1:1;
+      // By Dewey class
+      if(!loansMap[code])loansMap[code]={transactions:0,uniqueSigs:new Set()};
+      loansMap[code].transactions+=cnt;
+      loansMap[code].uniqueSigs.add(sig);
+      // By individual signatura
+      loansMapBySig[sig]=(loansMapBySig[sig]||0)+cnt;
+    }
+    for(const k of Object.keys(loansMap))
+      loansMap[k].uniqueItems=loansMap[k].uniqueSigs.size;
+    hasLoans=Object.keys(loansMap).length>0;
+  }
+  rebuild();
+  document.getElementById('map-lsig').addEventListener('change',rebuild);
+  document.getElementById('map-lcount').addEventListener('change',rebuild);
+}
+
+function populateColMaps(){
   const none='<option value="">— no usar —</option>';
-  const opts=allCols.map(c=>`<option value="${c}">${c}</option>`).join('');
+  const opts=colCols.map(c=>`<option value="${c}">${c}</option>`).join('');
   ['map-topo','map-year','map-unit'].forEach(id=>document.getElementById(id).innerHTML=none+opts);
   const norm=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-  const autoMap={
-    'map-topo':['topografico','signatura','dewey','clasificacion','cota'],
+  const auto={'map-topo':['topografico','signatura','dewey','clasificacion','cota'],
     'map-year':['ano de publicacion','ano publicacion','ano','year','pub_year','fecha'],
-    'map-unit':['unidad_academica','unidad academica','carrera','programa','escuela','unit'],
-  };
-  for(const [id,cands] of Object.entries(autoMap)){
+    'map-unit':['unidad_academica','unidad academica','carrera','programa','escuela','unit']};
+  for(const [id,cands] of Object.entries(auto)){
     const el=document.getElementById(id);
-    const match=allCols.find(c=>cands.some(k=>norm(c).includes(k)));
+    const match=colCols.find(c=>cands.some(k=>norm(c).includes(k)));
     if(match)el.value=match;
   }
   document.getElementById('map-unit').addEventListener('change',buildChips);
 }
 
+function populateLoansMaps(cols){
+  const none='<option value="">— no usar —</option>';
+  const opts=cols.map(c=>`<option value="${c}">${c}</option>`).join('');
+  ['map-lsig','map-lcount'].forEach(id=>document.getElementById(id).innerHTML=none+opts);
+  const norm=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const sigMatch=cols.find(c=>['signatura','topografico','cota','sig','callnumber','barcode'].some(k=>norm(c).includes(k)));
+  if(sigMatch)document.getElementById('map-lsig').value=sigMatch;
+  const cntMatch=cols.find(c=>['prestamo','prestamos','loan','loans','count','cantidad','total','circulacion'].some(k=>norm(c).includes(k)));
+  if(cntMatch)document.getElementById('map-lcount').value=cntMatch;
+}
+
 function buildChips(){
   const unitCol=document.getElementById('map-unit').value;
   const grid=document.getElementById('career-grid');
-  grid.innerHTML='';selectedCareers.clear();
-  if(!unitCol){document.getElementById('sel-info').textContent='(sin columna de carrera — se analizará todo)';return}
+  grid.innerHTML='';selCareers.clear();
+  if(!unitCol){document.getElementById('sel-info').textContent='(sin columna de carrera)';return}
   const counts={};
-  for(const r of rawData){const u=String(r[unitCol]||'').trim();if(u)counts[u]=(counts[u]||0)+1}
+  for(const r of colData){const u=String(r[unitCol]||'').trim();if(u)counts[u]=(counts[u]||0)+1}
   Object.entries(counts).sort((a,b)=>b[1]-a[1]).forEach(([code,n])=>{
-    const ch=document.createElement('div');
-    ch.className='career-chip';ch.dataset.code=code;
+    const ch=document.createElement('div');ch.className='career-chip';ch.dataset.code=code;
     ch.innerHTML=`<span>${code}</span><span class="chip-n">${n.toLocaleString()}</span>`;
     ch.addEventListener('click',()=>{
-      if(selectedCareers.has(code)){selectedCareers.delete(code);ch.classList.remove('selected')}
-      else{selectedCareers.add(code);ch.classList.add('selected')}
+      if(selCareers.has(code)){selCareers.delete(code);ch.classList.remove('selected')}
+      else{selCareers.add(code);ch.classList.add('selected')}
       updateSelInfo();
     });
     grid.appendChild(ch);
   });
   updateSelInfo();
 }
-function selAll(){document.querySelectorAll('.career-chip').forEach(ch=>{ch.classList.add('selected');selectedCareers.add(ch.dataset.code)});updateSelInfo()}
-function clearAll(){document.querySelectorAll('.career-chip').forEach(ch=>ch.classList.remove('selected'));selectedCareers.clear();updateSelInfo()}
+function selAll(){document.querySelectorAll('.career-chip').forEach(ch=>{ch.classList.add('selected');selCareers.add(ch.dataset.code)});updateSelInfo()}
+function clearAll(){document.querySelectorAll('.career-chip').forEach(ch=>ch.classList.remove('selected'));selCareers.clear();updateSelInfo()}
 function updateSelInfo(){
-  const n=selectedCareers.size;
-  const unitCol=document.getElementById('map-unit').value;
-  const tot=unitCol?rawData.filter(r=>selectedCareers.has(String(r[unitCol]||'').trim())).length:0;
+  const n=selCareers.size;
+  const uc=document.getElementById('map-unit').value;
+  const tot=uc?colData.filter(r=>selCareers.has(String(r[uc]||'').trim())).length:0;
   document.getElementById('sel-info').textContent=n===0?'Sin selección':`${n} carrera${n>1?'s':''} · ${tot.toLocaleString()} ejemplares`;
 }
 
@@ -514,48 +596,121 @@ function analyzeRows(rows){
   const topoCol=document.getElementById('map-topo').value;
   const yearCol=document.getElementById('map-year').value;
   const re=/^(\d{3})/,groups={};
+  // Build per-signatura loan lookup (exact match)
   for(const row of rows){
     const m=re.exec(String(row[topoCol]||'').trim());if(!m)continue;
     const code=m[1];
     const yr=parseFloat(String(row[yearCol]).replace(/\D/g,''));
-    if(!groups[code])groups[code]=[];
-    groups[code].push(isNaN(yr)?null:yr);
+    const sig=String(row[topoCol]||'').trim();
+    if(!groups[code])groups[code]={years:[],sigs:[]};
+    groups[code].years.push(isNaN(yr)?null:yr);
+    groups[code].sigs.push(sig);
   }
-  return Object.entries(groups).map(([code,years])=>{
+  // Build title-level data (group by signatura)
+  const titleGroups={};
+  for(const row of rows){
+    const topoCol2=document.getElementById('map-topo').value;
+    const yearCol2=document.getElementById('map-year').value;
+    const sig=String(row[topoCol2]||'').trim();if(!sig)continue;
+    const yr=parseFloat(String(row[yearCol2]).replace(/\D/g,''));
+    if(!titleGroups[sig])titleGroups[sig]={
+      sig,
+      titulo:String(row['Titulo']||row['título']||row['Título']||row['TITULO']||'—').trim(),
+      autor:String(row['Autor']||row['autor']||row['AUTOR']||'—').trim(),
+      year:isNaN(yr)?null:yr,
+      copies:0,
+      dewey:null,
+    };
+    titleGroups[sig].copies++;
+    if(!titleGroups[sig].dewey){const m=/^(\d{3})/.exec(sig);if(m)titleGroups[sig].dewey=m[1]}
+  }
+  // Attach loans to titles
+  const titleList=Object.values(titleGroups).map(t=>{
+    const loans=hasLoans?(loansMapBySig[t.sig]||0):null;
+    const corte=t.dewey?getCutoff(t.dewey):getCutoff('000');
+    const isOld=t.year!==null&&t.year<corte;
+    const lpc=t.copies>0&&loans!==null?loans/t.copies:null; // loans per copy
+    // Recommendation logic
+    let rec='',pri=4,recColor='';
+    if(loans===null){rec='Sin datos circulación';pri=5;recColor='#aaa'}
+    else if(loans===0&&isOld){rec='Candidato a descarte';pri=3;recColor='#8b1a1a'}
+    else if(loans===0&&!isOld){rec='Revisar pertinencia';pri=4;recColor='#1565c0'}
+    else if(loans>0&&isOld&&lpc>=3){rec='Comprar más ejemplares + edición actualizada';pri=1;recColor='#8b1a1a'}
+    else if(loans>0&&isOld&&lpc<3){rec='Buscar edición actualizada';pri=2;recColor:'#bf360c';recColor='#bf360c'}
+    else if(loans>0&&!isOld&&lpc>=3){rec='Comprar más ejemplares';pri=2;recColor='#8a5e00'}
+    else{rec='Mantener';pri=4;recColor='#1e6b3a'}
+    return{...t,loans,lpc,corte,isOld,rec,pri,recColor};
+  }).sort((a,b)=>(b.loans||0)-(a.loans||0));
+  const titleDataOut=titleList;
+
+
+  const deweyResult=Object.entries(groups).map(([code,{years,sigs}])=>{
     const corte=getCutoff(code);
-    const valid=years.filter(y=>y&&y>1800&&y<=CURRENT_YEAR+1);
+    const valid=years.filter(y=>y&&y>1800&&y<=CY+1);
     const s=[...valid].sort((a,b)=>a-b);
     const n=years.length,yMin=s[0]||null,yMax=s[s.length-1]||null;
     const med=s.length?s[Math.floor(s.length/2)]:null;
     const avg=s.length?s.reduce((a,b)=>a+b,0)/s.length:null;
     const pct=valid.length?(valid.filter(y=>y<corte).length/valid.length)*100:null;
-    const halfLife=calcHalfLife(valid);
-    const iObs=calcObsolescencia(valid,code);
+    const hl=calcHalfLife(valid);
+    const iObs=calcIObs(valid,code);
     const hlRef=getHLRef(code);
     const dc={};for(const d of DECADAS)dc[d]=valid.filter(y=>y>=d&&y<d+10).length;
-    return{dewey:code,materia:dlabel(code),n,yMin,yMax,med,avg,pct,corte,halfLife,iObs,hlRef,dc,valid};
+    let totalLoans=0,uniqueItemsLoaned=0;
+    if(hasLoans&&loansMap[code]){
+      totalLoans=loansMap[code].transactions;
+      uniqueItemsLoaned=loansMap[code].uniqueItems;
+    }
+    const circRate=hasLoans?(n>0?totalLoans/n:0):null;
+    const uniqueSigsInCol=new Set(sigs).size;
+    const pctBorrowed=hasLoans&&uniqueSigsInCol>0?(uniqueItemsLoaned/uniqueSigsInCol)*100:null;
+    return{dewey:code,materia:dlabel(code),n,yMin,yMax,med,avg,pct,corte,hl,iObs,hlRef,dc,valid,
+           totalLoans,itemsBorrowed:uniqueItemsLoaned,circRate,pctBorrowed};
   }).sort((a,b)=>a.dewey.localeCompare(b.dewey));
+  deweyResult._titles=titleDataOut;
+  return deweyResult;
 }
 
 function runAnalysis(){
   const topoCol=document.getElementById('map-topo').value;
   const yearCol=document.getElementById('map-year').value;
   if(!topoCol||!yearCol){showAlert('Asigne Topográfico y Año de publicación.','error');return}
-  const unitCol=document.getElementById('map-unit').value;
+  const uc=document.getElementById('map-unit').value;
   allResults={};
-  if(!unitCol||selectedCareers.size===0){
-    allResults['Colección']=analyzeRows(rawData);
+  if(!uc||selCareers.size===0){
+    const resAll=analyzeRows(colData);resAll._titles=resAll._titles||[];allResults['Colección']=resAll;
   } else {
-    for(const code of selectedCareers){
-      const sub=rawData.filter(r=>String(r[unitCol]||'').trim()===code);
-      allResults[code]=analyzeRows(sub);
+    for(const code of selCareers){
+      const sub=colData.filter(r=>String(r[uc]||'').trim()===code);
+      const res=analyzeRows(sub);res._titles=res._titles||[];allResults[code]=res;
     }
+  }
+  // Global circ threshold = median of circRates across all non-null rows
+  if(hasLoans){
+    // Threshold: median of classes that actually have loans (exclude 0s)
+    const allRates=Object.values(allResults).flatMap(d=>d.map(r=>r.circRate).filter(r=>r!==null&&r>0));
+    const sr=[...allRates].sort((a,b)=>a-b);
+    circThreshold=sr.length?sr[Math.floor(sr.length/2)]:0.01;
   }
   buildTabs();
   document.getElementById('results-container').style.display='block';
   document.getElementById('results-container').scrollIntoView({behavior:'smooth',block:'start'});
   hideAlert();
   document.getElementById('fts').textContent='Análisis: '+new Date().toLocaleString('es-CL');
+}
+
+// ── Quadrant logic ────────────────────────────────────────────────────────────
+// Returns {q, label, cls} where q=1..4
+// Q1: Desact + Alta circ   Q2: Act + Alta circ
+// Q3: Desact + Baja circ   Q4: Act + Baja circ
+function getQuadrant(row){
+  if(!hasLoans||row.circRate===null)return null;
+  const desact=row.pct===null?false:row.pct>50; // >50% = desactualizado para quadrant
+  const highCirc=row.totalLoans>0&&row.circRate>=circThreshold;
+  if(desact&&highCirc) return{q:1,label:'🔴 Adquirir y actualizar',cls:'q1-pill',bg:'#fdecea',color:'#8b1a1a'};
+  if(!desact&&highCirc) return{q:2,label:'🟢 Mantener',cls:'q2-pill',bg:'#e6f4ec',color:'#1e6b3a'};
+  if(desact&&!highCirc) return{q:3,label:'🟡 Revisar actualización',cls:'q3-pill',bg:'#fdf3d6',color:'#8a5e00'};
+  return{q:4,label:'🔵 Revisar pertinencia',cls:'q4-pill',bg:'#e3f0fc',color:'#1565c0'};
 }
 
 // ── Tabs ──────────────────────────────────────────────────────────────────────
@@ -573,59 +728,98 @@ function buildTabs(){
     });
     bar.appendChild(tab);
     const panel=document.createElement('div');
-    panel.className='tab-panel'+(i===0?' active':'');
-    panel.id='tp-'+code;
+    panel.className='tab-panel'+(i===0?' active':'');panel.id='tp-'+code;
     panel.innerHTML=panelHTML(code,allResults[code]);
     cont.appendChild(panel);
     wirePanel(code,allResults[code]);
   });
 }
 
-function globalHalfLife(data){
-  const allV=data.flatMap(r=>r.valid);
-  return calcHalfLife(allV);
-}
-function globalIObs(data){
-  // weighted average of IObs
-  const totalV=data.reduce((a,r)=>a+r.valid.length,0);
-  if(!totalV)return null;
-  const sumObs=data.reduce((a,r)=>{
-    if(r.iObs===null)return a;
-    return a+(r.iObs/100)*r.valid.length;
-  },0);
-  return(sumObs/totalV)*100;
-}
-
 function panelHTML(code,data){
   const allV=data.flatMap(r=>r.valid).sort((a,b)=>a-b);
   const gMed=allV.length?allV[Math.floor(allV.length/2)]:'—';
-  const totalV=data.reduce((a,r)=>a+r.valid.length,0);
-  const totalAntes=data.reduce((a,r)=>a+r.valid.filter(y=>y<r.corte).length,0);
-  const gPct=totalV?(totalAntes/totalV*100).toFixed(1)+'%':'—';
+  const tv=data.reduce((a,r)=>a+r.valid.length,0);
+  const ta=data.reduce((a,r)=>a+r.valid.filter(y=>y<r.corte).length,0);
+  const gPct=tv?(ta/tv*100).toFixed(1)+'%':'—';
   const tot=data.reduce((a,b)=>a+b.n,0);
   const nA=data.filter(r=>r.pct!==null&&r.pct<=30).length;
   const nM=data.filter(r=>r.pct!==null&&r.pct>30&&r.pct<=70).length;
   const nD=data.filter(r=>r.pct!==null&&r.pct>70).length;
-  const gHL=globalHalfLife(data);
-  const gObs=globalIObs(data);
+  const gHL=calcHalfLife(allV);
   const gHLstr=gHL!==null?gHL+' años':'—';
-  const gObsStr=gObs!==null?gObs.toFixed(1)+'%':'—';
-  const hlInterpret=gHL===null?'':gHL<=6?'Renovación activa':gHL<=12?'Renovación moderada':'Colección envejecida';
-  const obsInterpret=gObs===null?'':gObs<=30?'Buen estado':gObs<=60?'Requiere atención':'Renovación urgente';
+  const hlInt=gHL===null?'':gHL<=6?'Renovación activa':gHL<=12?'Renovación moderada':'Colección envejecida';
+
+  // Loans KPIs
+  let loanKPIs='';
+  let matrixHTML='';
+  if(hasLoans){
+    const totalL=data.reduce((a,r)=>a+r.totalLoans,0);
+    const itemsB=data.reduce((a,r)=>a+r.itemsBorrowed,0);
+    const neverB=data.reduce((a,r)=>a+(r.n-r.itemsBorrowed),0);
+    const pctNever=tot?((neverB/tot)*100).toFixed(1)+'%':'—';
+    // Quadrant counts
+    const q1=data.filter(r=>getQuadrant(r)?.q===1);
+    const q2=data.filter(r=>getQuadrant(r)?.q===2);
+    const q3=data.filter(r=>getQuadrant(r)?.q===3);
+    const q4=data.filter(r=>getQuadrant(r)?.q===4);
+
+    loanKPIs=`
+    <div class="kpi-card circ"><div class="kpi-lbl">Total préstamos</div><div class="kpi-val teal">${totalL.toLocaleString()}</div><div class="kpi-sub">en el período</div></div>
+    <div class="kpi-card circ"><div class="kpi-lbl">Ítems nunca prestados</div><div class="kpi-val red">${neverB.toLocaleString()}</div><div class="kpi-sub">${pctNever} del total</div></div>`;
+
+    // Matrix
+    const qItems=q=>`${q.map(r=>`<span style="font-family:'DM Mono',monospace;font-size:11px">${r.dewey} ${r.materia.substring(0,22)}</span>`).join('<br>')||'<span style="opacity:.5">ninguna</span>'}`;
+    matrixHTML=`
+    <div class="matrix-wrap">
+      <h3>Matriz de decisión: Actualización × Circulación</h3>
+      <p>Umbral de circulación: ${circThreshold.toFixed(2)} préstamos/ítem (mediana de clases con al menos 1 préstamo)</p>
+      <div class="matrix">
+        <div class="quadrant q1">
+          <h4>🔴 Desactualizada · Alta circulación</h4>
+          <div class="q-stat">${q1.length} materias</div>
+          <div class="q-sub">${q1.reduce((a,r)=>a+r.n,0)} ejemplares · ${q1.reduce((a,r)=>a+r.totalLoans,0)} préstamos</div>
+          <div class="q-items">${qItems(q1)}</div>
+          <div class="q-action">→ Adquirir ediciones actualizadas y más ejemplares: hay demanda real con fondo obsoleto</div>
+        </div>
+        <div class="quadrant q2">
+          <h4>🟢 Actualizada · Alta circulación</h4>
+          <div class="q-stat">${q2.length} materias</div>
+          <div class="q-sub">${q2.reduce((a,r)=>a+r.n,0)} ejemplares · ${q2.reduce((a,r)=>a+r.totalLoans,0)} préstamos</div>
+          <div class="q-items">${qItems(q2)}</div>
+          <div class="q-action">→ Mantener y monitorear disponibilidad</div>
+        </div>
+        <div class="quadrant q3">
+          <h4>🟡 Desactualizada · Sin circulación</h4>
+          <div class="q-stat">${q3.length} materias</div>
+          <div class="q-sub">${q3.reduce((a,r)=>a+r.n,0)} ejemplares · ${q3.reduce((a,r)=>a+r.totalLoans,0)} préstamos</div>
+          <div class="q-items">${qItems(q3)}</div>
+          <div class="q-action">→ Revisar actualización: fondo obsoleto que no se solicita — evaluar si el área sigue siendo pertinente antes de invertir</div>
+        </div>
+        <div class="quadrant q4">
+          <h4>🔵 Actualizada · Sin circulación</h4>
+          <div class="q-stat">${q4.length} materias</div>
+          <div class="q-sub">${q4.reduce((a,r)=>a+r.n,0)} ejemplares · ${q4.reduce((a,r)=>a+r.totalLoans,0)} préstamos</div>
+          <div class="q-items">${qItems(q4)}</div>
+          <div class="q-action">→ Revisar pertinencia curricular: colección actualizada pero sin uso — verificar si responde a la malla vigente</div>
+        </div>
+      </div>
+    </div>`;
+  }
 
   return`
   <div class="kpi-row">
     <div class="kpi-card"><div class="kpi-lbl">Ejemplares</div><div class="kpi-val">${tot.toLocaleString()}</div><div class="kpi-sub">${code}</div></div>
     <div class="kpi-card"><div class="kpi-lbl">Clases Dewey</div><div class="kpi-val">${data.length}</div><div class="kpi-sub">áreas temáticas</div></div>
     <div class="kpi-card"><div class="kpi-lbl">Mediana global</div><div class="kpi-val">${gMed}</div><div class="kpi-sub">año publicación</div></div>
-    <div class="kpi-card"><div class="kpi-lbl">% anterior al corte</div><div class="kpi-val">${gPct}</div><div class="kpi-sub">corte diferenciado</div></div>
-    <div class="kpi-card hl"><div class="kpi-lbl">Semivida colección</div><div class="kpi-val purple">${gHLstr}</div><div class="kpi-sub">${hlInterpret}</div></div>
-    <div class="kpi-card obs"><div class="kpi-lbl">Índice obsolescencia</div><div class="kpi-val teal">${gObsStr}</div><div class="kpi-sub">${obsInterpret}</div></div>
+    <div class="kpi-card"><div class="kpi-lbl">% ant. corte</div><div class="kpi-val">${gPct}</div><div class="kpi-sub">corte diferenciado</div></div>
+    <div class="kpi-card hl"><div class="kpi-lbl">Semivida</div><div class="kpi-val purple">${gHLstr}</div><div class="kpi-sub">${hlInt}</div></div>
+    ${loanKPIs}
   </div>
+  ${matrixHTML}
   <div class="tbl-wrap">
     <div class="tbl-head">
-      <h3>Materias · ${code}</h3>
-      <input class="filter-inp" type="text" placeholder="Filtrar materia o código…" id="fi-${code}">
+      <h3>Detalle por materia · ${code}</h3>
+      <input class="filter-inp" type="text" placeholder="Filtrar…" id="fi-${code}">
     </div>
     <div style="overflow-x:auto">
       <table><thead><tr>
@@ -638,8 +832,12 @@ function panelHTML(code,data){
         <th data-col="corte" data-code="${code}">Corte</th>
         <th data-col="pct" data-code="${code}">% ant. corte</th>
         <th data-col="pct" data-code="${code}">Estado</th>
-        <th data-col="halfLife" data-code="${code}" class="th-hl" title="Años que concentran el 50% más reciente de la colección">Semivida</th>
-        <th data-col="iObs" data-code="${code}" class="th-obs" title="% de ejemplares con antigüedad mayor a la semivida de referencia disciplinar">Í. Obsolescencia</th>
+        <th data-col="hl" data-code="${code}" class="th-hl">Semivida</th>
+        ${hasLoans?`
+        <th data-col="totalLoans" data-code="${code}" class="th-circ">Préstamos</th>
+        <th data-col="circRate" data-code="${code}" class="th-circ">Tasa circ.</th>
+        <th data-col="pctBorrowed" data-code="${code}" class="th-circ">% prestados</th>
+        <th data-col="circRate" data-code="${code}" class="th-circ">Decisión</th>`:''}
         <th>Décadas</th>
       </tr></thead>
       <tbody id="tb-${code}"></tbody></table>
@@ -648,6 +846,50 @@ function panelHTML(code,data){
   <div class="dl-row">
     <button class="dl-btn p" data-excel="${code}">📊 Excel — ${code}</button>
     <button class="dl-btn s" data-csv="${code}">📄 CSV — ${code}</button>
+    <button class="dl-btn m" data-budget="${code}">📋 Informe presupuestario</button>
+  </div>
+  <div class="title-section">
+    <button class="title-toggle" id="tt-${code}">
+      <span class="tt-arrow">▶</span>
+      📖 Ver detalle por título individual
+      <span style="margin-left:auto;font-family:'DM Mono',monospace;font-size:11px;font-weight:400;color:var(--ink3)" id="tt-count-${code}"></span>
+    </button>
+    <div class="title-content" id="tc-${code}">
+      <div class="title-filter-row">
+        <select id="tf-pri-${code}">
+          <option value="">Todas las prioridades</option>
+          <option value="1">🔴 Prioridad 1 — Urgente</option>
+          <option value="2">🟠 Prioridad 2 — Recomendado</option>
+          <option value="3">🟡 Prioridad 3 — Revisar/Descartar</option>
+          <option value="4">🔵 Sin acción requerida</option>
+        </select>
+        <select id="tf-rec-${code}">
+          <option value="">Todas las recomendaciones</option>
+          <option value="Comprar más ejemplares + edición actualizada">Comprar más ej. + edición actualizada</option>
+          <option value="Buscar edición actualizada">Buscar edición actualizada</option>
+          <option value="Comprar más ejemplares">Comprar más ejemplares</option>
+          <option value="Candidato a descarte">Candidato a descarte</option>
+          <option value="Revisar pertinencia">Revisar pertinencia</option>
+          <option value="Mantener">Mantener</option>
+        </select>
+        <input type="text" id="tf-q-${code}" placeholder="Buscar título o autor…" style="width:200px">
+        <span style="font-size:12px;color:var(--ink3)" id="tf-info-${code}"></span>
+      </div>
+      <div style="overflow-x:auto">
+        <table><thead><tr>
+          <th data-tcol="pri" data-tcode="${code}">Pri.</th>
+          <th data-tcol="sig" data-tcode="${code}">Signatura</th>
+          <th data-tcol="titulo" data-tcode="${code}">Título</th>
+          <th data-tcol="autor" data-tcode="${code}">Autor</th>
+          <th data-tcol="year" data-tcode="${code}" style="text-align:right">Año</th>
+          <th data-tcol="copies" data-tcode="${code}" style="text-align:right">Copias</th>
+          <th data-tcol="loans" data-tcode="${code}" style="text-align:right">Préstamos</th>
+          <th data-tcol="lpc" data-tcode="${code}" style="text-align:right">P/Copia</th>
+          <th data-tcol="rec" data-tcode="${code}">Recomendación</th>
+        </tr></thead>
+        <tbody id="ttb-${code}"></tbody></table>
+      </div>
+    </div>
   </div>`;
 }
 
@@ -659,11 +901,9 @@ function wirePanel(code,data){
   });
   document.querySelectorAll(`th[data-code="${code}"]`).forEach(th=>{
     th.addEventListener('click',()=>{
-      const col=th.dataset.col;
-      const wasAsc=th.classList.contains('sa');
+      const col=th.dataset.col,wasAsc=th.classList.contains('sa');
       document.querySelectorAll(`th[data-code="${code}"]`).forEach(h=>h.classList.remove('sa','sd'));
-      const dir=wasAsc?'desc':'asc';
-      th.classList.add(dir==='asc'?'sa':'sd');
+      const dir=wasAsc?'desc':'asc';th.classList.add(dir==='asc'?'sa':'sd');
       const sorted=[...data].sort((a,b)=>{
         const av=a[col],bv=b[col];
         if(av===null||av===undefined)return 1;if(bv===null||bv===undefined)return -1;
@@ -674,25 +914,43 @@ function wirePanel(code,data){
   });
   document.querySelector(`[data-excel="${code}"]`).addEventListener('click',()=>dlExcel(code,data));
   document.querySelector(`[data-csv="${code}"]`).addEventListener('click',()=>dlCSV(code,data));
+  document.querySelector(`[data-budget="${code}"]`).addEventListener('click',()=>dlBudget(code,data));
+
+  // Title section
+  const titles=data._titles||[];
+  const ttBtn=document.getElementById('tt-'+code);
+  const ttContent=document.getElementById('tc-'+code);
+  const ttCount=document.getElementById('tt-count-'+code);
+  if(ttCount)ttCount.textContent=titles.length+' títulos';
+  if(ttBtn){
+    ttBtn.addEventListener('click',()=>{
+      ttBtn.classList.toggle('open');
+      ttContent.classList.toggle('open');
+      if(ttContent.classList.contains('open')&&!ttContent.dataset.wired){
+        renderTitleTable(code,titles);
+        wireTitleFilters(code,titles);
+        ttContent.dataset.wired='1';
+      }
+    });
+  }
+  // Title table sort
+  document.querySelectorAll(`th[data-tcode="${code}"]`).forEach(th=>{
+    th.addEventListener('click',()=>{
+      const col=th.dataset.tcol,wasAsc=th.classList.contains('sa');
+      document.querySelectorAll(`th[data-tcode="${code}"]`).forEach(h=>h.classList.remove('sa','sd'));
+      const dir=wasAsc?'desc':'asc';th.classList.add(dir==='asc'?'sa':'sd');
+      const f=getCurrentTitleFilter(code,titles);
+      const sorted=[...f].sort((a,b)=>{
+        const av=a[col],bv=b[col];
+        if(av===null||av===undefined)return 1;if(bv===null||bv===undefined)return -1;
+        return dir==='asc'?(typeof av==='string'?av.localeCompare(bv):av-bv):(typeof av==='string'?bv.localeCompare(av):bv-av);
+      });
+      renderTitleTable(code,sorted);
+    });
+  });
 }
 
-function dcol(d){
-  if(d>=2020)return'#1a5c34';if(d>=2010)return'#2e7d32';if(d>=2000)return'#7cb342';
-  if(d>=1990)return'#f9a825';if(d>=1980)return'#ef6c00';return'#c62828';
-}
-
-function hlBadge(hl){
-  if(hl===null)return'<span style="color:var(--ink3);font-size:11px">—</span>';
-  const cls=hl<=6?'fast':hl<=12?'med':'slow';
-  const label=hl<=6?'Rápida':hl<=12?'Media':'Lenta';
-  return`<span class="hl-badge ${cls}" title="Semivida: ${hl} años (${label})">${hl} años</span>`;
-}
-function obsBadge(obs,hlRef){
-  if(obs===null)return'<span style="color:var(--ink3);font-size:11px">—</span>';
-  const bg=obs<=30?'#e6f4ec':obs<=60?'#fdf3d6':'#fdecea';
-  const color=obs<=30?'#1e6b3a':obs<=60?'#8a5e00':'#8b1a1a';
-  return`<span class="obs-badge" style="background:${bg};color:${color}" title="Ref. disciplinar: ${hlRef} años">${obs.toFixed(1)}%</span>`;
-}
+function dcol(d){if(d>=2020)return'#1a5c34';if(d>=2010)return'#2e7d32';if(d>=2000)return'#7cb342';if(d>=1990)return'#f9a825';if(d>=1980)return'#ef6c00';return'#c62828'}
 
 function renderTbody(code,data){
   const tbody=document.getElementById('tb-'+code);if(!tbody)return;
@@ -701,62 +959,188 @@ function renderTbody(code,data){
     const bc=p===null?'':p<=30?'g':p<=70?'a':'r';
     const bl=p===null?'Sin año':p<=30?'✓ Actualizado':p<=70?'◑ Moderado':'✗ Desactualizado';
     const fc=p===null?'#ccc':p<=30?'var(--green)':p<=70?'#f9a825':'var(--red)';
-    const corteColor=yearColor(row.corte);
+    const cc=yearColor(row.corte);
     const maxD=Math.max(...DECADAS.map(d=>row.dc[d]||0),1);
     const bars=DECADAS.map(d=>{const v=row.dc[d]||0,h=Math.round(v/maxD*14)+2;
       return`<div class="dbar" style="height:${h}px;background:${dcol(d)};opacity:${v?.85:.12}" title="${d}s: ${v}"></div>`;
     }).join('');
+    const hlStr=row.hl!==null?`<span class="hl-badge" style="background:${row.hl<=6?'#fce8ec':row.hl<=12?'#fff3e0':'#e6f4ec'};color:${row.hl<=6?'#8b1a1a':row.hl<=12?'#8a5e00':'#1e6b3a'}">${row.hl}a</span>`:'<span style="color:var(--ink3)">—</span>';
+    let loanCols='';
+    if(hasLoans){
+      const qd=getQuadrant(row);
+      const circBg=row.circRate!==null&&row.circRate>=circThreshold?'#e0f7fa':'#f5f5f5';
+      const pBg=row.pctBorrowed!==null&&row.pctBorrowed>50?'#e6f4ec':'#fafafa';
+      loanCols=`
+        <td class="num td-circ">${row.totalLoans}</td>
+        <td class="td-circ" style="background:${circBg}"><span style="font-family:'DM Mono',monospace;font-size:11px;font-weight:600">${row.circRate!==null?row.circRate.toFixed(2):'—'}</span></td>
+        <td class="td-circ" style="background:${pBg}"><span style="font-family:'DM Mono',monospace;font-size:11px">${row.pctBorrowed!==null?row.pctBorrowed.toFixed(1)+'%':'—'}</span></td>
+        <td>${qd?`<span class="quad-pill" style="background:${qd.bg};color:${qd.color}">${qd.label}</span>`:'<span class="no-loans">—</span>'}</td>`;
+    }
     return`<tr>
-      <td class="mono">${row.dewey}</td>
-      <td>${row.materia}</td>
+      <td class="mono">${row.dewey}</td><td>${row.materia}</td>
       <td class="num">${row.n}</td>
-      <td class="num mono">${row.yMin||'—'}</td>
-      <td class="num mono">${row.yMax||'—'}</td>
+      <td class="num mono">${row.yMin||'—'}</td><td class="num mono">${row.yMax||'—'}</td>
       <td class="num mono">${row.med||'—'}</td>
-      <td><span class="corte-tag" style="border:1px solid ${corteColor};color:${corteColor}">&lt;${row.corte}</span></td>
+      <td><span class="corte-tag" style="border:1px solid ${cc};color:${cc}">&lt;${row.corte}</span></td>
       <td><div class="pbar-wrap"><div class="pbar"><div class="pbar-fill" style="width:${p||0}%;background:${fc}"></div></div><span class="pval">${p!==null?p.toFixed(1)+'%':'—'}</span></div></td>
       <td><span class="badge ${bc}">${bl}</span></td>
-      <td class="td-hl">${hlBadge(row.halfLife)}</td>
-      <td class="td-obs">${obsBadge(row.iObs,row.hlRef)}</td>
+      <td class="td-hl">${hlStr}</td>
+      ${loanCols}
       <td><div class="dbars">${bars}</div></td>
     </tr>`;
   }).join('');
 }
 
+// ── Title table functions ─────────────────────────────────────────────────────
+const PRI_CONFIG={
+  1:{bg:'#fdecea',color:'#8b1a1a',label:'P1'},
+  2:{bg:'#fbe9e7',color:'#bf360c',label:'P2'},
+  3:{bg:'#fdf3d6',color:'#8a5e00',label:'P3'},
+  4:{bg:'#e3f0fc',color:'#1565c0',label:'P4'},
+  5:{bg:'#f5f5f5',color:'#757575',label:'—'},
+};
+
+function getCurrentTitleFilter(code,titles){
+  const pri=document.getElementById('tf-pri-'+code)?.value||'';
+  const rec=document.getElementById('tf-rec-'+code)?.value||'';
+  const q=(document.getElementById('tf-q-'+code)?.value||'').toLowerCase();
+  return titles.filter(t=>{
+    if(pri&&String(t.pri)!==pri)return false;
+    if(rec&&t.rec!==rec)return false;
+    if(q&&!t.titulo.toLowerCase().includes(q)&&!t.autor.toLowerCase().includes(q)&&!t.sig.toLowerCase().includes(q))return false;
+    return true;
+  });
+}
+
+function wireTitleFilters(code,titles){
+  ['tf-pri-','tf-rec-','tf-q-'].forEach(pfx=>{
+    const el=document.getElementById(pfx+code);
+    if(el)el.addEventListener('input',()=>{
+      const f=getCurrentTitleFilter(code,titles);
+      document.getElementById('tf-info-'+code).textContent=f.length+' títulos';
+      renderTitleTable(code,f);
+    });
+  });
+}
+
+function renderTitleTable(code,titles){
+  const tbody=document.getElementById('ttb-'+code);if(!tbody)return;
+  tbody.innerHTML=titles.map(t=>{
+    const pc=PRI_CONFIG[t.pri]||PRI_CONFIG[5];
+    const yColor=t.isOld?'#8b1a1a':'#1e6b3a';
+    const lpcStr=t.lpc!==null?t.lpc.toFixed(1):'—';
+    const lpcColor=t.lpc!==null&&t.lpc>=3?'#8b1a1a':t.lpc!==null&&t.lpc>=1?'#8a5e00':'inherit';
+    return`<tr>
+      <td style="text-align:center">
+        <span class="pri-badge" style="background:${pc.bg};color:${pc.color}" title="${t.rec}">${pc.label}</span>
+      </td>
+      <td class="mono" style="font-size:10px;white-space:nowrap">${t.sig}</td>
+      <td style="max-width:280px;font-size:12px">${t.titulo}</td>
+      <td style="font-size:11px;color:var(--ink2);max-width:140px">${t.autor}</td>
+      <td class="num mono" style="color:${yColor}">${t.year||'—'}</td>
+      <td class="num">${t.copies}</td>
+      <td class="num" style="font-weight:${t.loans>0?'600':'400'}">${t.loans!==null?t.loans:'—'}</td>
+      <td class="num" style="color:${lpcColor};font-weight:600">${lpcStr}</td>
+      <td><span class="rec-badge" style="background:${pc.bg};color:${pc.color}">${t.rec}</span></td>
+    </tr>`;
+  }).join('');
+  const info=document.getElementById('tf-info-'+code);
+  if(info)info.textContent=titles.length+' títulos';
+}
+
+// ── Budget report export ──────────────────────────────────────────────────────
+function dlBudget(code,data){
+  const titles=data._titles||[];
+  if(!titles.length){alert('No hay datos de títulos para exportar.');return}
+  const wb=XLSX.utils.book_new();
+  const now=new Date().toLocaleString('es-CL');
+
+  // Summary sheet
+  const p1=titles.filter(t=>t.pri===1),p2=titles.filter(t=>t.pri===2);
+  const p3=titles.filter(t=>t.pri===3),p4=titles.filter(t=>t.pri===4);
+  const sumRows=[
+    ['INFORME PRESUPUESTARIO — '+code],['Generado: '+now],[''],
+    ['RESUMEN EJECUTIVO'],[''],
+    ['Prioridad','Categoría','N° Títulos','N° Copias afectadas','Préstamos involucrados'],
+    ['P1 — URGENTE','Comprar más ejemplares + edición actualizada',p1.length,
+      p1.reduce((a,t)=>a+t.copies,0),p1.reduce((a,t)=>a+(t.loans||0),0)],
+    ['P2 — RECOMENDADO','Buscar edición actualizada / Comprar más ejemplares',p2.length,
+      p2.reduce((a,t)=>a+t.copies,0),p2.reduce((a,t)=>a+(t.loans||0),0)],
+    ['P3 — REVISAR','Candidatos a descarte / Revisar pertinencia',p3.length,
+      p3.reduce((a,t)=>a+t.copies,0),p3.reduce((a,t)=>a+(t.loans||0),0)],
+    ['P4 — SIN ACCIÓN','Mantener / Sin datos',p4.length,
+      p4.reduce((a,t)=>a+t.copies,0),p4.reduce((a,t)=>a+(t.loans||0),0)],
+    [''],
+    ['NOTA: P/Copia ≥ 3 = alta demanda por copia (requiere más ejemplares)'],
+  ];
+  const wsSum=XLSX.utils.aoa_to_sheet(sumRows);
+  wsSum['!cols']=[{wch:14},{wch:45},{wch:12},{wch:20},{wch:20}];
+  XLSX.utils.book_append_sheet(wb,wsSum,'Resumen ejecutivo');
+
+  const TH=['Signatura','Título','Autor','Año','Copias','Préstamos','P/Copia','Estado actualiz.','Recomendación','Prioridad'];
+  function titleRows(arr){
+    return arr.map(t=>[t.sig,t.titulo,t.autor,t.year||'',t.copies,t.loans!==null?t.loans:'',
+      t.lpc!==null?+t.lpc.toFixed(2):'',t.isOld?'Desactualizado':'Vigente',t.rec,`P${t.pri}`]);
+  }
+  const colW=[{wch:20},{wch:52},{wch:28},{wch:8},{wch:8},{wch:11},{wch:9},{wch:16},{wch:42},{wch:6}];
+
+  if(p1.length){
+    const ws=XLSX.utils.aoa_to_sheet([['P1 — Adquirir urgente: más ejemplares + edición actualizada'],[],TH,...titleRows(p1)]);
+    ws['!cols']=colW;XLSX.utils.book_append_sheet(wb,ws,'P1 — Urgente');
+  }
+  if(p2.length){
+    const ws=XLSX.utils.aoa_to_sheet([['P2 — Recomendado: actualizar edición o ampliar ejemplares'],[],TH,...titleRows(p2)]);
+    ws['!cols']=colW;XLSX.utils.book_append_sheet(wb,ws,'P2 — Recomendado');
+  }
+  if(p3.length){
+    const ws=XLSX.utils.aoa_to_sheet([['P3 — Revisar: candidatos a descarte o sin uso'],[],TH,...titleRows(p3)]);
+    ws['!cols']=colW;XLSX.utils.book_append_sheet(wb,ws,'P3 — Revisar·Descartar');
+  }
+  // All titles
+  const wsAll=XLSX.utils.aoa_to_sheet([['Todos los títulos — '+code],['Generado: '+now],[],TH,...titleRows(titles)]);
+  wsAll['!cols']=colW;
+  XLSX.utils.book_append_sheet(wb,wsAll,'Todos los títulos');
+  XLSX.writeFile(wb,`Informe_Presupuestario_${code}_${new Date().getFullYear()}.xlsx`);
+}
+
 // ── Exports ───────────────────────────────────────────────────────────────────
 function buildSheets(code,data){
   const h1=['Código Dewey','Materia','N Ejemplares','Año mín','Año máx','Mediana','Promedio',
-            'Corte aplicado','% anterior corte','Estado',
-            'Semivida (años)','Semivida (interp.)','Í. Obsolescencia','HL Ref. disciplinar (años)'];
+            'Corte','% ant. corte','Estado','Semivida (años)','I. Obsolescencia',
+            ...(hasLoans?['Préstamos totales','Ítems prestados','Tasa circulación','% ítems prestados','Decisión']:[] )];
   const r1=data.map(r=>{
     const e=r.pct===null?'Sin dato':r.pct<=30?'Actualizado':r.pct<=70?'Moderado':'Desactualizado';
-    const hlI=r.halfLife===null?'—':r.halfLife<=6?'Renovación activa':r.halfLife<=12?'Renovación moderada':'Colección envejecida';
+    const qd=hasLoans?getQuadrant(r):null;
+    const loanCols=hasLoans?[r.totalLoans,r.itemsBorrowed,
+      r.circRate!==null?+r.circRate.toFixed(3):'',
+      r.pctBorrowed!==null?+(r.pctBorrowed/100).toFixed(4):'',
+      qd?qd.label.replace(/[🔴🟢🟡🔵]/g,'').trim():'Sin datos']
+      :[];
     return[r.dewey,r.materia,r.n,r.yMin||'',r.yMax||'',r.med||'',
            r.avg?+r.avg.toFixed(1):'',r.corte,
            r.pct!==null?+(r.pct/100).toFixed(4):'',e,
-           r.halfLife!==null?r.halfLife:'',hlI,
-           r.iObs!==null?+(r.iObs/100).toFixed(4):'',r.hlRef];
+           r.hl!==null?r.hl:'',r.iObs!==null?+(r.iObs/100).toFixed(4):'',
+           ...loanCols];
   });
-  r1.push(['TOTAL','',data.reduce((a,b)=>a+b.n,0),'','','','','','','','','','','']);
-  const ws1=XLSX.utils.aoa_to_sheet([[`Análisis de Colección — ${code}`],
-    [`Semivida y cortes diferenciados por Dewey · ${new Date().toLocaleString('es-CL')}`],[],h1,...r1]);
-  ws1['!cols']=[{wch:11},{wch:40},{wch:11},{wch:9},{wch:9},{wch:9},{wch:9},{wch:12},
-                {wch:15},{wch:15},{wch:14},{wch:20},{wch:15},{wch:22}];
+  r1.push(new Array(h1.length).fill(''));r1[r1.length-1][0]='TOTAL';r1[r1.length-1][2]=data.reduce((a,b)=>a+b.n,0);
+  const ws1=XLSX.utils.aoa_to_sheet([[`Análisis de Colección — ${code}`],[`Generado: ${new Date().toLocaleString('es-CL')}`],[],h1,...r1]);
+  const colW=[{wch:11},{wch:38},{wch:11},{wch:9},{wch:9},{wch:9},{wch:9},{wch:10},{wch:13},{wch:14},{wch:13},{wch:14},
+    ...(hasLoans?[{wch:14},{wch:14},{wch:14},{wch:14},{wch:22}]:[])];
+  ws1['!cols']=colW;
   for(let i=4;i<4+r1.length;i++){
     let c=XLSX.utils.encode_cell({r:i,c:8});if(ws1[c]&&typeof ws1[c].v==='number')ws1[c].z='0.0%';
-    c=XLSX.utils.encode_cell({r:i,c:12});if(ws1[c]&&typeof ws1[c].v==='number')ws1[c].z='0.0%';
+    c=XLSX.utils.encode_cell({r:i,c:11});if(ws1[c]&&typeof ws1[c].v==='number')ws1[c].z='0.0%';
+    if(hasLoans){c=XLSX.utils.encode_cell({r:i,c:15});if(ws1[c]&&typeof ws1[c].v==='number')ws1[c].z='0.0%'}
   }
-
   const h2=['Código Dewey','Materia','Total',...DECADAS.map(d=>d+'s')];
   const r2=data.map(r=>[r.dewey,r.materia,r.n,...DECADAS.map(d=>r.dc[d]||0)]);
   r2.push(['TOTAL','',data.reduce((a,b)=>a+b.n,0),...DECADAS.map(d=>data.reduce((a,r)=>a+(r.dc[d]||0),0))]);
   const ws2=XLSX.utils.aoa_to_sheet([[`Por Décadas — ${code}`],[],h2,...r2]);
-  ws2['!cols']=[{wch:11},{wch:40},{wch:8},...DECADAS.map(()=>({wch:8}))];
-
-  const hC=['Rango Dewey','Descripción','Año de corte','Semivida ref. (años)','Fundamento'];
+  ws2['!cols']=[{wch:11},{wch:38},{wch:8},...DECADAS.map(()=>({wch:8}))];
+  const hC=['Rango Dewey','Descripción','Año de corte','HL Ref. (años)','Fundamento'];
   const rC=cutoffRules.map(r=>[r.label,r.desc,r.year,getHLRef(String(r.from).padStart(3,'0')),r.why]);
   const wsC=XLSX.utils.aoa_to_sheet([['Criterios aplicados'],[],hC,...rC]);
-  wsC['!cols']=[{wch:12},{wch:36},{wch:12},{wch:18},{wch:55}];
+  wsC['!cols']=[{wch:12},{wch:34},{wch:12},{wch:14},{wch:50}];
   return{ws1,ws2,wsC};
 }
 
@@ -766,17 +1150,19 @@ function dlExcel(code,data){
   XLSX.utils.book_append_sheet(wb,ws1,'Análisis por Materia');
   XLSX.utils.book_append_sheet(wb,ws2,'Por Década');
   XLSX.utils.book_append_sheet(wb,wsC,'Criterios');
-  XLSX.writeFile(wb,`Coleccion_${code}_${CURRENT_YEAR}.xlsx`);
+  XLSX.writeFile(wb,`Coleccion_${code}_${CY}.xlsx`);
 }
 
 function dlCSV(code,data){
-  const h=['Carrera','Dewey','Materia','N','Anio_min','Anio_max','Mediana','Corte',
-           'Pct_ant_corte','Estado','Semivida_anios','I_Obsolescencia','HL_ref_disciplinar'];
+  const h=['Carrera','Dewey','Materia','N','Anio_min','Anio_max','Mediana','Corte','Pct_ant_corte','Estado',
+           'Semivida_anios','I_Obsolescencia',...(hasLoans?['Prestamos','Items_prestados','Tasa_circ','Pct_prestados','Decision']:[])];
   const rows=data.map(r=>{
     const e=r.pct===null?'Sin dato':r.pct<=30?'Actualizado':r.pct<=70?'Moderado':'Desactualizado';
+    const qd=hasLoans?getQuadrant(r):null;
     return[code,r.dewey,`"${r.materia}"`,r.n,r.yMin||'',r.yMax||'',r.med||'',r.corte,
-           r.pct!==null?r.pct.toFixed(1):'',e,
-           r.halfLife!==null?r.halfLife:'',r.iObs!==null?r.iObs.toFixed(1):'',r.hlRef];
+           r.pct!==null?r.pct.toFixed(1):'',e,r.hl!==null?r.hl:'',r.iObs!==null?r.iObs.toFixed(1):'',
+           ...(hasLoans?[r.totalLoans,r.itemsBorrowed,r.circRate!==null?r.circRate.toFixed(2):'',
+             r.pctBorrowed!==null?r.pctBorrowed.toFixed(1):'',qd?qd.label.replace(/[🔴🟢🟡🔵]/g,'').trim():'']:[] )];
   });
   const csv=[h,...rows].map(r=>r.join(',')).join('\n');
   const a=document.createElement('a');
@@ -787,54 +1173,50 @@ function dlCSV(code,data){
 document.getElementById('dl-all-excel').addEventListener('click',()=>{
   const title=document.getElementById('report-title').value.trim()||'Colecciones';
   const wb=XLSX.utils.book_new();
-  const sh=['Carrera','Ejemplares','Clases Dewey','Mediana','% ant. corte','Estado mat.',
-            'Semivida global (años)','I. Obsolescencia global','Desactualizadas','Moderadas','Actualizadas'];
+  const sh=['Carrera','Ejemplares','Clases Dewey','Mediana','% ant. corte','Semivida (años)',
+            ...(hasLoans?['Préstamos totales','Ítems nunca prestados','Adquisición urgente (Q1)',
+              'Mantener (Q2)','Evaluar descarte (Q3)','Revisar pertinencia (Q4)']:[] )];
   const sr=Object.entries(allResults).map(([code,data])=>{
     const av=data.flatMap(r=>r.valid).sort((a,b)=>a-b);
     const med=av.length?av[Math.floor(av.length/2)]:'';
     const tv=data.reduce((a,r)=>a+r.valid.length,0);
     const ta=data.reduce((a,r)=>a+r.valid.filter(y=>y<r.corte).length,0);
     const pct=tv?+(ta/tv).toFixed(4):'';
-    const gHL=globalHalfLife(data);
-    const gObs=globalIObs(data);
-    const nD=data.filter(r=>r.pct!==null&&r.pct>70).length;
-    const nM=data.filter(r=>r.pct!==null&&r.pct>30&&r.pct<=70).length;
-    const nA=data.filter(r=>r.pct!==null&&r.pct<=30).length;
-    const totM=nD+nM+nA;
-    const est=nD>nM&&nD>nA?'Desactualizada':nM>=nA&&nM>=nD?'Moderada':'Actualizada';
-    return[code,data.reduce((a,b)=>a+b.n,0),data.length,med,pct,est,
-           gHL!==null?gHL:'',gObs!==null?+(gObs/100).toFixed(4):'',nD,nM,nA];
+    const gHL=calcHalfLife(av);
+    const base=[code,data.reduce((a,b)=>a+b.n,0),data.length,med,pct,gHL!==null?gHL:''];
+    if(hasLoans){
+      const totL=data.reduce((a,r)=>a+r.totalLoans,0);
+      const neverB=data.reduce((a,r)=>a+(r.n-r.itemsBorrowed),0);
+      return[...base,totL,neverB,
+        data.filter(r=>getQuadrant(r)?.q===1).length,data.filter(r=>getQuadrant(r)?.q===2).length,
+        data.filter(r=>getQuadrant(r)?.q===3).length,data.filter(r=>getQuadrant(r)?.q===4).length];
+    }
+    return base;
   });
   const wsS=XLSX.utils.aoa_to_sheet([[`Resumen — ${title}`],[`${new Date().toLocaleString('es-CL')}`],[],sh,...sr]);
-  wsS['!cols']=[{wch:12},{wch:11},{wch:12},{wch:10},{wch:13},{wch:14},{wch:18},{wch:22},{wch:14},{wch:12},{wch:12}];
-  for(let i=4;i<4+sr.length;i++){
-    let c=XLSX.utils.encode_cell({r:i,c:4});if(wsS[c]&&typeof wsS[c].v==='number')wsS[c].z='0.0%';
-    c=XLSX.utils.encode_cell({r:i,c:7});if(wsS[c]&&typeof wsS[c].v==='number')wsS[c].z='0.0%';
-  }
+  wsS['!cols']=[{wch:12},{wch:11},{wch:12},{wch:10},{wch:13},{wch:13},...(hasLoans?[{wch:14},{wch:18},{wch:20},{wch:14},{wch:18},{wch:20}]:[])];
+  for(let i=4;i<4+sr.length;i++){const c=XLSX.utils.encode_cell({r:i,c:4});if(wsS[c]&&typeof wsS[c].v==='number')wsS[c].z='0.0%'}
   XLSX.utils.book_append_sheet(wb,wsS,'Resumen General');
   for(const [code,data] of Object.entries(allResults)){
     const{ws1,ws2}=buildSheets(code,data);
-    XLSX.utils.book_append_sheet(wb,ws1,code.substring(0,27)+'-Mat');
-    XLSX.utils.book_append_sheet(wb,ws2,code.substring(0,27)+'-Dec');
+    XLSX.utils.book_append_sheet(wb,ws1,code.substring(0,25)+'-Mat');
+    XLSX.utils.book_append_sheet(wb,ws2,code.substring(0,25)+'-Dec');
   }
-  const hC=['Rango Dewey','Descripción','Año de corte','Semivida ref. (años)','Fundamento'];
-  const rC=cutoffRules.map(r=>[r.label,r.desc,r.year,getHLRef(String(r.from).padStart(3,'0')),r.why]);
-  const wsC=XLSX.utils.aoa_to_sheet([['Criterios aplicados'],[],hC,...rC]);
-  wsC['!cols']=[{wch:12},{wch:36},{wch:12},{wch:18},{wch:55}];
-  XLSX.utils.book_append_sheet(wb,wsC,'Criterios');
-  XLSX.writeFile(wb,`Analisis_${title.replace(/\s+/g,'_')}_${CURRENT_YEAR}.xlsx`);
+  XLSX.writeFile(wb,`Analisis_${title.replace(/\s+/g,'_')}_${CY}.xlsx`);
 });
 
 document.getElementById('dl-all-csv').addEventListener('click',()=>{
-  const h=['Carrera','Dewey','Materia','N','Anio_min','Anio_max','Mediana','Corte',
-           'Pct_ant_corte','Estado','Semivida_anios','I_Obsolescencia','HL_ref_disciplinar'];
+  const h=['Carrera','Dewey','Materia','N','Anio_min','Anio_max','Mediana','Corte','Pct_ant_corte','Estado',
+           'Semivida_anios','I_Obsolescencia',...(hasLoans?['Prestamos','Items_prestados','Tasa_circ','Pct_prestados','Decision']:[])];
   const rows=[];
   for(const [code,data] of Object.entries(allResults)){
     for(const r of data){
       const e=r.pct===null?'Sin dato':r.pct<=30?'Actualizado':r.pct<=70?'Moderado':'Desactualizado';
+      const qd=hasLoans?getQuadrant(r):null;
       rows.push([code,r.dewey,`"${r.materia}"`,r.n,r.yMin||'',r.yMax||'',r.med||'',r.corte,
-                 r.pct!==null?r.pct.toFixed(1):'',e,
-                 r.halfLife!==null?r.halfLife:'',r.iObs!==null?r.iObs.toFixed(1):'',r.hlRef]);
+                 r.pct!==null?r.pct.toFixed(1):'',e,r.hl!==null?r.hl:'',r.iObs!==null?r.iObs.toFixed(1):'',
+                 ...(hasLoans?[r.totalLoans,r.itemsBorrowed,r.circRate!==null?r.circRate.toFixed(2):'',
+                   r.pctBorrowed!==null?r.pctBorrowed.toFixed(1):'',qd?qd.label.replace(/[🔴🟢🟡🔵]/g,'').trim():'']:[] )]);
     }
   }
   const csv=[h,...rows].map(r=>r.join(',')).join('\n');
