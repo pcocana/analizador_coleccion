@@ -281,9 +281,11 @@ footer{background:var(--paper2);border-top:1.5px solid var(--rule);padding:10px 
     <div class="slabel">Mapeo — Préstamos</div>
     <div class="map-grid-2">
       <div class="map-field"><label>Signatura / Topográfico *</label><select id="map-lsig"></select></div>
-      <div class="map-field"><label>N° de préstamos (opcional)</label><select id="map-lcount"></select></div>
+      <div class="map-field"><label>Carrera / Unidad académica *</label><select id="map-lunit"></select></div>
     </div>
-    <p style="font-size:11px;color:var(--ink3);margin-top:8px">Si cada fila es una transacción, deje "N° préstamos" sin asignar — se contarán las filas por signatura automáticamente.</p>
+    <p style="font-size:11px;color:var(--ink3);margin-top:8px">
+      Cada fila del archivo de préstamos equivale a 1 uso (préstamo o renovación). La columna <strong>Carrera / Unidad</strong> filtra los registros para que solo se cuenten los movimientos de la carrera que se está analizando.
+    </p>
   </div>
 </div>
 
@@ -505,33 +507,53 @@ setupDrop('dz-loans','fi-loans','hint-loans',(file,hintId,dzId)=>{
   });
 });
 
-let loansMapBySig={};  // signatura → total loans
+let loansMapBySig={};    // signatura → total loans (all units combined)
+let loansRawJson=[];     // full loans data for per-unit filtering
 
 function buildLoansMap(json){
+  loansRawJson=json;
   const re=/^(\d{3})/;
   function rebuild(){
-    const sc=document.getElementById('map-lsig').value;
-    const cc=document.getElementById('map-lcount').value;
     loansMap={};loansMapBySig={};
-    for(const r of json){
-      const sig=String(r[sc]||'').trim();if(!sig)continue;
-      const m=re.exec(sig);if(!m)continue;
-      const code=m[1];
-      const cnt=cc&&r[cc]?parseFloat(r[cc])||1:1;
-      // By Dewey class
-      if(!loansMap[code])loansMap[code]={transactions:0,uniqueSigs:new Set()};
-      loansMap[code].transactions+=cnt;
-      loansMap[code].uniqueSigs.add(sig);
-      // By individual signatura
-      loansMapBySig[sig]=(loansMapBySig[sig]||0)+cnt;
-    }
-    for(const k of Object.keys(loansMap))
-      loansMap[k].uniqueItems=loansMap[k].uniqueSigs.size;
-    hasLoans=Object.keys(loansMap).length>0;
+    // Maps are now built on-demand per unit in buildLoansMapForUnit()
+    hasLoans=json.length>0;
   }
   rebuild();
-  document.getElementById('map-lsig').addEventListener('change',rebuild);
-  document.getElementById('map-lcount').addEventListener('change',rebuild);
+  ['map-lsig','map-lunit'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.addEventListener('change',rebuild);
+  });
+}
+
+// Build loansMap filtered to a specific unit code (or all if unitCode is null)
+// Each row = 1 transaction (loans + renewals both count as 1 use unit)
+function buildLoansMapForUnit(unitCode){
+  const re=/^(\d{3})/;
+  const sc=document.getElementById('map-lsig').value;
+  const uc=document.getElementById('map-lunit').value;
+  const map={};   // dewey → {transactions, uniqueSigs: Set}
+  const sigMap={}; // signatura → total transactions
+
+  for(const r of loansRawJson){
+    // Filter by unit/career if column is mapped
+    if(uc&&unitCode){
+      const rowUnit=String(r[uc]||'').trim();
+      if(rowUnit!==unitCode)continue;
+    }
+    const sig=String(r[sc]||'').trim();if(!sig)continue;
+    const m=re.exec(sig);if(!m)continue;
+    const code=m[1];
+
+    if(!map[code])map[code]={transactions:0,uniqueSigs:new Set()};
+    map[code].transactions++;          // each row = 1 use (loan or renewal)
+    map[code].uniqueSigs.add(sig);
+    sigMap[sig]=(sigMap[sig]||0)+1;
+  }
+
+  for(const k of Object.keys(map))
+    map[k].uniqueItems=map[k].uniqueSigs.size;
+
+  return{map,sigMap};
 }
 
 function populateColMaps(){
@@ -553,12 +575,16 @@ function populateColMaps(){
 function populateLoansMaps(cols){
   const none='<option value="">— no usar —</option>';
   const opts=cols.map(c=>`<option value="${c}">${c}</option>`).join('');
-  ['map-lsig','map-lcount'].forEach(id=>document.getElementById(id).innerHTML=none+opts);
+  ['map-lsig','map-lunit'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.innerHTML=none+opts;
+  });
   const norm=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-  const sigMatch=cols.find(c=>['signatura','topografico','cota','sig','callnumber','barcode'].some(k=>norm(c).includes(k)));
+  const sigMatch=cols.find(c=>['signatura','topografico','cota','callnumber'].some(k=>norm(c).includes(k)));
   if(sigMatch)document.getElementById('map-lsig').value=sigMatch;
-  const cntMatch=cols.find(c=>['prestamo','prestamos','loan','loans','count','cantidad','total','circulacion'].some(k=>norm(c).includes(k)));
-  if(cntMatch)document.getElementById('map-lcount').value=cntMatch;
+  const unitMatch=cols.find(c=>['unidad_academica','unidad academica','carrera','programa','escuela','unit'].some(k=>norm(c).includes(k)));
+  const lunitEl=document.getElementById('map-lunit');
+  if(unitMatch&&lunitEl)lunitEl.value=unitMatch;
 }
 
 function buildChips(){
@@ -592,9 +618,11 @@ function updateSelInfo(){
 // ── Analysis ──────────────────────────────────────────────────────────────────
 document.getElementById('analyze-btn').addEventListener('click',runAnalysis);
 
-function analyzeRows(rows){
+function analyzeRows(rows, unitCode=null){
   const topoCol=document.getElementById('map-topo').value;
   const yearCol=document.getElementById('map-year').value;
+  // Build per-unit loan maps (filtered + deduplicated)
+  const {map:_unitLoansMap, sigMap:_unitSigMap}=hasLoans?buildLoansMapForUnit(unitCode):{map:{},sigMap:{}};
   const re=/^(\d{3})/,groups={};
   // Build per-signatura loan lookup (exact match)
   for(const row of rows){
@@ -626,7 +654,7 @@ function analyzeRows(rows){
   }
   // Attach loans to titles
   const titleList=Object.values(titleGroups).map(t=>{
-    const loans=hasLoans?(loansMapBySig[t.sig]||0):null;
+    const loans=hasLoans?(_unitSigMap&&_unitSigMap[t.sig]!==undefined?_unitSigMap[t.sig]:0):null;
     const corte=t.dewey?getCutoff(t.dewey):getCutoff('000');
     const isOld=t.year!==null&&t.year<corte;
     const lpc=t.copies>0&&loans!==null?loans/t.copies:null; // loans per copy
@@ -657,9 +685,9 @@ function analyzeRows(rows){
     const hlRef=getHLRef(code);
     const dc={};for(const d of DECADAS)dc[d]=valid.filter(y=>y>=d&&y<d+10).length;
     let totalLoans=0,uniqueItemsLoaned=0;
-    if(hasLoans&&loansMap[code]){
-      totalLoans=loansMap[code].transactions;
-      uniqueItemsLoaned=loansMap[code].uniqueItems;
+    if(hasLoans&&_unitLoansMap&&_unitLoansMap[code]){
+      totalLoans=_unitLoansMap[code].transactions;
+      uniqueItemsLoaned=_unitLoansMap[code].uniqueItems;
     }
     const circRate=hasLoans?(n>0?totalLoans/n:0):null;
     const uniqueSigsInCol=new Set(sigs).size;
@@ -678,11 +706,11 @@ function runAnalysis(){
   const uc=document.getElementById('map-unit').value;
   allResults={};
   if(!uc||selCareers.size===0){
-    const resAll=analyzeRows(colData);resAll._titles=resAll._titles||[];allResults['Colección']=resAll;
+    const resAll=analyzeRows(colData,null);resAll._titles=resAll._titles||[];allResults['Colección']=resAll;
   } else {
     for(const code of selCareers){
       const sub=colData.filter(r=>String(r[uc]||'').trim()===code);
-      const res=analyzeRows(sub);res._titles=res._titles||[];allResults[code]=res;
+      const res=analyzeRows(sub,code);res._titles=res._titles||[];allResults[code]=res;
     }
   }
   // Global circ threshold = median of circRates across all non-null rows
@@ -764,7 +792,7 @@ function panelHTML(code,data){
     const q4=data.filter(r=>getQuadrant(r)?.q===4);
 
     loanKPIs=`
-    <div class="kpi-card circ"><div class="kpi-lbl">Total préstamos</div><div class="kpi-val teal">${totalL.toLocaleString()}</div><div class="kpi-sub">en el período</div></div>
+    <div class="kpi-card circ"><div class="kpi-lbl">Total movimientos</div><div class="kpi-val teal">${totalL.toLocaleString()}</div><div class="kpi-sub">préstamos + renovaciones</div></div>
     <div class="kpi-card circ"><div class="kpi-lbl">Ítems nunca prestados</div><div class="kpi-val red">${neverB.toLocaleString()}</div><div class="kpi-sub">${pctNever} del total</div></div>`;
 
     // Matrix
