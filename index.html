@@ -271,41 +271,20 @@ footer{background:var(--paper2);border-top:1.5px solid var(--rule);padding:10px 
 <div class="map-panels">
   <div id="map-col" class="map-panel">
     <div class="slabel">Mapeo — Inventario</div>
-    <div class="map-grid" style="grid-template-columns:1fr 1fr 1fr 1fr">
+    <div class="map-grid">
       <div class="map-field"><label>Topográfico (Dewey) *</label><select id="map-topo"></select></div>
       <div class="map-field"><label>Año de publicación *</label><select id="map-year"></select></div>
       <div class="map-field"><label>Carrera / Unidad</label><select id="map-unit"></select></div>
-      <div class="map-field"><label>N° Inventario <span style="color:var(--teal);font-size:10px;font-weight:600">ID único</span></label><select id="map-inv"></select></div>
     </div>
   </div>
   <div id="map-loans" class="map-panel loans-panel">
     <div class="slabel">Mapeo — Préstamos</div>
-    <div class="map-grid-2" style="grid-template-columns:1fr 1fr 1fr 1fr">
+    <div class="map-grid-2">
       <div class="map-field"><label>Signatura / Topográfico *</label><select id="map-lsig"></select></div>
       <div class="map-field"><label>Carrera / Unidad académica *</label><select id="map-lunit"></select></div>
-      <div class="map-field"><label>N° Inventario <span style="color:var(--teal);font-size:10px;font-weight:600">ID único</span></label><select id="map-linv"></select></div>
-      <div class="map-field"><label>Fecha de préstamo <span style="color:var(--amber);font-size:10px;font-weight:600">para filtro</span></label><select id="map-ldate"></select></div>
     </div>
-
-    <!-- Filtro de rango de años -->
-    <div id="loan-year-filter" style="display:none;margin-top:12px;padding:12px 14px;background:var(--amber-bg);border:1.5px solid #e6c96a;border-radius:8px">
-      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-        <span style="font-size:12px;font-weight:600;color:var(--amber)">🗓 Filtrar préstamos por año:</span>
-        <label style="font-size:12px;color:var(--ink2)">Desde
-          <input type="number" id="loan-year-from" min="2000" max="2099" placeholder="2024"
-            style="width:72px;margin-left:5px;padding:4px 7px;border:1.5px solid #e6c96a;border-radius:5px;font-family:'DM Mono',monospace;font-size:12px;text-align:center;background:#fff">
-        </label>
-        <label style="font-size:12px;color:var(--ink2)">Hasta
-          <input type="number" id="loan-year-to" min="2000" max="2099" placeholder="2025"
-            style="width:72px;margin-left:5px;padding:4px 7px;border:1.5px solid #e6c96a;border-radius:5px;font-family:'DM Mono',monospace;font-size:12px;text-align:center;background:#fff">
-        </label>
-        <button onclick="clearLoanYearFilter()" style="padding:4px 10px;font-size:11px;border:1.5px solid #e6c96a;border-radius:5px;cursor:pointer;background:#fff;color:var(--amber);font-family:'DM Sans',sans-serif">✕ Limpiar</button>
-        <span id="loan-year-info" style="font-size:11px;color:var(--ink3)"></span>
-      </div>
-    </div>
-
     <p style="font-size:11px;color:var(--ink3);margin-top:8px">
-      Cada fila del archivo de préstamos equivale a 1 uso (préstamo o renovación). La columna <strong>Carrera / Unidad</strong> filtra los registros. Si se mapea <strong>N° Inventario</strong>, el cruce se realiza por ID exacto (máxima precisión); si no, se usa la signatura topográfica como respaldo. Si se mapea <strong>Fecha de préstamo</strong>, se puede filtrar por rango de años.
+      Cada fila del archivo de préstamos equivale a 1 uso (préstamo o renovación). La columna <strong>Carrera / Unidad</strong> filtra los registros para que solo se cuenten los movimientos de la carrera que se está analizando.
     </p>
   </div>
 </div>
@@ -345,158 +324,6 @@ footer{background:var(--paper2);border-top:1.5px solid var(--rule);padding:10px 
 
 <script>
 const CY=new Date().getFullYear();
-
-// ── Módulo: Filtro de rango de años de préstamos ──────────────────────────────
-
-function toggleLoanYearFilter(){
-  const dateCol=document.getElementById('map-ldate')?.value||'';
-  const panel=document.getElementById('loan-year-filter');
-  if(panel)panel.style.display=dateCol?'block':'none';
-  updateLoanYearInfo();
-}
-
-function clearLoanYearFilter(){
-  const f=document.getElementById('loan-year-from');
-  const t=document.getElementById('loan-year-to');
-  if(f)f.value='';if(t)t.value='';
-  updateLoanYearInfo();
-}
-
-function updateLoanYearInfo(){
-  const info=document.getElementById('loan-year-info');if(!info)return;
-  const from=parseInt(document.getElementById('loan-year-from')?.value||'');
-  const to=parseInt(document.getElementById('loan-year-to')?.value||'');
-  if(!isNaN(from)&&!isNaN(to))info.textContent=`→ filtrando ${from}–${to}`;
-  else if(!isNaN(from))info.textContent=`→ desde ${from}`;
-  else if(!isNaN(to))info.textContent=`→ hasta ${to}`;
-  else info.textContent='(sin filtro de año activo — se usarán todos los registros)';
-}
-['loan-year-from','loan-year-to'].forEach(id=>{
-  document.getElementById(id)?.addEventListener('input',()=>{
-    updateLoanYearInfo();
-    // Marcar que hay cambios pendientes si ya hay resultados
-    const btn=document.getElementById('analyze-btn');
-    if(btn&&document.getElementById('results-container')?.style.display!=='none'){
-      btn.textContent='⚡ Re-analizar con nuevo filtro';
-      btn.style.background='var(--amber)';
-      btn.style.color='#fff';
-      btn.style.fontWeight='700';
-    }
-  });
-});
-
-/**
- * Extrae el año de un valor de fecha (string, número serial Excel, o Date).
- * Soporta formatos: DD/MM/YYYY, YYYY-MM-DD, YYYY/MM/DD, número serial Excel, etc.
- * @returns {number|null}
- */
-function extractYearFromDate(val){
-  if(val===null||val===undefined||val==='')return null;
-  // Número serial Excel (entero > 10000 → fecha Excel)
-  if(typeof val==='number'&&val>10000&&val<100000){
-    // Excel serial → JS date: días desde 1900-01-01 (con corrección leap bug)
-    const d=new Date(Math.round((val-25569)*86400*1000));
-    const y=d.getUTCFullYear();
-    return y>1900&&y<2200?y:null;
-  }
-  const s=String(val).trim();
-  // YYYY-MM-DD o YYYY/MM/DD al inicio
-  let m=s.match(/^(\d{4})[-\/]/);if(m)return parseInt(m[1]);
-  // DD/MM/YYYY o DD-MM-YYYY
-  m=s.match(/\d{1,2}[-\/]\d{1,2}[-\/](\d{4})/);if(m)return parseInt(m[1]);
-  // Solo año de 4 dígitos
-  m=s.match(/^(\d{4})$/);if(m)return parseInt(m[1]);
-  // Fecha JS parseable
-  const d=new Date(s);if(!isNaN(d.getTime())){const y=d.getFullYear();return y>1900&&y<2200?y:null;}
-  return null;
-}
-
-/**
- * Devuelve los parámetros del filtro de año en un objeto.
- * Se llama UNA sola vez antes del loop para no leer el DOM miles de veces.
- */
-function getLoanYearFilterParams(){
-  const dateCol=document.getElementById('map-ldate')?.value||'';
-  if(!dateCol)return{active:false};
-  const fromVal=document.getElementById('loan-year-from')?.value||'';
-  const toVal=document.getElementById('loan-year-to')?.value||'';
-  const from=fromVal.trim()===''?null:parseInt(fromVal);
-  const to=toVal.trim()===''?null:parseInt(toVal);
-  // Si ambos son inválidos tras parsear → sin rango definido
-  if((from===null||isNaN(from))&&(to===null||isNaN(to)))return{active:false,dateCol};
-  return{
-    active:true,
-    dateCol,
-    from:(from!==null&&!isNaN(from))?from:null,
-    to:(to!==null&&!isNaN(to))?to:null,
-  };
-}
-
-/**
- * Indica si un préstamo pasa el filtro de año.
- * Recibe los parámetros pre-calculados para evitar lecturas DOM repetidas.
- */
-function loanPassesYearFilter(row, params){
-  // Si se llama sin params (compatibilidad), calcular en el momento
-  if(!params)params=getLoanYearFilterParams();
-  if(!params.active)return true;
-  const y=extractYearFromDate(row[params.dateCol]);
-  if(y===null)return false;  // sin fecha válida → excluir cuando hay filtro activo
-  if(params.from!==null&&y<params.from)return false;
-  if(params.to!==null&&y>params.to)return false;
-  return true;
-}
-
-// Prioridad 1: Coincidencia exacta por N° Inventario normalizado
-// Prioridad 2: Fallback → signatura topográfica (comportamiento original)
-
-/**
- * Normaliza un código de inventario para comparación robusta:
- * - Elimina espacios innecesarios (trim + colapso interno)
- * - Convierte a mayúsculas
- * - Elimina caracteres invisibles / control (errores OCR comunes)
- * - Colapsa guiones dobles y espacios alrededor de guiones
- * @param {string|number} val
- * @returns {string} ID normalizado o '' si vacío
- */
-function normalizeInv(val){
-  if(val===null||val===undefined)return'';
-  return String(val)
-    .replace(/[\u0000-\u001F\u007F-\u009F\u200B-\u200D\uFEFF]/g,'') // chars invisibles/control
-    .trim()
-    .toUpperCase()
-    .replace(/\s+/g,' ')            // espacios internos múltiples → uno
-    .replace(/\s*-\s*/g,'-')        // espacios alrededor de guiones
-    .replace(/-{2,}/g,'-');         // guiones dobles → uno
-}
-
-/**
- * Indica si el match por inventario está habilitado en ambos lados.
- * Retorna true sólo cuando hay columna mapeada en inventario Y en préstamos.
- */
-function invMatchEnabled(){
-  const colInv=document.getElementById('map-inv')?.value||'';
-  const loanInv=document.getElementById('map-linv')?.value||'';
-  return colInv!==''&&loanInv!=='';
-}
-
-/**
- * Construye un Set de IDs de inventario normalizados a partir de las filas del inventario.
- * Útil para deduplicación.
- * @param {Array} rows - filas del inventario ya filtradas por carrera
- * @returns {Map} normalizedInv → {original, rowIndex}
- */
-function buildInvIndex(rows){
-  const colInv=document.getElementById('map-inv')?.value||'';
-  const idx=new Map();
-  if(!colInv)return idx;
-  rows.forEach((r,i)=>{
-    const norm=normalizeInv(r[colInv]);
-    if(norm&&!idx.has(norm))idx.set(norm,{original:String(r[colInv]||'').trim(),rowIndex:i});
-  });
-  return idx;
-}
-
 
 // ── Dewey labels ──────────────────────────────────────────────────────────────
 const DEWEY={
@@ -700,95 +527,43 @@ function buildLoansMap(json){
 
 // Build loansMap filtered to a specific unit code (or all if unitCode is null)
 // Each row = 1 transaction (loans + renewals both count as 1 use unit)
-// ── MATCHING PRIORITY ────────────────────────────────────────────────────────
-// 1° Inventario normalizado (si map-linv Y map-inv están mapeados)
-// 2° Signatura topográfica  (comportamiento original — fallback)
 function buildLoansMapForUnit(unitCode){
   const re=/^(\d{3})/;
   const sc=document.getElementById('map-lsig').value;
   const uc=document.getElementById('map-lunit').value;
-  // Inventario columns (optional — both sides must be mapped to activate)
-  const colInv=document.getElementById('map-inv')?.value||'';
-  const loanInv=document.getElementById('map-linv')?.value||'';
-  const useInvMatch=invMatchEnabled();
-
-  // Build a normalized inventory index from the collection rows for this unit
-  // invNorm → Dewey class (first 3 digits extracted from topographic field)
-  let invToDewey=new Map();  // normalizedInv → dewey code
-  let invToSig=new Map();    // normalizedInv → signatura string
-  if(useInvMatch){
-    const topoCol=document.getElementById('map-topo').value;
-    const unitCol=document.getElementById('map-unit').value;
-    for(const r of colData){
-      // Filter by unit
-      if(unitCol&&unitCode&&String(r[unitCol]||'').trim()!==unitCode)continue;
-      const inv=normalizeInv(r[colInv]);if(!inv)continue;
-      const sig=String(r[topoCol]||'').trim();
-      const m=re.exec(sig);
-      if(m){invToDewey.set(inv,m[1]);invToSig.set(inv,sig);}
-    }
-  }
-
-  const map={};   // dewey → {transactions, uniqueSigs: Set, matchedByInv: number}
+  const map={};   // dewey → {transactions, uniqueSigs: Set}
   const sigMap={}; // signatura → total transactions
 
-  // Calcular parámetros del filtro UNA vez antes del loop
-  const _yearFilterParams=getLoanYearFilterParams();
-
   for(const r of loansRawJson){
-    // Filter by unit/career
+    // Filter by unit/career if column is mapped
     if(uc&&unitCode){
-      const rowUnit=String(r[uc]||'').trim();
+      const rowUnit=normalizeUnitCode(r[uc]);
       if(rowUnit!==unitCode)continue;
     }
+    const sig=String(r[sc]||'').trim();if(!sig)continue;
+    const m=re.exec(sig);if(!m)continue;
+    const code=m[1];
 
-    // ── Filtro de rango de años de préstamos ────────────────────────────────
-    if(!loanPassesYearFilter(r,_yearFilterParams))continue;
-
-    let sig='';
-    let code='';
-    let matchedByInv=false;
-
-    // ── Priority 1: Match by Inventario (ID único) ──────────────────────────
-    if(useInvMatch){
-      const invNorm=normalizeInv(r[loanInv]);
-      if(invNorm&&invToDewey.has(invNorm)){
-        code=invToDewey.get(invNorm);
-        sig=invToSig.get(invNorm)||invNorm;
-        matchedByInv=true;
-      }
-    }
-
-    // ── Priority 2: Fallback → signatura topográfica (original behavior) ────
-    if(!matchedByInv){
-      sig=String(r[sc]||'').trim();if(!sig)continue;
-      const m=re.exec(sig);if(!m)continue;
-      code=m[1];
-    }
-
-    if(!code)continue;
-    if(!map[code])map[code]={transactions:0,uniqueSigs:new Set(),invMatched:0};
-    map[code].transactions++;
+    if(!map[code])map[code]={transactions:0,uniqueSigs:new Set()};
+    map[code].transactions++;          // each row = 1 use (loan or renewal)
     map[code].uniqueSigs.add(sig);
-    if(matchedByInv)map[code].invMatched=(map[code].invMatched||0)+1;
     sigMap[sig]=(sigMap[sig]||0)+1;
   }
 
   for(const k of Object.keys(map))
     map[k].uniqueItems=map[k].uniqueSigs.size;
 
-  return{map,sigMap,invMatchUsed:useInvMatch};
+  return{map,sigMap};
 }
 
 function populateColMaps(){
   const none='<option value="">— no usar —</option>';
   const opts=colCols.map(c=>`<option value="${c}">${c}</option>`).join('');
-  ['map-topo','map-year','map-unit','map-inv'].forEach(id=>document.getElementById(id).innerHTML=none+opts);
+  ['map-topo','map-year','map-unit'].forEach(id=>document.getElementById(id).innerHTML=none+opts);
   const norm=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-  const auto={'map-topo':['topografico','signatura','dewey','clasificacion','cota'],
+  const auto={'map-topo':['topografico','signatura','dewey','clasificacion','cota','n clasificacion','nº clasificacion'],
     'map-year':['ano de publicacion','ano publicacion','ano','year','pub_year','fecha'],
-    'map-unit':['unidad_academica','unidad academica','carrera','programa','escuela','unit'],
-    'map-inv':['inventario','n inventario','num inventario','numero inventario','n_inventario','inv','id_ejemplar','ejemplar_id','barcode','codigo_barras','item_id']};
+    'map-unit':['unidad_academica','unidad academica','carrera','programa','escuela','unit']};
   for(const [id,cands] of Object.entries(auto)){
     const el=document.getElementById(id);
     const match=colCols.find(c=>cands.some(k=>norm(c).includes(k)));
@@ -800,27 +575,32 @@ function populateColMaps(){
 function populateLoansMaps(cols){
   const none='<option value="">— no usar —</option>';
   const opts=cols.map(c=>`<option value="${c}">${c}</option>`).join('');
-  ['map-lsig','map-lunit','map-linv','map-ldate'].forEach(id=>{
+  ['map-lsig','map-lunit'].forEach(id=>{
     const el=document.getElementById(id);
     if(el)el.innerHTML=none+opts;
   });
   const norm=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-  const sigMatch=cols.find(c=>['signatura','topografico','cota','callnumber'].some(k=>norm(c).includes(k)));
+  const sigMatch=cols.find(c=>['signatura','topografico','cota','callnumber','clasificacion','clasificacion','n clasificacion','nº clasificacion'].some(k=>norm(c).includes(k)));
   if(sigMatch)document.getElementById('map-lsig').value=sigMatch;
   const unitMatch=cols.find(c=>['unidad_academica','unidad academica','carrera','programa','escuela','unit'].some(k=>norm(c).includes(k)));
   const lunitEl=document.getElementById('map-lunit');
   if(unitMatch&&lunitEl)lunitEl.value=unitMatch;
-  // Auto-detect inventario en préstamos
-  const invMatch=cols.find(c=>['inventario','n inventario','num inventario','numero inventario','n_inventario','inv','id_ejemplar','ejemplar_id','barcode','codigo_barras','item_id'].some(k=>norm(c).includes(k)));
-  const linvEl=document.getElementById('map-linv');
-  if(invMatch&&linvEl)linvEl.value=invMatch;
-  // Auto-detect fecha de préstamo
-  const dateMatch=cols.find(c=>['fecha_prestamo','fecha prestamo','fecha_devolucion','fecha','date','checkout','loan_date','prestamo_fecha','f_prestamo'].some(k=>norm(c).includes(k)));
-  const ldateEl=document.getElementById('map-ldate');
-  if(dateMatch&&ldateEl)ldateEl.value=dateMatch;
-  // Mostrar/ocultar filtro de rango al cambiar fecha
-  if(ldateEl)ldateEl.addEventListener('change',toggleLoanYearFilter);
-  toggleLoanYearFilter();
+}
+
+/**
+ * Normaliza el código de unidad académica a su forma corta (ej: "EIE").
+ * Corrige el error tipográfico 'Ell' -> 'EII' (Ingeniería Industrial).
+ * Soporta el formato largo del catálogo "EIE - Colección Escuela de Ingeniería Eléctrica"
+ * y el formato corto de préstamos "EIE".
+ */
+function normalizeUnitCode(val){
+  if(!val)return'';
+  const s=String(val).trim();
+  // Extraer el primer token (antes del primer espacio)
+  const code=s.split(' ')[0].trim();
+  // Corregir error tipográfico: 'Ell' (ele minúscula) → 'EII' (i mayúscula)
+  if(code==='Ell')return'EII';
+  return code;
 }
 
 function buildChips(){
@@ -829,7 +609,7 @@ function buildChips(){
   grid.innerHTML='';selCareers.clear();
   if(!unitCol){document.getElementById('sel-info').textContent='(sin columna de carrera)';return}
   const counts={};
-  for(const r of colData){const u=String(r[unitCol]||'').trim();if(u)counts[u]=(counts[u]||0)+1}
+  for(const r of colData){const u=normalizeUnitCode(r[unitCol]);if(u)counts[u]=(counts[u]||0)+1}
   Object.entries(counts).sort((a,b)=>b[1]-a[1]).forEach(([code,n])=>{
     const ch=document.createElement('div');ch.className='career-chip';ch.dataset.code=code;
     ch.innerHTML=`<span>${code}</span><span class="chip-n">${n.toLocaleString()}</span>`;
@@ -847,7 +627,7 @@ function clearAll(){document.querySelectorAll('.career-chip').forEach(ch=>ch.cla
 function updateSelInfo(){
   const n=selCareers.size;
   const uc=document.getElementById('map-unit').value;
-  const tot=uc?colData.filter(r=>selCareers.has(String(r[uc]||'').trim())).length:0;
+  const tot=uc?colData.filter(r=>selCareers.has(normalizeUnitCode(r[uc]))).length:0;
   document.getElementById('sel-info').textContent=n===0?'Sin selección':`${n} carrera${n>1?'s':''} · ${tot.toLocaleString()} ejemplares`;
 }
 
@@ -857,28 +637,10 @@ document.getElementById('analyze-btn').addEventListener('click',runAnalysis);
 function analyzeRows(rows, unitCode=null){
   const topoCol=document.getElementById('map-topo').value;
   const yearCol=document.getElementById('map-year').value;
-  const colInv=document.getElementById('map-inv')?.value||'';
-  // Build per-unit loan maps (filtered + matched by Inventario first, then signatura)
-  const {map:_unitLoansMap, sigMap:_unitSigMap, invMatchUsed}=hasLoans?buildLoansMapForUnit(unitCode):{map:{},sigMap:{},invMatchUsed:false};
+  // Build per-unit loan maps (filtered + deduplicated)
+  const {map:_unitLoansMap, sigMap:_unitSigMap}=hasLoans?buildLoansMapForUnit(unitCode):{map:{},sigMap:{}};
   const re=/^(\d{3})/,groups={};
-
   // Build per-signatura loan lookup (exact match)
-  // When inventario match is enabled, build a parallel invNorm→loans map
-  // so title-level lookup can also benefit from ID matching
-  let invSigMap={};  // normalizedInv → loans count (per-title precision)
-  if(hasLoans&&invMatchUsed&&colInv){
-    const loanInvCol=document.getElementById('map-linv')?.value||'';
-    const ucCol=document.getElementById('map-lunit').value;
-    const _yf=getLoanYearFilterParams();
-    // Build inv→loans from loansRawJson filtered by unit
-    for(const r of loansRawJson){
-      if(ucCol&&unitCode&&String(r[ucCol]||'').trim()!==unitCode)continue;
-      if(!loanPassesYearFilter(r,_yf))continue;
-      const inv=normalizeInv(r[loanInvCol]);
-      if(inv)invSigMap[inv]=(invSigMap[inv]||0)+1;
-    }
-  }
-
   for(const row of rows){
     const m=re.exec(String(row[topoCol]||'').trim());if(!m)continue;
     const code=m[1];
@@ -888,70 +650,37 @@ function analyzeRows(rows, unitCode=null){
     groups[code].years.push(isNaN(yr)?null:yr);
     groups[code].sigs.push(sig);
   }
-
-  // Build title-level data
-  // AGRUPACIÓN: siempre por signatura topográfica normalizada (= 1 entrada por título/edición)
-  // PRÉSTAMOS:  se suman todos los préstamos de los ejemplares del grupo
-  //             usando Inventario como ID exacto cuando está disponible
+  // Build title-level data (group by signatura)
   const titleGroups={};
   for(const row of rows){
-    const sig=String(row[topoCol]||'').trim();if(!sig)continue;
-    const yr=parseFloat(String(row[yearCol]).replace(/\D/g,''));
-    const invNorm=colInv?normalizeInv(row[colInv]):'';
-
-    // La clave de agrupación es SIEMPRE la signatura (agrupa ejemplares del mismo título)
-    const groupKey=sig;
-
-    if(!titleGroups[groupKey]){
-      titleGroups[groupKey]={
-        sig,
-        titulo:String(row['Titulo']||row['título']||row['Título']||row['TITULO']||'—').trim(),
-        autor:String(row['Autor']||row['autor']||row['AUTOR']||'—').trim(),
-        year:isNaN(yr)?null:yr,
-        copies:0,
-        dewey:null,
-        // Lista de IDs de inventario de los ejemplares de este título
-        invNorms:new Set(),
-      };
-    }
-    titleGroups[groupKey].copies++;
-    if(invNorm) titleGroups[groupKey].invNorms.add(invNorm);
-    if(!titleGroups[groupKey].dewey){const m=/^(\d{3})/.exec(sig);if(m)titleGroups[groupKey].dewey=m[1]}
+    const topoCol2=document.getElementById('map-topo').value;
+    const yearCol2=document.getElementById('map-year').value;
+    const sig=String(row[topoCol2]||'').trim();if(!sig)continue;
+    const yr=parseFloat(String(row[yearCol2]).replace(/\D/g,''));
+    if(!titleGroups[sig])titleGroups[sig]={
+      sig,
+      titulo:String(row['Titulo']||row['título']||row['Título']||row['TITULO']||'—').trim(),
+      autor:String(row['Autor']||row['autor']||row['AUTOR']||'—').trim(),
+      year:isNaN(yr)?null:yr,
+      copies:0,
+      dewey:null,
+    };
+    titleGroups[sig].copies++;
+    if(!titleGroups[sig].dewey){const m=/^(\d{3})/.exec(sig);if(m)titleGroups[sig].dewey=m[1]}
   }
-
   // Attach loans to titles
-  // Si hay match por Inventario: sumar préstamos de TODOS los ejemplares del grupo
-  // Fallback: préstamos por signatura (comportamiento original)
   const titleList=Object.values(titleGroups).map(t=>{
-    let loans=null;
-    if(hasLoans){
-      if(invMatchUsed&&t.invNorms.size>0){
-        // Sumar préstamos de cada ejemplar identificado por su Inventario
-        let total=0;
-        for(const inv of t.invNorms){
-          total+=(invSigMap[inv]||0);
-        }
-        // Si ningún ejemplar tuvo préstamos registrados, verificar también por signatura como respaldo
-        if(total===0&&_unitSigMap&&_unitSigMap[t.sig]!==undefined){
-          total=_unitSigMap[t.sig];
-        }
-        loans=total;
-      } else if(_unitSigMap&&_unitSigMap[t.sig]!==undefined){
-        loans=_unitSigMap[t.sig];    // fallback: signatura (comportamiento original)
-      } else {
-        loans=0;
-      }
-    }
+    const loans=hasLoans?(_unitSigMap&&_unitSigMap[t.sig]!==undefined?_unitSigMap[t.sig]:0):null;
     const corte=t.dewey?getCutoff(t.dewey):getCutoff('000');
     const isOld=t.year!==null&&t.year<corte;
-    const lpc=t.copies>0&&loans!==null?loans/t.copies:null;
-    // Recommendation logic (unchanged)
+    const lpc=t.copies>0&&loans!==null?loans/t.copies:null; // loans per copy
+    // Recommendation logic
     let rec='',pri=4,recColor='';
     if(loans===null){rec='Sin datos circulación';pri=5;recColor='#aaa'}
     else if(loans===0&&isOld){rec='Candidato a descarte';pri=3;recColor='#8b1a1a'}
     else if(loans===0&&!isOld){rec='Revisar pertinencia';pri=4;recColor='#1565c0'}
     else if(loans>0&&isOld&&lpc>=3){rec='Comprar más ejemplares + edición actualizada';pri=1;recColor='#8b1a1a'}
-    else if(loans>0&&isOld&&lpc<3){rec='Buscar edición actualizada';pri=2;recColor='#bf360c'}
+    else if(loans>0&&isOld&&lpc<3){rec='Buscar edición actualizada';pri=2;recColor:'#bf360c';recColor='#bf360c'}
     else if(loans>0&&!isOld&&lpc>=3){rec='Comprar más ejemplares';pri=2;recColor='#8a5e00'}
     else{rec='Mantener';pri=4;recColor='#1e6b3a'}
     return{...t,loans,lpc,corte,isOld,rec,pri,recColor};
@@ -996,7 +725,7 @@ function runAnalysis(){
     const resAll=analyzeRows(colData,null);resAll._titles=resAll._titles||[];allResults['Colección']=resAll;
   } else {
     for(const code of selCareers){
-      const sub=colData.filter(r=>String(r[uc]||'').trim()===code);
+      const sub=colData.filter(r=>normalizeUnitCode(r[uc])===code);
       const res=analyzeRows(sub,code);res._titles=res._titles||[];allResults[code]=res;
     }
   }
@@ -1012,9 +741,6 @@ function runAnalysis(){
   document.getElementById('results-container').scrollIntoView({behavior:'smooth',block:'start'});
   hideAlert();
   document.getElementById('fts').textContent='Análisis: '+new Date().toLocaleString('es-CL');
-  // Restablecer botón
-  const btn=document.getElementById('analyze-btn');
-  if(btn){btn.innerHTML='<span>⚡</span> Analizar colección';btn.style.background='';btn.style.color='';btn.style.fontWeight='';}
 }
 
 // ── Quadrant logic ────────────────────────────────────────────────────────────
@@ -1124,31 +850,7 @@ function panelHTML(code,data){
     </div>`;
   }
 
-  // Rango de años activo
-  const loanFrom=parseInt(document.getElementById('loan-year-from')?.value||'');
-  const loanTo=parseInt(document.getElementById('loan-year-to')?.value||'');
-  const loanDateCol=document.getElementById('map-ldate')?.value||'';
-  const hasYearFilter=loanDateCol&&(!isNaN(loanFrom)||!isNaN(loanTo));
-  const yearRangeLabel=hasYearFilter
-    ?(!isNaN(loanFrom)&&!isNaN(loanTo)?`${loanFrom}–${loanTo}`:!isNaN(loanFrom)?`desde ${loanFrom}`:`hasta ${loanTo}`)
-    :'';
-
-  // Match mode indicator
-  const matchModeHTML=hasLoans?`
-  <div style="display:flex;align-items:center;gap:7px;padding:7px 12px;border-radius:7px;background:${invMatchEnabled()?'var(--teal-bg)':'var(--paper2)'};border:1px solid ${invMatchEnabled()?'#a5d4d4':'var(--rule)'};margin-bottom:${hasYearFilter?'6px':'12px'};font-size:12px">
-    <span style="font-size:15px">${invMatchEnabled()?'🎯':'🔗'}</span>
-    <span style="font-weight:600;color:${invMatchEnabled()?'var(--teal)':'var(--ink2)'}">${invMatchEnabled()?'Cruce por N° Inventario activo':'Cruce por signatura topográfica'}</span>
-    <span style="color:var(--ink3)">${invMatchEnabled()?'— precisión máxima: cada ejemplar identificado por ID único':'— modo estándar (active N° Inventario en mapeo para mayor precisión)'}</span>
-  </div>
-  ${hasYearFilter?`<div style="display:flex;align-items:center;gap:7px;padding:7px 12px;border-radius:7px;background:var(--amber-bg);border:1px solid #e6c96a;margin-bottom:12px;font-size:12px">
-    <span style="font-size:15px">🗓</span>
-    <span style="font-weight:600;color:var(--amber)">Préstamos filtrados por año: ${yearRangeLabel}</span>
-    <span style="color:var(--ink3)">— solo se contabilizan transacciones dentro del rango seleccionado</span>
-  </div>`:''}
-  `:'';
-
   return`
-  ${matchModeHTML}
   <div class="kpi-row">
     <div class="kpi-card"><div class="kpi-lbl">Ejemplares</div><div class="kpi-val">${tot.toLocaleString()}</div><div class="kpi-sub">${code}</div></div>
     <div class="kpi-card"><div class="kpi-lbl">Clases Dewey</div><div class="kpi-val">${data.length}</div><div class="kpi-sub">áreas temáticas</div></div>
