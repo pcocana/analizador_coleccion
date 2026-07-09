@@ -102,7 +102,7 @@ main{flex:1;max-width:1300px;margin:0 auto;padding:26px 40px 60px;width:100%}
 .tab-panel{display:none}.tab-panel.active{display:block}
 
 /* KPIs */
-.kpi-row{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin-bottom:18px}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:10px;margin-bottom:18px}
 .kpi-card{background:#fff;border:1.5px solid var(--rule);border-radius:9px;padding:12px 13px;position:relative;overflow:hidden}
 .kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent2)}
 .kpi-card.hl::before{background:var(--purple)}
@@ -198,53 +198,6 @@ td.td-hl{background:#faf5ff}
 .title-filter-row select:focus,.title-filter-row input:focus{outline:none;border-color:var(--accent)}
 footer{background:var(--paper2);border-top:1.5px solid var(--rule);padding:10px 40px;font-size:11px;color:var(--ink3);display:flex;justify-content:space-between}
 @media(max-width:900px){main{padding:14px 12px 36px}.cfg-row,.kpi-row,.map-panels,.drop-row{grid-template-columns:1fr}.matrix{grid-template-columns:1fr}}
-
-/* ── Trends Module ────────────────────────────────────────────────── */
-.trends-section{margin-top:26px;border-top:3px solid var(--accent);padding-top:22px}
-.trends-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:12px}
-.trends-header h2{font-family:'Playfair Display',serif;font-size:18px;color:var(--accent)}
-.trends-header p{font-size:12px;color:var(--ink3);margin-top:2px}
-.trends-nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
-.tnav-btn{padding:7px 16px;font-size:12px;font-weight:500;border:1.5px solid var(--rule);border-radius:20px;cursor:pointer;background:#fff;color:var(--ink2);font-family:'DM Sans',sans-serif;transition:all .15s}
-.tnav-btn:hover{border-color:var(--accent);color:var(--accent)}
-.tnav-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
-.trends-panel{display:none}.trends-panel.active{display:block}
-.t-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
-.t-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:16px}
-.t-card{background:#fff;border:1.5px solid var(--rule);border-radius:10px;padding:16px 18px}
-.t-card h4{font-family:'Playfair Display',serif;font-size:13px;margin-bottom:10px;color:var(--ink)}
-.t-card p{font-size:12px;color:var(--ink3);margin-bottom:8px}
-.chart-area{width:100%;overflow-x:auto}
-.bar-chart{display:flex;align-items:flex-end;gap:4px;height:140px;padding-top:8px}
-.bc-bar{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:2px;flex:1;min-width:28px;height:100%}
-.bc-bar .bv{font-family:'DM Mono',monospace;font-size:9px;color:var(--ink3);text-align:center;flex-shrink:0}
-.bc-bar .br{width:100%;border-radius:3px 3px 0 0;transition:opacity .2s;cursor:pointer;flex-shrink:0}
-.bc-bar .br:hover{opacity:.75}
-.bc-bar .bl{font-family:'DM Mono',monospace;font-size:9px;color:var(--ink3);text-align:center;white-space:nowrap;flex-shrink:0}
-.line-chart{position:relative;width:100%;height:140px}
-.line-chart svg{width:100%;height:100%}
-.alert-card{border-radius:8px;padding:10px 14px;margin-bottom:8px;font-size:12px;display:flex;align-items:flex-start;gap:10px}
-.alert-card .ac-icon{font-size:18px;flex-shrink:0;margin-top:1px}
-.alert-card .ac-body strong{display:block;font-size:13px;margin-bottom:2px}
-.alert-card.ac-crit{background:#fdecea;border-left:3px solid var(--red);color:var(--red)}
-.alert-card.ac-warn{background:var(--amber-bg);border-left:3px solid var(--amber);color:var(--amber)}
-.alert-card.ac-info{background:var(--blue-bg);border-left:3px solid var(--blue);color:var(--blue)}
-.scenario-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
-.sc-card{border-radius:9px;padding:14px 15px;border:1.5px solid}
-.sc-card h4{font-size:12px;font-weight:700;margin-bottom:6px}
-.sc-card .sc-val{font-family:'DM Mono',monospace;font-size:22px;font-weight:700;line-height:1;margin-bottom:3px}
-.sc-card .sc-sub{font-size:10px;opacity:.8}
-.sc1{background:#e8f5e9;border-color:#a5d4b5}.sc1 h4,.sc1 .sc-val{color:#1b5e20}
-.sc2{background:#e3f2fd;border-color:#90caf9}.sc2 h4,.sc2 .sc-val{color:#0d47a1}
-.sc3{background:#fff3e0;border-color:#ffcc80}.sc3 h4,.sc3 .sc-val{color:#e65100}
-.sc4{background:#f3e5f5;border-color:#ce93d8}.sc4 h4,.sc4 .sc-val{color:#6a1b9a}
-.ind-table{width:100%;font-size:12px;border-collapse:collapse}
-.ind-table th{background:var(--paper2);padding:6px 10px;text-align:left;font-size:10px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--ink2);border-bottom:1.5px solid var(--rule)}
-.ind-table td{padding:6px 10px;border-bottom:1px solid var(--paper2);vertical-align:middle}
-.ind-table tr:hover td{background:#f0f4fc}
-.mini-bar{height:8px;border-radius:4px;display:inline-block;vertical-align:middle;margin-left:6px}
-.proj-year-sel{padding:5px 10px;border:1.5px solid var(--rule);border-radius:6px;font-size:12px;font-family:'DM Mono',monospace;color:var(--ink);background:#fff;cursor:pointer}
-.proj-year-sel:focus{outline:none;border-color:var(--accent)}
 </style>
 </head>
 <body>
@@ -361,116 +314,6 @@ footer{background:var(--paper2);border-top:1.5px solid var(--rule);padding:10px 
       <button class="dl-btn s" id="dl-all-csv">📄 CSV consolidado</button>
     </div>
   </div>
-
-  <!-- Trends Module -->
-  <div class="trends-section" id="trends-section">
-    <div class="trends-header">
-      <div>
-        <h2>📈 Módulo de Tendencias y Proyección</h2>
-        <p>Análisis histórico · Proyecciones futuras · Simulación de escenarios · Alertas tempranas</p>
-      </div>
-      <select class="proj-year-sel" id="proj-horizon" title="Horizonte de proyección">
-        <option value="5">Proyectar 5 años</option>
-        <option value="10" selected>Proyectar 10 años</option>
-        <option value="15">Proyectar 15 años</option>
-      </select>
-    </div>
-    <div class="trends-nav">
-      <button class="tnav-btn active" data-panel="tp-indicadores">📊 Indicadores</button>
-      <button class="tnav-btn" data-panel="tp-evolucion">📅 Evolución histórica</button>
-      <button class="tnav-btn" data-panel="tp-proyeccion">🔭 Proyección</button>
-      <button class="tnav-btn" data-panel="tp-escenarios">🎭 Escenarios</button>
-      <button class="tnav-btn" data-panel="tp-alertas">🚨 Alertas tempranas</button>
-    </div>
-    <!-- Indicadores -->
-    <div class="trends-panel active" id="tp-indicadores">
-      <div class="t-grid-3" id="tr-kpi-row"></div>
-      <div class="t-card" style="margin-bottom:16px">
-        <h4>Indicadores por área temática</h4>
-        <div style="overflow-x:auto"><table class="ind-table" id="tr-ind-table">
-          <thead><tr>
-            <th>Dewey</th><th>Materia</th><th>N</th>
-            <th>Edad prom.</th><th>% actualizado</th><th>% obsoleto</th>
-            <th>Semivida</th><th>Índice obs.</th><th>Tendencia</th>
-          </tr></thead>
-          <tbody id="tr-ind-tbody"></tbody>
-        </table></div>
-      </div>
-    </div>
-    <!-- Evolución -->
-    <div class="trends-panel" id="tp-evolucion">
-      <div class="t-grid-2">
-        <div class="t-card">
-          <h4>Distribución por décadas — colección completa</h4>
-          <div class="chart-area"><div class="bar-chart" id="tr-decades-chart"></div></div>
-        </div>
-        <div class="t-card">
-          <h4>Antigüedad media por clase Dewey (años desde publicación)</h4>
-          <div id="tr-age-chart"></div>
-        </div>
-      </div>
-      <div class="t-grid-2">
-        <div class="t-card">
-          <h4>Distribución temática — % ejemplares por área Dewey</h4>
-          <div class="chart-area" id="tr-dewey-dist"></div>
-        </div>
-        <div class="t-card">
-          <h4>Áreas con mayor obsolescencia actual</h4>
-          <div id="tr-obs-chart"></div>
-        </div>
-      </div>
-    </div>
-    <!-- Proyección -->
-    <div class="trends-panel" id="tp-proyeccion">
-      <div class="t-grid-2">
-        <div class="t-card">
-          <h4>Proyección de envejecimiento</h4>
-          <p id="tr-proj-desc" style="font-size:11px;color:var(--ink3)"></p>
-          <div class="chart-area"><div class="bar-chart" id="tr-aging-proj"></div></div>
-        </div>
-        <div class="t-card">
-          <h4>Materias en riesgo de déficit bibliográfico</h4>
-          <p>Áreas donde el índice de obsolescencia superará el 70% en el horizonte proyectado</p>
-          <div id="tr-deficit-list"></div>
-        </div>
-      </div>
-      <div class="t-card" style="margin-bottom:16px">
-        <h4>Estimación de necesidades de adquisición</h4>
-        <div style="overflow-x:auto"><table class="ind-table" id="tr-acq-table">
-          <thead><tr>
-            <th>Dewey</th><th>Materia</th><th>N actual</th>
-            <th>% obs. actual</th><th>% obs. proy.</th><th>Δ obsolescencia</th>
-            <th>Prioridad renovación</th>
-          </tr></thead>
-          <tbody id="tr-acq-tbody"></tbody>
-        </table></div>
-      </div>
-    </div>
-    <!-- Escenarios -->
-    <div class="trends-panel" id="tp-escenarios">
-      <p style="font-size:12px;color:var(--ink3);margin-bottom:14px">Simulación del estado de la colección en el horizonte seleccionado según distintas estrategias de gestión.</p>
-      <div class="scenario-grid" id="tr-sc-cards"></div>
-      <div class="t-grid-2">
-        <div class="t-card">
-          <h4>Comparación — % material obsoleto proyectado</h4>
-          <div class="chart-area"><div class="bar-chart" id="tr-sc-chart"></div></div>
-        </div>
-        <div class="t-card">
-          <h4>Impacto en la semivida de la colección</h4>
-          <div id="tr-sc-hl-table"></div>
-        </div>
-      </div>
-      <div class="t-card" style="margin-top:2px">
-        <h4>Descripción de los escenarios</h4>
-        <div id="tr-sc-desc"></div>
-      </div>
-    </div>
-    <!-- Alertas -->
-    <div class="trends-panel" id="tp-alertas">
-      <p style="font-size:12px;color:var(--ink3);margin-bottom:14px">El sistema detecta automáticamente situaciones que pueden afectar la calidad de la colección.</p>
-      <div id="tr-alerts-list"></div>
-    </div>
-  </div><!-- /trends-section -->
 </div>
 </main>
 
@@ -569,6 +412,36 @@ const HALFLIFE_REF={
   '700':20,'800':25,'900':25,
 };
 function getHLRef(c){return HALFLIFE_REF[c]||(HALFLIFE_REF[c[0]+'00'])||10}
+
+// ── Detección de idioma por título (heurística, sin columna de idioma en el catálogo) ──
+const ES_MARKERS=/[ñÑáéíóúÁÉÍÓÚü¿¡]/;
+const ES_STOP=new Set(['de','la','el','en','y','los','las','un','una','unas','unos','para','del','con','su','al','es','como','más','por','se','no','lo','sus','entre','sobre','hacia','desde','este','esta','estos','estas','sin','o','u','e','que','le','les','muy','ya','fue','ser','son','han','está','están','les','nuevo','nueva','curso','manual','introducción','teoría','tomo','edición']);
+const EN_STOP=new Set(['the','of','and','in','to','a','is','for','with','on','an','as','by','from','that','this','these','those','are','at','be','or','its','into','their','was','were','will','can','which','it','not','have','has','handbook','introduction','theory','principles','fundamentals','guide']);
+const EN_SUFFIX=/(ing|tion|sion|ment|ology|ics|ware|ship|ness|able|ology)$/;
+const ES_SUFFIX=/(ción|sión|dad|miento|ncia|logía|aje|ismo|ería|oso|osa|able|ible)$/;
+function detectLanguage(titulo){
+  if(!titulo||titulo==='—')return'Indet.';
+  const t=titulo.toLowerCase();
+  if(ES_MARKERS.test(t))return'ES';
+  const words=t.replace(/[^a-zà-ÿ\s]/gi,' ').split(/\s+/).filter(Boolean);
+  if(words.length<2)return'Indet.';
+  let esHits=0,enHits=0;
+  for(const w of words){
+    if(ES_STOP.has(w))esHits++;
+    if(EN_STOP.has(w))enHits++;
+  }
+  if(esHits===0&&enHits===0){
+    // Sin palabras funcionales (frecuente en títulos técnicos en inglés sin artículos): usar sufijos
+    for(const w of words){
+      if(EN_SUFFIX.test(w))enHits++;
+      if(ES_SUFFIX.test(w))esHits++;
+    }
+  }
+  if(esHits===0&&enHits===0)return'Indet.';
+  if(enHits>esHits)return'EN';
+  if(esHits>enHits)return'ES';
+  return'Indet.';
+}
 let cutoffRules=JSON.parse(JSON.stringify(DEFAULT_CUTOFFS));
 function yearColor(y){if(y>=2018)return'#c62828';if(y>=2015)return'#ef6c00';if(y>=2012)return'#558b2f';return'#2e7d32'}
 function buildCutoffGrid(){
@@ -798,14 +671,18 @@ function analyzeRows(rows, unitCode=null){
     const yearCol2=document.getElementById('map-year').value;
     const sig=String(row[topoCol2]||'').trim();if(!sig)continue;
     const yr=parseFloat(String(row[yearCol2]).replace(/\D/g,''));
-    if(!titleGroups[sig])titleGroups[sig]={
-      sig,
-      titulo:String(row['Titulo']||row['título']||row['Título']||row['TITULO']||'—').trim(),
-      autor:String(row['Autor']||row['autor']||row['AUTOR']||'—').trim(),
-      year:isNaN(yr)?null:yr,
-      copies:0,
-      dewey:null,
-    };
+    if(!titleGroups[sig]){
+      const titulo=String(row['Titulo']||row['título']||row['Título']||row['TITULO']||'—').trim();
+      titleGroups[sig]={
+        sig,
+        titulo,
+        autor:String(row['Autor']||row['autor']||row['AUTOR']||'—').trim(),
+        year:isNaN(yr)?null:yr,
+        copies:0,
+        dewey:null,
+        lang:detectLanguage(titulo),
+      };
+    }
     titleGroups[sig].copies++;
     if(!titleGroups[sig].dewey){const m=/^(\d{3})/.exec(sig);if(m)titleGroups[sig].dewey=m[1]}
   }
@@ -828,6 +705,16 @@ function analyzeRows(rows, unitCode=null){
   }).sort((a,b)=>(b.loans||0)-(a.loans||0));
   const titleDataOut=titleList;
 
+  // Agregación de idioma por materia (Dewey)
+  const langByCode={};
+  for(const t of titleList){
+    if(!t.dewey)continue;
+    if(!langByCode[t.dewey])langByCode[t.dewey]={en:0,es:0,otro:0,total:0};
+    langByCode[t.dewey].total++;
+    if(t.lang==='EN')langByCode[t.dewey].en++;
+    else if(t.lang==='ES')langByCode[t.dewey].es++;
+    else langByCode[t.dewey].otro++;
+  }
 
   const deweyResult=Object.entries(groups).map(([code,{years,sigs}])=>{
     const corte=getCutoff(code);
@@ -849,8 +736,11 @@ function analyzeRows(rows, unitCode=null){
     const circRate=hasLoans?(n>0?totalLoans/n:0):null;
     const uniqueSigsInCol=new Set(sigs).size;
     const pctBorrowed=hasLoans&&uniqueSigsInCol>0?(uniqueItemsLoaned/uniqueSigsInCol)*100:null;
+    const lc=langByCode[code]||{en:0,es:0,otro:0,total:0};
+    const pctIngles=lc.total?(lc.en/lc.total)*100:null;
     return{dewey:code,materia:dlabel(code),n,yMin,yMax,med,avg,pct,corte,hl,iObs,hlRef,dc,valid,
-           totalLoans,itemsBorrowed:uniqueItemsLoaned,circRate,pctBorrowed};
+           totalLoans,itemsBorrowed:uniqueItemsLoaned,circRate,pctBorrowed,
+           nIngles:lc.en,nTitulosMateria:lc.total,pctIngles};
   }).sort((a,b)=>a.dewey.localeCompare(b.dewey));
   deweyResult._titles=titleDataOut;
   return deweyResult;
@@ -878,7 +768,6 @@ function runAnalysis(){
     circThreshold=sr.length?sr[Math.floor(sr.length/2)]:0.01;
   }
   buildTabs();
-  setTimeout(()=>buildTrendsModule(),100);
   document.getElementById('results-container').style.display='block';
   document.getElementById('results-container').scrollIntoView({behavior:'smooth',block:'start'});
   hideAlert();
@@ -934,6 +823,13 @@ function panelHTML(code,data){
   const gHL=calcHalfLife(allV);
   const gHLstr=gHL!==null?gHL+' años':'—';
   const hlInt=gHL===null?'':gHL<=6?'Renovación activa':gHL<=12?'Renovación moderada':'Colección envejecida';
+
+  // Idioma (heurística por título)
+  const titlesForLang=data._titles||[];
+  const nEn=titlesForLang.filter(t=>t.lang==='EN').length;
+  const nEs=titlesForLang.filter(t=>t.lang==='ES').length;
+  const pctEnGlobal=titlesForLang.length?(nEn/titlesForLang.length*100):null;
+  const pctEnStr=pctEnGlobal!==null?pctEnGlobal.toFixed(1)+'%':'—';
 
   // Loans KPIs
   let loanKPIs='';
@@ -999,6 +895,7 @@ function panelHTML(code,data){
     <div class="kpi-card"><div class="kpi-lbl">Mediana global</div><div class="kpi-val">${gMed}</div><div class="kpi-sub">año publicación</div></div>
     <div class="kpi-card"><div class="kpi-lbl">% ant. corte</div><div class="kpi-val">${gPct}</div><div class="kpi-sub">corte diferenciado</div></div>
     <div class="kpi-card hl"><div class="kpi-lbl">Semivida</div><div class="kpi-val purple">${gHLstr}</div><div class="kpi-sub">${hlInt}</div></div>
+    <div class="kpi-card"><div class="kpi-lbl">% Inglés</div><div class="kpi-val">${pctEnStr}</div><div class="kpi-sub">${nEn} de ${titlesForLang.length} títulos (heurístico)</div></div>
     ${loanKPIs}
   </div>
   ${matrixHTML}
@@ -1019,6 +916,7 @@ function panelHTML(code,data){
         <th data-col="pct" data-code="${code}">% ant. corte</th>
         <th data-col="pct" data-code="${code}">Estado</th>
         <th data-col="hl" data-code="${code}" class="th-hl">Semivida</th>
+        <th data-col="pctIngles" data-code="${code}">% Inglés</th>
         ${hasLoans?`
         <th data-col="totalLoans" data-code="${code}" class="th-circ">Préstamos</th>
         <th data-col="circRate" data-code="${code}" class="th-circ">Tasa circ.</th>
@@ -1058,6 +956,12 @@ function panelHTML(code,data){
           <option value="Revisar pertinencia">Revisar pertinencia</option>
           <option value="Mantener">Mantener</option>
         </select>
+        <select id="tf-lang-${code}">
+          <option value="">Todos los idiomas</option>
+          <option value="EN">🇬🇧 Inglés</option>
+          <option value="ES">🇪🇸 Español</option>
+          <option value="Indet.">Indeterminado</option>
+        </select>
         <input type="text" id="tf-q-${code}" placeholder="Buscar título o autor…" style="width:200px">
         <span style="font-size:12px;color:var(--ink3)" id="tf-info-${code}"></span>
       </div>
@@ -1067,6 +971,7 @@ function panelHTML(code,data){
           <th data-tcol="sig" data-tcode="${code}">Signatura</th>
           <th data-tcol="titulo" data-tcode="${code}">Título</th>
           <th data-tcol="autor" data-tcode="${code}">Autor</th>
+          <th data-tcol="lang" data-tcode="${code}">Idioma</th>
           <th data-tcol="year" data-tcode="${code}" style="text-align:right">Año</th>
           <th data-tcol="copies" data-tcode="${code}" style="text-align:right">Copias</th>
           <th data-tcol="loans" data-tcode="${code}" style="text-align:right">Préstamos</th>
@@ -1171,6 +1076,7 @@ function renderTbody(code,data){
       <td><div class="pbar-wrap"><div class="pbar"><div class="pbar-fill" style="width:${p||0}%;background:${fc}"></div></div><span class="pval">${p!==null?p.toFixed(1)+'%':'—'}</span></div></td>
       <td><span class="badge ${bc}">${bl}</span></td>
       <td class="td-hl">${hlStr}</td>
+      <td>${row.pctIngles!==null?`<div class="pbar-wrap"><div class="pbar"><div class="pbar-fill" style="width:${row.pctIngles}%;background:#1565c0"></div></div><span class="pval">${row.pctIngles.toFixed(1)+'%'}</span></div>`:'<span style="color:var(--ink3)">—</span>'}</td>
       ${loanCols}
       <td><div class="dbars">${bars}</div></td>
     </tr>`;
@@ -1189,17 +1095,19 @@ const PRI_CONFIG={
 function getCurrentTitleFilter(code,titles){
   const pri=document.getElementById('tf-pri-'+code)?.value||'';
   const rec=document.getElementById('tf-rec-'+code)?.value||'';
+  const lang=document.getElementById('tf-lang-'+code)?.value||'';
   const q=(document.getElementById('tf-q-'+code)?.value||'').toLowerCase();
   return titles.filter(t=>{
     if(pri&&String(t.pri)!==pri)return false;
     if(rec&&t.rec!==rec)return false;
+    if(lang&&t.lang!==lang)return false;
     if(q&&!t.titulo.toLowerCase().includes(q)&&!t.autor.toLowerCase().includes(q)&&!t.sig.toLowerCase().includes(q))return false;
     return true;
   });
 }
 
 function wireTitleFilters(code,titles){
-  ['tf-pri-','tf-rec-','tf-q-'].forEach(pfx=>{
+  ['tf-pri-','tf-rec-','tf-lang-','tf-q-'].forEach(pfx=>{
     const el=document.getElementById(pfx+code);
     if(el)el.addEventListener('input',()=>{
       const f=getCurrentTitleFilter(code,titles);
@@ -1216,6 +1124,7 @@ function renderTitleTable(code,titles){
     const yColor=t.isOld?'#8b1a1a':'#1e6b3a';
     const lpcStr=t.lpc!==null?t.lpc.toFixed(1):'—';
     const lpcColor=t.lpc!==null&&t.lpc>=3?'#8b1a1a':t.lpc!==null&&t.lpc>=1?'#8a5e00':'inherit';
+    const lg=t.lang==='EN'?{bg:'#e3f0fc',color:'#1565c0',lbl:'🇬🇧 EN'}:t.lang==='ES'?{bg:'#e6f4ec',color:'#1e6b3a',lbl:'🇪🇸 ES'}:{bg:'#f5f5f5',color:'#757575',lbl:'—'};
     return`<tr>
       <td style="text-align:center">
         <span class="pri-badge" style="background:${pc.bg};color:${pc.color}" title="${t.rec}">${pc.label}</span>
@@ -1223,6 +1132,7 @@ function renderTitleTable(code,titles){
       <td class="mono" style="font-size:10px;white-space:nowrap">${t.sig}</td>
       <td style="max-width:280px;font-size:12px">${t.titulo}</td>
       <td style="font-size:11px;color:var(--ink2);max-width:140px">${t.autor}</td>
+      <td><span class="badge" style="background:${lg.bg};color:${lg.color}">${lg.lbl}</span></td>
       <td class="num mono" style="color:${yColor}">${t.year||'—'}</td>
       <td class="num">${t.copies}</td>
       <td class="num" style="font-weight:${t.loans>0?'600':'400'}">${t.loans!==null?t.loans:'—'}</td>
@@ -1263,12 +1173,12 @@ function dlBudget(code,data){
   wsSum['!cols']=[{wch:14},{wch:45},{wch:12},{wch:20},{wch:20}];
   XLSX.utils.book_append_sheet(wb,wsSum,'Resumen ejecutivo');
 
-  const TH=['Signatura','Título','Autor','Año','Copias','Préstamos','P/Copia','Estado actualiz.','Recomendación','Prioridad'];
+  const TH=['Signatura','Título','Autor','Idioma','Año','Copias','Préstamos','P/Copia','Estado actualiz.','Recomendación','Prioridad'];
   function titleRows(arr){
-    return arr.map(t=>[t.sig,t.titulo,t.autor,t.year||'',t.copies,t.loans!==null?t.loans:'',
+    return arr.map(t=>[t.sig,t.titulo,t.autor,t.lang,t.year||'',t.copies,t.loans!==null?t.loans:'',
       t.lpc!==null?+t.lpc.toFixed(2):'',t.isOld?'Desactualizado':'Vigente',t.rec,`P${t.pri}`]);
   }
-  const colW=[{wch:20},{wch:52},{wch:28},{wch:8},{wch:8},{wch:11},{wch:9},{wch:16},{wch:42},{wch:6}];
+  const colW=[{wch:20},{wch:52},{wch:28},{wch:9},{wch:8},{wch:8},{wch:11},{wch:9},{wch:16},{wch:42},{wch:6}];
 
   if(p1.length){
     const ws=XLSX.utils.aoa_to_sheet([['P1 — Adquirir urgente: más ejemplares + edición actualizada'],[],TH,...titleRows(p1)]);
@@ -1292,7 +1202,7 @@ function dlBudget(code,data){
 // ── Exports ───────────────────────────────────────────────────────────────────
 function buildSheets(code,data){
   const h1=['Código Dewey','Materia','N Ejemplares','Año mín','Año máx','Mediana','Promedio',
-            'Corte','% ant. corte','Estado','Semivida (años)','I. Obsolescencia',
+            'Corte','% ant. corte','Estado','Semivida (años)','I. Obsolescencia','% Inglés',
             ...(hasLoans?['Préstamos totales','Ítems prestados','Tasa circulación','% ítems prestados','Decisión']:[] )];
   const r1=data.map(r=>{
     const e=r.pct===null?'Sin dato':r.pct<=30?'Actualizado':r.pct<=70?'Moderado':'Desactualizado';
@@ -1306,17 +1216,19 @@ function buildSheets(code,data){
            r.avg?+r.avg.toFixed(1):'',r.corte,
            r.pct!==null?+(r.pct/100).toFixed(4):'',e,
            r.hl!==null?r.hl:'',r.iObs!==null?+(r.iObs/100).toFixed(4):'',
+           r.pctIngles!==null?+(r.pctIngles/100).toFixed(4):'',
            ...loanCols];
   });
   r1.push(new Array(h1.length).fill(''));r1[r1.length-1][0]='TOTAL';r1[r1.length-1][2]=data.reduce((a,b)=>a+b.n,0);
   const ws1=XLSX.utils.aoa_to_sheet([[`Análisis de Colección — ${code}`],[`Generado: ${new Date().toLocaleString('es-CL')}`],[],h1,...r1]);
-  const colW=[{wch:11},{wch:38},{wch:11},{wch:9},{wch:9},{wch:9},{wch:9},{wch:10},{wch:13},{wch:14},{wch:13},{wch:14},
+  const colW=[{wch:11},{wch:38},{wch:11},{wch:9},{wch:9},{wch:9},{wch:9},{wch:10},{wch:13},{wch:14},{wch:13},{wch:14},{wch:11},
     ...(hasLoans?[{wch:14},{wch:14},{wch:14},{wch:14},{wch:22}]:[])];
   ws1['!cols']=colW;
   for(let i=4;i<4+r1.length;i++){
     let c=XLSX.utils.encode_cell({r:i,c:8});if(ws1[c]&&typeof ws1[c].v==='number')ws1[c].z='0.0%';
     c=XLSX.utils.encode_cell({r:i,c:11});if(ws1[c]&&typeof ws1[c].v==='number')ws1[c].z='0.0%';
-    if(hasLoans){c=XLSX.utils.encode_cell({r:i,c:15});if(ws1[c]&&typeof ws1[c].v==='number')ws1[c].z='0.0%'}
+    c=XLSX.utils.encode_cell({r:i,c:12});if(ws1[c]&&typeof ws1[c].v==='number')ws1[c].z='0.0%';
+    if(hasLoans){c=XLSX.utils.encode_cell({r:i,c:16});if(ws1[c]&&typeof ws1[c].v==='number')ws1[c].z='0.0%'}
   }
   const h2=['Código Dewey','Materia','Total',...DECADAS.map(d=>d+'s')];
   const r2=data.map(r=>[r.dewey,r.materia,r.n,...DECADAS.map(d=>r.dc[d]||0)]);
@@ -1341,12 +1253,13 @@ function dlExcel(code,data){
 
 function dlCSV(code,data){
   const h=['Carrera','Dewey','Materia','N','Anio_min','Anio_max','Mediana','Corte','Pct_ant_corte','Estado',
-           'Semivida_anios','I_Obsolescencia',...(hasLoans?['Prestamos','Items_prestados','Tasa_circ','Pct_prestados','Decision']:[])];
+           'Semivida_anios','I_Obsolescencia','Pct_ingles',...(hasLoans?['Prestamos','Items_prestados','Tasa_circ','Pct_prestados','Decision']:[])];
   const rows=data.map(r=>{
     const e=r.pct===null?'Sin dato':r.pct<=30?'Actualizado':r.pct<=70?'Moderado':'Desactualizado';
     const qd=hasLoans?getQuadrant(r):null;
     return[code,r.dewey,`"${r.materia}"`,r.n,r.yMin||'',r.yMax||'',r.med||'',r.corte,
            r.pct!==null?r.pct.toFixed(1):'',e,r.hl!==null?r.hl:'',r.iObs!==null?r.iObs.toFixed(1):'',
+           r.pctIngles!==null?r.pctIngles.toFixed(1):'',
            ...(hasLoans?[r.totalLoans,r.itemsBorrowed,r.circRate!==null?r.circRate.toFixed(2):'',
              r.pctBorrowed!==null?r.pctBorrowed.toFixed(1):'',qd?qd.label.replace(/[🔴🟢🟡🔵]/g,'').trim():'']:[] )];
   });
@@ -1359,7 +1272,7 @@ function dlCSV(code,data){
 document.getElementById('dl-all-excel').addEventListener('click',()=>{
   const title=document.getElementById('report-title').value.trim()||'Colecciones';
   const wb=XLSX.utils.book_new();
-  const sh=['Carrera','Ejemplares','Clases Dewey','Mediana','% ant. corte','Semivida (años)',
+  const sh=['Carrera','Ejemplares','Clases Dewey','Mediana','% ant. corte','Semivida (años)','% Inglés',
             ...(hasLoans?['Préstamos totales','Ítems nunca prestados','Adquisición urgente (Q1)',
               'Mantener (Q2)','Evaluar descarte (Q3)','Revisar pertinencia (Q4)']:[] )];
   const sr=Object.entries(allResults).map(([code,data])=>{
@@ -1369,7 +1282,9 @@ document.getElementById('dl-all-excel').addEventListener('click',()=>{
     const ta=data.reduce((a,r)=>a+r.valid.filter(y=>y<r.corte).length,0);
     const pct=tv?+(ta/tv).toFixed(4):'';
     const gHL=calcHalfLife(av);
-    const base=[code,data.reduce((a,b)=>a+b.n,0),data.length,med,pct,gHL!==null?gHL:''];
+    const titlesC=data._titles||[];
+    const pctEn=titlesC.length?+(titlesC.filter(t=>t.lang==='EN').length/titlesC.length).toFixed(4):'';
+    const base=[code,data.reduce((a,b)=>a+b.n,0),data.length,med,pct,gHL!==null?gHL:'',pctEn];
     if(hasLoans){
       const totL=data.reduce((a,r)=>a+r.totalLoans,0);
       const neverB=data.reduce((a,r)=>a+(r.n-r.itemsBorrowed),0);
@@ -1393,7 +1308,7 @@ document.getElementById('dl-all-excel').addEventListener('click',()=>{
 
 document.getElementById('dl-all-csv').addEventListener('click',()=>{
   const h=['Carrera','Dewey','Materia','N','Anio_min','Anio_max','Mediana','Corte','Pct_ant_corte','Estado',
-           'Semivida_anios','I_Obsolescencia',...(hasLoans?['Prestamos','Items_prestados','Tasa_circ','Pct_prestados','Decision']:[])];
+           'Semivida_anios','I_Obsolescencia','Pct_ingles',...(hasLoans?['Prestamos','Items_prestados','Tasa_circ','Pct_prestados','Decision']:[])];
   const rows=[];
   for(const [code,data] of Object.entries(allResults)){
     for(const r of data){
@@ -1401,6 +1316,7 @@ document.getElementById('dl-all-csv').addEventListener('click',()=>{
       const qd=hasLoans?getQuadrant(r):null;
       rows.push([code,r.dewey,`"${r.materia}"`,r.n,r.yMin||'',r.yMax||'',r.med||'',r.corte,
                  r.pct!==null?r.pct.toFixed(1):'',e,r.hl!==null?r.hl:'',r.iObs!==null?r.iObs.toFixed(1):'',
+                 r.pctIngles!==null?r.pctIngles.toFixed(1):'',
                  ...(hasLoans?[r.totalLoans,r.itemsBorrowed,r.circRate!==null?r.circRate.toFixed(2):'',
                    r.pctBorrowed!==null?r.pctBorrowed.toFixed(1):'',qd?qd.label.replace(/[🔴🟢🟡🔵]/g,'').trim():'']:[] )]);
     }
@@ -1410,457 +1326,6 @@ document.getElementById('dl-all-csv').addEventListener('click',()=>{
   a.href=URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'}));
   a.download='Analisis_consolidado.csv';a.click();
 });
-
-// ══════════════════════════════════════════════════════════════════════════════
-// MÓDULO DE TENDENCIAS Y PROYECCIÓN
-// ══════════════════════════════════════════════════════════════════════════════
-
-// Wire tab nav
-document.querySelectorAll('.tnav-btn').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    document.querySelectorAll('.tnav-btn').forEach(b=>b.classList.remove('active'));
-    document.querySelectorAll('.trends-panel').forEach(p=>p.classList.remove('active'));
-    btn.classList.add('active');
-    const pid=btn.dataset.panel;
-    document.getElementById(pid).classList.add('active');
-  });
-});
-document.getElementById('proj-horizon').addEventListener('change',()=>{
-  if(Object.keys(allResults).length)buildTrendsModule();
-});
-
-// ── Helper: get all rows across all careers ───────────────────────────────────
-function getAllData(){
-  const all=[];
-  for(const data of Object.values(allResults)) all.push(...data);
-  return all;
-}
-
-// ── Compute age (years since publication) ────────────────────────────────────
-function rowAge(r){
-  const med=r.med||r.avg;
-  return med?CY-med:null;
-}
-
-// ── Mini bar chart helper ─────────────────────────────────────────────────────
-function makeBarChart(containerId,items,colorFn){
-  // items: [{label, value, title?}]
-  const c=document.getElementById(containerId);
-  if(!c)return;
-  const maxV=Math.max(...items.map(i=>i.value),1);
-  const maxPx=100;
-  c.innerHTML=items.map(i=>{
-    const h=Math.max(Math.round((i.value/maxV)*maxPx),i.value>0?2:0);
-    const col=colorFn?colorFn(i.value,i,maxV):'var(--accent)';
-    const valStr=i.value>0?(i.value>9999?(i.value/1000).toFixed(1)+'k':i.value):'';
-    return`<div class="bc-bar" title="${i.title||i.label+': '+i.value}">
-      <div class="bv">${valStr}</div>
-      <div class="br" style="height:${h}px;background:${col}"></div>
-      <div class="bl">${i.label}</div>
-    </div>`;
-  }).join('');
-}
-
-function makeHBarChart(containerId,items,colorFn,unit=''){
-  // Horizontal bar chart — items: [{label, value, sub?, title?}]
-  const c=document.getElementById(containerId);
-  if(!c)return;
-  const maxV=Math.max(...items.map(i=>i.value),1);
-  c.style.display='block';
-  c.innerHTML=`<div style="display:flex;flex-direction:column;gap:5px;margin-top:4px">
-  ${items.map(i=>{
-    const pct=(i.value/maxV*100).toFixed(1);
-    const col=colorFn?colorFn(i.value,i,maxV):'var(--accent)';
-    const valStr=i.value+(unit?' '+unit:'');
-    return`<div style="display:flex;align-items:center;gap:8px;font-size:12px" title="${i.title||i.label+': '+valStr}">
-      <div style="min-width:180px;max-width:180px;font-size:11px;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right;flex-shrink:0">${i.label}</div>
-      <div style="flex:1;background:var(--paper2);border-radius:4px;height:14px;overflow:hidden;min-width:60px">
-        <div style="width:${pct}%;background:${col};height:100%;border-radius:4px;transition:width .3s"></div>
-      </div>
-      <span style="font-family:'DM Mono',monospace;font-size:11px;color:${col};font-weight:600;min-width:44px">${valStr}</span>
-    </div>`;
-  }).join('')}
-  </div>`;
-}
-
-// ── MAIN BUILD ────────────────────────────────────────────────────────────────
-function buildTrendsModule(){
-  const data=getAllData();
-  if(!data.length)return;
-  const horizon=parseInt(document.getElementById('proj-horizon').value)||10;
-  buildTrIndicadores(data,horizon);
-  buildTrEvolucion(data);
-  buildTrProyeccion(data,horizon);
-  buildTrEscenarios(data,horizon);
-  buildTrAlertas(data,horizon);
-}
-
-// ── 1. INDICADORES ────────────────────────────────────────────────────────────
-function buildTrIndicadores(data,horizon){
-  const allValid=data.flatMap(r=>r.valid);
-  const tv=allValid.length;
-  if(!tv){document.getElementById('tr-kpi-row').innerHTML='<p style="color:var(--ink3);font-size:12px">Sin datos suficientes.</p>';return}
-
-  const avgAge=allValid.length?CY-allValid.reduce((a,b)=>a+b,0)/allValid.length:0;
-  const pctUpd=data.reduce((a,r)=>a+(r.pct!==null&&r.pct<=30?1:0),0)/data.length*100;
-  const pctObs=data.reduce((a,r)=>a+(r.pct!==null&&r.pct>70?1:0),0)/data.length*100;
-  const avgObs=data.reduce((a,r)=>a+(r.iObs!==null?r.iObs:0),0)/data.filter(r=>r.iObs!==null).length;
-  const renIdx=data.filter(r=>r.valid.some(y=>y>=CY-5)).length/data.length*100;
-
-  const kpis=[
-    {label:'Edad promedio',val:avgAge.toFixed(1)+' años',sub:'antigüedad media de la colección',col:'var(--accent2)'},
-    {label:'% actualizado',val:pctUpd.toFixed(1)+'%',sub:'materias con ≤30% ant. corte',col:'var(--green)'},
-    {label:'% obsoleto',val:pctObs.toFixed(1)+'%',sub:'materias con >70% ant. corte',col:'var(--red)'},
-    {label:'Áreas Dewey',val:data.length,sub:'clases temáticas analizadas',col:'var(--accent)'},
-    {label:'Índice obs. medio',val:avgObs.toFixed(1)+'%',sub:'% material fuera semivida ref.',col:'var(--orange)'},
-    {label:'Índice renovación',val:renIdx.toFixed(1)+'%',sub:'materias con adquisición reciente (≤5a)',col:'var(--teal)'},
-  ];
-  document.getElementById('tr-kpi-row').innerHTML=kpis.map(k=>`
-    <div class="t-card" style="border-top:3px solid ${k.col}">
-      <div class="kpi-lbl">${k.label}</div>
-      <div class="kpi-val" style="font-family:'Playfair Display',serif;font-size:24px;color:${k.col}">${k.val}</div>
-      <div class="kpi-sub">${k.sub}</div>
-    </div>`).join('');
-
-  // Indicadores table
-  const sorted=[...data].sort((a,b)=>a.dewey.localeCompare(b.dewey));
-  const tbody=document.getElementById('tr-ind-tbody');
-  tbody.innerHTML=sorted.map(r=>{
-    const age=r.avg?+(CY-r.avg).toFixed(1):null;
-    const pctUpd2=r.pct!==null?(100-r.pct).toFixed(1):null;
-    const pctObs2=r.pct!==null?r.pct.toFixed(1):null;
-    const iObs=r.iObs!==null?r.iObs.toFixed(1):null;
-    const hlRef=r.hlRef||10;
-    // Trend: compare age vs half-life ref
-    let trend='→ Estable',tColor='var(--ink3)';
-    if(r.iObs!==null&&r.iObs>70){trend='↑ Envejeciendo';tColor='var(--red)'}
-    else if(r.iObs!==null&&r.iObs>45){trend='↗ En riesgo';tColor='var(--orange)'}
-    else if(r.iObs!==null&&r.iObs<20){trend='↓ Renovado';tColor='var(--green)'}
-    const obsBg=r.iObs!==null?(r.iObs>70?'#fdecea':r.iObs>45?'var(--amber-bg)':'var(--green-bg)'):'';
-    return`<tr>
-      <td class="mono">${r.dewey}</td>
-      <td>${r.materia}</td>
-      <td class="num">${r.n}</td>
-      <td class="num">${age!==null?age+'a':'—'}</td>
-      <td class="num">${pctUpd2!==null?pctUpd2+'%':'—'}</td>
-      <td class="num">${pctObs2!==null?pctObs2+'%':'—'}</td>
-      <td class="num">${r.hl!==null?r.hl+'a':'—'}</td>
-      <td style="background:${obsBg}"><span style="font-family:'DM Mono',monospace;font-size:11px">${iObs!==null?iObs+'%':'—'}</span></td>
-      <td style="color:${tColor};font-weight:600;font-size:12px">${trend}</td>
-    </tr>`;
-  }).join('');
-}
-
-// ── 2. EVOLUCIÓN HISTÓRICA ────────────────────────────────────────────────────
-function buildTrEvolucion(data){
-  // Decades chart — total exemplars per decade
-  const decTotals=DECADAS.map(d=>({
-    label:d+"s",
-    value:data.reduce((a,r)=>a+(r.dc[d]||0),0),
-    title:'Publicados en los '+d+'s: '+data.reduce((a,r)=>a+(r.dc[d]||0),0)+' ejemplares'
-  }));
-  makeBarChart('tr-decades-chart',decTotals,(v,i,mx)=>{
-    const d=parseInt(i.label);
-    return d>=2020?'#1a5c34':d>=2010?'#2e7d32':d>=2000?'#7cb342':d>=1990?'#f9a825':d>=1980?'#ef6c00':'#c62828';
-  });
-
-  // Age by Dewey class — sort by age desc, show top 12 oldest
-  const topAged=[...data].filter(r=>r.avg!==null)
-    .map(r=>({...r,age:Math.round(CY-r.avg)}))
-    .sort((a,b)=>b.age-a.age).slice(0,12);
-  makeHBarChart('tr-age-chart',topAged.map(r=>({
-    label:r.materia.substring(0,32),value:r.age,title:r.dewey+' '+r.materia+': '+r.age+' años de antigüedad media'
-  })),(v)=>{
-    if(v>25)return'#c62828';if(v>18)return'#ef6c00';if(v>12)return'#f9a825';return'#7cb342';
-  },'años');
-
-  // Dewey 100s distribution
-  const dist100={};
-  for(const r of data){
-    const key=r.dewey[0]+'00';
-    dist100[key]=(dist100[key]||0)+r.n;
-  }
-  const tot=Object.values(dist100).reduce((a,b)=>a+b,0)||1;
-  const distEl=document.getElementById('tr-dewey-dist');
-  distEl.innerHTML='<div style="display:flex;flex-direction:column;gap:5px;margin-top:4px">'+
-    Object.entries(dist100).sort((a,b)=>b[1]-a[1]).map(([k,v])=>{
-      const pct=(v/tot*100).toFixed(1);
-      const label=DEWEY[k]?DEWEY[k].split(/[,;]/)[0]:('Área '+k);
-      const col=k[0]=='0'?'#1565c0':k[0]=='1'?'#6a1b9a':k[0]=='2'?'#ad1457':k[0]=='3'?'#00695c':
-                k[0]=='4'?'#558b2f':k[0]=='5'?'#1565c0':k[0]=='6'?'#e65100':k[0]=='7'?'#6d4c41':'#37474f';
-      return`<div style="display:flex;align-items:center;gap:8px;font-size:12px">
-        <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--ink3);width:28px">${k}</span>
-        <div style="flex:1;background:var(--paper2);border-radius:4px;height:10px;overflow:hidden">
-          <div style="width:${pct}%;background:${col};height:100%;border-radius:4px"></div>
-        </div>
-        <span style="font-family:'DM Mono',monospace;font-size:11px;color:${col};font-weight:600;width:38px;text-align:right">${pct}%</span>
-        <span style="color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px">${label}</span>
-      </div>`;
-    }).join('')+'</div>';
-
-  // Obsolescence ranking
-  const topObs=[...data].filter(r=>r.iObs!==null).sort((a,b)=>b.iObs-a.iObs).slice(0,10);
-  makeHBarChart('tr-obs-chart',topObs.map(r=>({
-    label:r.materia.substring(0,32),value:Math.round(r.iObs),title:r.dewey+' '+r.materia+': '+r.iObs.toFixed(1)+'% obsoleto'
-  })),(v)=>{
-    if(v>75)return'#c62828';if(v>55)return'#ef6c00';if(v>35)return'#f9a825';return'#7cb342';
-  },'%');
-}
-
-// ── 3. PROYECCIÓN ─────────────────────────────────────────────────────────────
-function buildTrProyeccion(data,horizon){
-  // Each year that passes, the half-life reference window shifts: items become older
-  // We model: for each class, how many items will be beyond their cutoff in H years
-  // Simple model: items don't change; the threshold year advances by H
-  const projData=data.map(r=>{
-    const hRef=r.hlRef||10;
-    const curObs=r.iObs||0;
-    // projected: items older than (hRef) years in H years = items with year < CY+H-hRef
-    const futureThreshold=CY+horizon-hRef;
-    const projObs=r.valid.length?
-      (r.valid.filter(y=>y<futureThreshold).length/r.valid.length)*100:null;
-    const curPct=r.pct||0;
-    const futPct=r.valid.length?
-      (r.valid.filter(y=>y<(r.corte+0)).length/r.valid.length)*100:curPct;
-    // projected % ante corte: same items, but corte stays fixed; obsolescence grows
-    const projAntCorte=r.valid.length?
-      (r.valid.filter(y=>y<r.corte).length/r.valid.length)*100:null;
-    return{...r,projObs,projAntCorte,futureThreshold};
-  });
-
-  // Aging projection chart: simulate % obsolete per year for next H years
-  const years=Array.from({length:horizon+1},(_,i)=>CY+i);
-  const yearlyObs=years.map(yr=>{
-    const total=data.reduce((a,r)=>a+r.valid.length,0)||1;
-    const obs=data.reduce((a,r)=>{
-      const hRef=r.hlRef||10;
-      return a+r.valid.filter(y=>y<yr-hRef).length;
-    },0);
-    return{label:String(yr),value:Math.round(obs/total*100)};
-  });
-  makeBarChart('tr-aging-proj',yearlyObs,(v)=>{
-    if(v>75)return'#c62828';if(v>55)return'#ef6c00';if(v>35)return'#f9a825';return'#2e7d32';
-  });
-  const curObsGlobal=yearlyObs[0]?.value||0;
-  const projObsGlobal=yearlyObs[yearlyObs.length-1]?.value||0;
-  document.getElementById('tr-proj-desc').textContent=
-    `Obsolescencia actual: ${curObsGlobal}% → proyectada en ${horizon} años: ${projObsGlobal}% (sin adquisiciones nuevas)`;
-
-  // Deficit list
-  const deficit=projData.filter(r=>r.projObs!==null&&r.projObs>70).sort((a,b)=>b.projObs-a.projObs);
-  document.getElementById('tr-deficit-list').innerHTML=deficit.length?
-    deficit.map(r=>`<div class="alert-card ac-crit" style="margin-bottom:6px">
-      <div class="ac-icon">⚠️</div>
-      <div class="ac-body">
-        <strong>${r.dewey} — ${r.materia}</strong>
-        Índice de obsolescencia proyectado: <b>${r.projObs.toFixed(1)}%</b> en ${horizon} años
-        (actual: ${r.iObs!==null?r.iObs.toFixed(1):'—'}%)
-      </div>
-    </div>`).join(''):
-    '<div class="alert-card ac-info"><div class="ac-icon">✅</div><div class="ac-body"><strong>Sin áreas en riesgo crítico</strong><br>Ninguna materia superará el 70% de obsolescencia en el horizonte proyectado.</div></div>';
-
-  // Acquisition needs table
-  const acqData=[...projData].filter(r=>r.projObs!==null)
-    .sort((a,b)=>(b.projObs-b.iObs)-(a.projObs-a.iObs));
-  const tbody=document.getElementById('tr-acq-tbody');
-  tbody.innerHTML=acqData.map(r=>{
-    const delta=r.projObs-r.iObs;
-    const pri=r.projObs>70?'🔴 Urgente':r.projObs>55?'🟠 Alta':r.projObs>35?'🟡 Media':'🟢 Baja';
-    const priCol=r.projObs>70?'#8b1a1a':r.projObs>55?'#bf360c':r.projObs>35?'#8a5e00':'#1e6b3a';
-    return`<tr>
-      <td class="mono">${r.dewey}</td><td>${r.materia}</td><td class="num">${r.n}</td>
-      <td class="num">${r.iObs!==null?r.iObs.toFixed(1)+'%':'—'}</td>
-      <td class="num">${r.projObs!==null?r.projObs.toFixed(1)+'%':'—'}</td>
-      <td class="num" style="color:${delta>20?'var(--red)':delta>10?'var(--orange)':'var(--green)'};font-weight:600">
-        ${delta>0?'+':''}${delta.toFixed(1)}%
-      </td>
-      <td style="color:${priCol};font-weight:600">${pri}</td>
-    </tr>`;
-  }).join('');
-}
-
-// ── 4. ESCENARIOS ─────────────────────────────────────────────────────────────
-function buildTrEscenarios(data,horizon){
-  // Base: current global obsolescence
-  const allValid=data.flatMap(r=>r.valid);
-  const totV=allValid.length||1;
-  const calcGlobalObs=(extraYears,annualNew,weeding)=>{
-    // extraYears: how many years ahead
-    // annualNew: new items per year (added with current year)
-    // weeding: % of oldest items removed per year
-    let pool=[...allValid];
-    for(let y=0;y<extraYears;y++){
-      for(let i=0;i<annualNew;i++) pool.push(CY+y+1);
-      if(weeding>0){
-        pool.sort((a,b)=>a-b);
-        const remove=Math.floor(pool.length*weeding/100);
-        pool=pool.slice(remove);
-      }
-    }
-    const hlRef=10; // global average
-    const obs=pool.filter(yr=>yr<(CY+extraYears-hlRef)).length;
-    return{pct:pool.length?obs/pool.length*100:0,size:pool.length,hl:calcHalfLife(pool)};
-  };
-
-  const baseline=calcGlobalObs(0,0,0);
-  // Scenario parameters based on collection size
-  const colSize=allValid.length;
-  const annualAvg=Math.max(Math.round(colSize*0.03),10); // ~3% annual growth historical avg
-
-  const scenarios=[
-    {
-      id:'sc1',name:'Crecimiento',desc:'Adquisición sostenida (+5% anual) con descarte de material más antiguo',
-      icon:'🚀',cls:'sc1',
-      result:calcGlobalObs(horizon,Math.round(colSize*0.05),2)
-    },
-    {
-      id:'sc2',name:'Conservador',desc:'Ritmo histórico de crecimiento (~3% anual) sin descarte activo',
-      icon:'📊',cls:'sc2',
-      result:calcGlobalObs(horizon,annualAvg,0)
-    },
-    {
-      id:'sc3',name:'Restricción presupuestaria',desc:'Sin adquisiciones durante el horizonte proyectado',
-      icon:'⚠️',cls:'sc3',
-      result:calcGlobalObs(horizon,0,0)
-    },
-    {
-      id:'sc4',name:'Actualización intensiva',desc:'Inversión extraordinaria: +8% anual + descarte agresivo de fondo obsoleto (5%/año)',
-      icon:'✨',cls:'sc4',
-      result:calcGlobalObs(horizon,Math.round(colSize*0.08),5)
-    },
-  ];
-
-  document.getElementById('tr-sc-cards').innerHTML=scenarios.map(s=>
-    `<div class="sc-card ${s.cls}">
-      <h4>${s.icon} ${s.name}</h4>
-      <div class="sc-val">${s.result.pct.toFixed(1)}%</div>
-      <div class="sc-sub">obsolescencia proyectada<br>tamaño estimado: ${s.result.size.toLocaleString()} ítems</div>
-    </div>`
-  ).join('');
-
-  makeBarChart('tr-sc-chart',scenarios.map(s=>({
-    label:s.name.split(' ')[0],value:Math.round(s.result.pct),title:s.name+': '+s.result.pct.toFixed(1)+'%'
-  })),(v)=>{
-    if(v>65)return'#c62828';if(v>50)return'#ef6c00';if(v>35)return'#f9a825';return'#2e7d32';
-  });
-
-  const base=calcGlobalObs(horizon,0,0);
-  document.getElementById('tr-sc-hl-table').innerHTML=`
-    <table class="ind-table">
-      <thead><tr><th>Escenario</th><th>% obsoleto</th><th>Semivida col.</th><th>vs. sin acción</th></tr></thead>
-      <tbody>${scenarios.map(s=>{
-        const diff=(base.pct-s.result.pct);
-        const hlStr=s.result.hl!==null?s.result.hl+'a':'—';
-        const diffColor=diff>0?'var(--green)':diff<0?'var(--red)':'var(--ink3)';
-        return`<tr>
-          <td>${s.icon||''} ${s.name}</td>
-          <td class="num">${s.result.pct.toFixed(1)}%</td>
-          <td class="num">${hlStr}</td>
-          <td class="num" style="color:${diffColor};font-weight:600">${diff>0?'-':'+'}${Math.abs(diff).toFixed(1)}%</td>
-        </tr>`;
-      }).join('')}</tbody>
-    </table>`;
-
-  document.getElementById('tr-sc-desc').innerHTML=`
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px">
-    ${scenarios.map(s=>`<div style="padding:10px 12px;background:var(--paper);border-radius:7px;border:1px solid var(--rule)">
-      <strong style="font-size:12px">${s.icon} ${s.name}</strong>
-      <p style="font-size:11px;color:var(--ink3);margin-top:3px">${s.desc}</p>
-    </div>`).join('')}
-    </div>`;
-}
-
-// ── 5. ALERTAS TEMPRANAS ──────────────────────────────────────────────────────
-function buildTrAlertas(data,horizon){
-  const alerts=[];
-
-  // A1: Materias con alta obsolescencia
-  const highObs=data.filter(r=>r.iObs!==null&&r.iObs>70).sort((a,b)=>b.iObs-a.iObs);
-  if(highObs.length){
-    const chips=highObs.map(r=>`<span style="display:inline-flex;align-items:center;gap:3px;padding:2px 7px;background:#fdecea;border:1px solid #f5a5a5;border-radius:12px;font-size:10px;font-family:'DM Mono',monospace;color:#8b1a1a;margin:2px">${r.dewey} <b>${r.iObs.toFixed(0)}%</b></span>`).join('');
-    alerts.push({cls:'ac-crit',icon:'🔴',
-      title:`${highObs.length} área${highObs.length>1?'s':''} con obsolescencia crítica (>70%)`,
-      chips});
-  }
-
-  // A2: Áreas con pocos ejemplares
-  const sparse=data.filter(r=>r.n<5);
-  if(sparse.length){
-    const chips=sparse.map(r=>`<span style="display:inline-flex;gap:3px;padding:2px 7px;background:var(--amber-bg);border:1px solid #ffcc80;border-radius:12px;font-size:10px;font-family:'DM Mono',monospace;color:var(--amber);margin:2px">${r.dewey} (${r.n} ej.)</span>`).join('');
-    alerts.push({cls:'ac-warn',icon:'🟡',
-      title:`${sparse.length} área${sparse.length>1?'s':''} con representación documental escasa (<5 ejemplares)`,
-      chips});
-  }
-
-  // A3: Colección sin renovación reciente
-  const noRecent=data.filter(r=>!r.valid.some(y=>y>=CY-7));
-  if(noRecent.length>data.length*0.3){
-    const shown=noRecent.slice(0,15);
-    const chips=shown.map(r=>`<span style="display:inline-flex;gap:3px;padding:2px 7px;background:var(--amber-bg);border:1px solid #ffcc80;border-radius:12px;font-size:10px;font-family:'DM Mono',monospace;color:var(--amber);margin:2px">${r.dewey}</span>`).join('')+(noRecent.length>15?`<span style="font-size:11px;color:var(--ink3);margin-left:4px">+${noRecent.length-15} más</span>`:'');
-    alerts.push({cls:'ac-warn',icon:'🟡',
-      title:`${noRecent.length} áreas sin adquisiciones en los últimos 7 años`,
-      chips});
-  }
-
-  // A4: Semivida muy alta (colección envejecida)
-  const allV=data.flatMap(r=>r.valid);
-  const gHL=calcHalfLife(allV);
-  if(gHL!==null&&gHL>15){
-    alerts.push({cls:'ac-crit',icon:'🔴',
-      title:`Semivida global de la colección: ${gHL} años — colección envejecida`,
-      body:'El 50% del fondo tiene más de '+gHL+' años. Se recomienda un plan de renovación sistemático.'});
-  }
-
-  // A5: Crecimiento excesivo de fondo antiguo
-  const pre1990=allV.filter(y=>y<1990).length;
-  const pre1990pct=allV.length?(pre1990/allV.length*100).toFixed(1):0;
-  if(parseFloat(pre1990pct)>20){
-    alerts.push({cls:'ac-warn',icon:'⚠️',
-      title:`${pre1990pct}% de la colección fue publicado antes de 1990`,
-      body:'Un volumen considerable del fondo es anterior a 1990. Evaluar pertinencia y posibilidad de descarte selectivo.'});
-  }
-
-  // A6: Proyección — materias que entrarán en déficit
-  const futureDeficit=data.filter(r=>{
-    if(r.iObs===null||r.iObs>=70)return false;
-    const hRef=r.hlRef||10;
-    const futObs=r.valid.length?r.valid.filter(y=>y<CY+horizon-hRef).length/r.valid.length*100:0;
-    return futObs>70;
-  });
-  if(futureDeficit.length){
-    const chips=futureDeficit.map(r=>`<span style="display:inline-flex;gap:3px;padding:2px 7px;background:var(--blue-bg);border:1px solid #90caf9;border-radius:12px;font-size:10px;font-family:'DM Mono',monospace;color:var(--blue);margin:2px">${r.dewey} ${r.materia.substring(0,18)}</span>`).join('');
-    alerts.push({cls:'ac-info',icon:'🔵',
-      title:`${futureDeficit.length} área${futureDeficit.length>1?'s':''} entrarán en déficit bibliográfico en ${horizon} años`,
-      chips});
-  }
-
-  // A7: Desequilibrio temático (un área >40% del fondo)
-  const totN=data.reduce((a,r)=>a+r.n,0)||1;
-  const bigArea=data.find(r=>r.n/totN>0.4);
-  if(bigArea){
-    alerts.push({cls:'ac-info',icon:'ℹ️',
-      title:`Concentración: ${bigArea.dewey} ${bigArea.materia} representa el ${(bigArea.n/totN*100).toFixed(1)}% del fondo`,
-      body:'Una concentración superior al 40% en una sola área puede indicar desequilibrio bibliográfico. Revisar cobertura de otras disciplinas.'});
-  }
-
-  // A8: Sin alertas
-  const el=document.getElementById('tr-alerts-list');
-  if(!alerts.length){
-    el.innerHTML='<div class="alert-card ac-info"><div class="ac-icon">✅</div><div class="ac-body"><strong>Sin alertas activas</strong><br>La colección no presenta situaciones de riesgo detectables con los datos actuales.</div></div>';
-    return;
-  }
-  el.innerHTML=alerts.map(a=>`
-    <div class="alert-card ${a.cls}">
-      <div class="ac-icon">${a.icon}</div>
-      <div class="ac-body">
-        <strong>${a.title}</strong>
-        ${a.body?`<span style="display:block;margin-top:3px;opacity:.85">${a.body}</span>`:''}
-        ${a.chips?`<div style="margin-top:6px;display:flex;flex-wrap:wrap;gap:2px">${a.chips}</div>`:''}
-      </div>
-    </div>`).join('');
-}
-
-// Trends module is triggered from runAnalysis directly
 
 function showAlert(msg,type){const el=document.getElementById('alert-box');el.textContent=msg;el.className='alert '+type;el.style.display='block'}
 function hideAlert(){document.getElementById('alert-box').style.display='none'}
